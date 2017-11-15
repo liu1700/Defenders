@@ -10,7 +10,7 @@ public class CameraController : MonoBehaviour
     /// Note that this is the game-play camera. All UI rendering is done by UICamera in another thread.
     /// </summary>
 
-    public static float cps = 13;           //camera's projection size
+    public static float cps = 15;           //camera's projection size
 
     public bool performStartMove = true;    //should camera moves towards enemy and back to player, when we just start the game?1
     internal bool startMoveIsDoneFlag;      //flag to set when the starting animation has been performed

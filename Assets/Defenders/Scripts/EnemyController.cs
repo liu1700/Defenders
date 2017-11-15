@@ -63,16 +63,16 @@ public class EnemyController : MonoBehaviour
         switch (enemySkill)
         {
             case enemySkillLevels.easy:
-                shootAngleError = 1.5f;
-                fakeWindPower = Random.Range(0, 20);
+                shootAngleError = 2.0f;
+                fakeWindPower = Random.Range(0, 30);
                 break;
             case enemySkillLevels.normal:
-                shootAngleError = 0.7f;
-                fakeWindPower = Random.Range(0, 7);
+                shootAngleError = 1.0f;
+                fakeWindPower = Random.Range(0, 20);
                 break;
             case enemySkillLevels.hard:
-                shootAngleError = 0.4f;
-                fakeWindPower = Random.Range(0, 3);
+                shootAngleError = 0.3f;
+                fakeWindPower = Random.Range(0, 10);
                 break;
             case enemySkillLevels.Robinhood:
                 shootAngleError = 0;
@@ -95,8 +95,8 @@ public class EnemyController : MonoBehaviour
     /// </summary>
     void setStartingPosition()
     {
-        float randomX = Random.Range(15, 60);
-        transform.position = new Vector3(randomX, transform.position.y, transform.position.z);
+        //float randomX = Random.Range(15, 60);
+        //transform.position = new Vector3(randomX, transform.position.y, transform.position.z);
     }
 
 

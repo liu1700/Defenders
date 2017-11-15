@@ -112,9 +112,9 @@ public class PlayerController : MonoBehaviour
 
             turnPlayerBody();
 
-            //only show shot info when we are fighting with an enemy
-            if (GameModeController.isEnemyRequired())
-                infoPanel.SetActive(true);
+            ////only show shot info when we are fighting with an enemy
+            //if (GameModeController.isEnemyRequired())
+            //    infoPanel.SetActive(true);
 
             helperShowTimer += Time.deltaTime;
             if (helperShowTimer >= helperShowDelay)
