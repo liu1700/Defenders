@@ -153,6 +153,9 @@ public class GameController : MonoBehaviour
         StartCoroutine(activateTap());
         StartCoroutine(roundTurnManager());
 
+        var ctrl = cam.GetComponent<CameraController>();
+        ctrl.SetCameraProjectionSize(15f);
+        ctrl.SetcameraCurrentPos(new Vector3(3, 7, -10));
     }
 
 

@@ -10,7 +10,7 @@ public class CameraController : MonoBehaviour
     /// Note that this is the game-play camera. All UI rendering is done by UICamera in another thread.
     /// </summary>
 
-    public static float cps = 15;           //camera's projection size
+    float cps = 15;           //camera's projection size
 
     public bool performStartMove = true;    //should camera moves towards enemy and back to player, when we just start the game?1
     internal bool startMoveIsDoneFlag;      //flag to set when the starting animation has been performed
@@ -35,7 +35,6 @@ public class CameraController : MonoBehaviour
             performStartMove = false;
         }
 
-        GetComponent<Camera>().orthographicSize = cps;
         cameraStartingPos = new Vector3(3, 7, -10);
         cameraCurrentPos = cameraStartingPos;
         transform.position = cameraStartingPos;
@@ -45,6 +44,18 @@ public class CameraController : MonoBehaviour
 
         player = GameObject.FindGameObjectWithTag("Player");
         enemy = GameObject.FindGameObjectWithTag("enemy");
+    }
+
+    public void SetCameraProjectionSize(float s)
+    {
+        cps = s;
+        GetComponent<Camera>().orthographicSize = cps;
+    }
+
+    public void SetcameraCurrentPos(Vector3 pos)
+    {
+        cameraCurrentPos = pos;
+        transform.position = pos;
     }
 
 
@@ -188,7 +199,11 @@ public class CameraController : MonoBehaviour
         //if (cps < 5) cps = 5;
         //if (cps > 6) cps = 6;
 
-        //GetComponent<Camera>().orthographicSize = cps;
+        //if (cps != prevCps)
+        //{
+        //    GetComponent<Camera>().orthographicSize = cps;
+        //    prevCps = cps;
+        //}
     }
 
 
