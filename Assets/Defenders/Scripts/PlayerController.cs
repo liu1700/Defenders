@@ -190,12 +190,16 @@ public class PlayerController : MonoBehaviour
 
             shootDirection = Mathf.Atan2(inputDirection.y, inputDirection.x) * Mathf.Rad2Deg;
 
-            //for an optimal experience, we need to limit the rotation to 0 ~ 90 euler angles.
-            //so...
+            ////for an optimal experience, we need to limit the rotation to 0 ~ 90 euler angles.
+            ////so...
+            //if (shootDirection > 90)
+            //    shootDirection = 90;
+            //if (shootDirection < 0)
+            //    shootDirection = 0;
             if (shootDirection > 90)
                 shootDirection = 90;
-            if (shootDirection < 0)
-                shootDirection = 0;
+            if (shootDirection < -90)
+                shootDirection = -90;
 
             //apply the rotation
             playerTurnPivot.transform.eulerAngles = new Vector3(0, 0, shootDirection);
@@ -245,7 +249,7 @@ public class PlayerController : MonoBehaviour
         arr.GetComponent<MainLauncherController>().ownerID = 0;
 
         shootDirectionVector = Vector3.Normalize(inputDirection);
-        shootDirectionVector = new Vector3(Mathf.Clamp(shootDirectionVector.x, 0, 1), Mathf.Clamp(shootDirectionVector.y, 0, 1), shootDirectionVector.z);
+        //shootDirectionVector = new Vector3(Mathf.Clamp(shootDirectionVector.x, 0, 1), Mathf.Clamp(shootDirectionVector.y, 0, 1), shootDirectionVector.z);
 
         arr.GetComponent<MainLauncherController>().playerShootVector = shootDirectionVector * ((shootPower + baseShootPower) / 50);
 
@@ -269,6 +273,7 @@ public class PlayerController : MonoBehaviour
 
         yield return new WaitForSeconds(0.25f);
         float currentRotationAngle = playerTurnPivot.transform.eulerAngles.z;
+        //playerTurnPivot.transform.rotation = Quaternion.Euler(0, 0, Mathf.SmoothStep(currentRotationAngle, 0, 1));
         float t = 0;
         while (t < 1)
         {
@@ -276,7 +281,6 @@ public class PlayerController : MonoBehaviour
             playerTurnPivot.transform.rotation = Quaternion.Euler(0, 0, Mathf.SmoothStep(currentRotationAngle, 0, t));
             yield return 0;
         }
-
     }
 
 
@@ -294,7 +298,7 @@ public class PlayerController : MonoBehaviour
         GameObject t = Instantiate(trajectoryHelper, playerShootPosition.transform.position, Quaternion.Euler(0, 180, shootDirection * -1)) as GameObject;
 
         shootDirectionVector = Vector3.Normalize(inputDirection);
-        shootDirectionVector = new Vector3(Mathf.Clamp(shootDirectionVector.x, 0, 1), Mathf.Clamp(shootDirectionVector.y, 0, 1), shootDirectionVector.z);
+        //shootDirectionVector = new Vector3(Mathf.Clamp(shootDirectionVector.x, 0, 1), Mathf.Clamp(shootDirectionVector.y, 0, 1), shootDirectionVector.z);
         //print("shootPower: " + shootPower + " --- " + "shootDirectionVector: " + shootDirectionVector);
 
         t.GetComponent<Rigidbody>().AddForce(shootDirectionVector * ((shootPower + baseShootPower) / 50), ForceMode.Impulse);
