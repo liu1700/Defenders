@@ -31,7 +31,7 @@ public class MainLauncherController : MonoBehaviour
     private float collisionCheckDelay = 0.1f;   //seconds.
 
     //reference to player and enemy game objects
-    private GameObject enemy;
+    //private GameObject enemy;
     private GameObject player;
 
     //effect objects
@@ -65,7 +65,7 @@ public class MainLauncherController : MonoBehaviour
         //bombExplosionByPlayer = false;
         //bombExplosionByEnemy = false;
 
-        enemy = GameObject.FindGameObjectWithTag("enemy");
+        //enemy = GameObject.FindGameObjectWithTag("enemy");
         player = GameObject.FindGameObjectWithTag("Player");
 
         switch (arrowType)
@@ -117,7 +117,7 @@ public class MainLauncherController : MonoBehaviour
 		GetComponent<BoxCollider> ().enabled = true;*/
 
         //we can destroy the arrow after a short time (if it is not already destroyed)
-        Destroy(gameObject, 45);
+        Destroy(gameObject, 10);
     }
 
 
@@ -153,7 +153,6 @@ public class MainLauncherController : MonoBehaviour
         if (transform.position.y < -8)
             Destroy(gameObject);
     }
-
 
     /// <summary>
     /// Enemy object just commands the shot sequence. All calculations for the actual arrow happens here.
@@ -238,30 +237,30 @@ public class MainLauncherController : MonoBehaviour
     void explodeOnTouch()
     {
 
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
+        //if (Input.GetKeyDown(KeyCode.Mouse0))
+        //{
 
-            //bombExplosionByPlayer = true;
-            GameObject exp = Instantiate(explosionFx, transform.position + new Vector3(0, 0, -1.5f), Quaternion.Euler(0, 0, 0)) as GameObject;
-            exp.name = "Explosion";
+        //    //bombExplosionByPlayer = true;
+        //    GameObject exp = Instantiate(explosionFx, transform.position + new Vector3(0, 0, -1.5f), Quaternion.Euler(0, 0, 0)) as GameObject;
+        //    exp.name = "Explosion";
 
-            //check explosion distance with target
-            float distanceToTarget = Vector3.Distance(transform.position, enemy.transform.position);
-            print("Bomb - distanceToTarget: " + distanceToTarget);
-            if (distanceToTarget <= MasterWeaponManager.bombExplosionRadius)
-            {
-                //apply explosion damage
-                enemy.GetComponent<EnemyController>().enemyCurrentHealth -= MasterWeaponManager.bombExplosionDamage;
-                enemy.GetComponent<EnemyController>().gotLastHit = true;
-                enemy.GetComponent<EnemyController>().playRandomHitSound();
-            }
+        //    //check explosion distance with target
+        //    float distanceToTarget = Vector3.Distance(transform.position, enemy.transform.position);
+        //    print("Bomb - distanceToTarget: " + distanceToTarget);
+        //    if (distanceToTarget <= MasterWeaponManager.bombExplosionRadius)
+        //    {
+        //        //apply explosion damage
+        //        enemy.GetComponent<EnemyController>().enemyCurrentHealth -= MasterWeaponManager.bombExplosionDamage;
+        //        enemy.GetComponent<EnemyController>().gotLastHit = true;
+        //        enemy.GetComponent<EnemyController>().playRandomHitSound();
+        //    }
 
-            Destroy(gameObject, 0.01f);
+        //    Destroy(gameObject, 0.01f);
 
-            GameController.isArrowInScene = false;
-            enemy.GetComponent<EnemyController>().changeTurns();
+        //    GameController.isArrowInScene = false;
+        //    //enemy.GetComponent<EnemyController>().changeTurns();
 
-        }
+        //}
     }
 
 
@@ -312,15 +311,15 @@ public class MainLauncherController : MonoBehaviour
 
             GameController.isArrowInScene = false;
 
-            //We only change turns if this game more requires an enemy
-            if (!bypassCode)
-            {
+            ////We only change turns if this game more requires an enemy
+            //if (!bypassCode)
+            //{
 
-                if (ownerID == 0)
-                    enemy.GetComponent<EnemyController>().changeTurns();
-                else if (ownerID == 1)
-                    player.GetComponent<PlayerController>().changeTurns();
-            }
+            //    if (ownerID == 0)
+            //        enemy.GetComponent<EnemyController>().changeTurns();
+            //    else if (ownerID == 1)
+            //        player.GetComponent<PlayerController>().changeTurns();
+            //}
 
         }
 
@@ -362,17 +361,19 @@ public class MainLauncherController : MonoBehaviour
                 Destroy(gameObject, 0.01f);
             }
 
+            var enemy = other.collider.gameObject.GetComponentInParent<EnemyController>();
+
             //manage victim's helath status
-            enemy.GetComponent<EnemyController>().enemyCurrentHealth -= damage;
+            enemy.enemyCurrentHealth -= damage;
 
             //save enemy state for lastHit. will be used if we need to move the enemy after getting hit
-            enemy.GetComponent<EnemyController>().gotLastHit = true;
+            enemy.gotLastHit = true;
 
             //play hit sfx
-            enemy.GetComponent<EnemyController>().playRandomHitSound();
+            enemy.playRandomHitSound();
 
-            //change the turn
-            enemy.GetComponent<EnemyController>().changeTurns();
+            ////change the turn
+            //enemy.GetComponent<EnemyController>().changeTurns();
         }
 
 
@@ -410,8 +411,8 @@ public class MainLauncherController : MonoBehaviour
             //play hit sfx
             player.GetComponent<PlayerController>().playRandomHitSound();
 
-            //change the turn
-            player.GetComponent<PlayerController>().changeTurns();
+            ////change the turn
+            //player.GetComponent<PlayerController>().changeTurns();
         }
 
 

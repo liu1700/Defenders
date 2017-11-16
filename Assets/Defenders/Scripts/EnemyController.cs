@@ -14,13 +14,15 @@ public class EnemyController : MonoBehaviour
     public enum enemySkillLevels { easy, normal, hard, Robinhood }
     public enemySkillLevels enemySkill = enemySkillLevels.easy;
 
+    public int enemyId;
+
     [Header("Public GamePlay settings")]
     public int enemyHealth = 100;                   //initial (full) health. can be edited.
     private float baseShootAngle = 61.5f;           //Very important! - avoid editing this value! (it has been calculated based on the size/shape/weight of the arrow)
     private float shootAngleError = 0;              //We use this to give some erros to enemy shoots. Setting this to 0 will results in accurate shoots
     public static float fakeWindPower = 0;              //We use this if we need to add more randomness to enemy shots.
     internal int enemyCurrentHealth;                //not editable.
-    public static bool isEnemyDead;                 //flag for gameover event
+    public bool isEnemyDead;                 //flag for gameover event
     public bool moveAfterEachHit = true;            //if set to true, enemy will move a little after getting hit by player
     internal bool gotLastHit = false;               //will set to ture if enemy got hit in the previous round (by player)
 
@@ -40,6 +42,7 @@ public class EnemyController : MonoBehaviour
     //Enemy shoot settings
     private bool canShoot;
 
+    public EnemyPool poolRef;
 
     //Init
     void Awake()
@@ -107,7 +110,7 @@ public class EnemyController : MonoBehaviour
     {
 
         //if the game has not started yet, or the game is finished, just return
-        if (!GameController.gameIsStarted || GameController.gameIsFinished)
+        if (!GameController.gameIsStarted || GameController.gameIsFinished || isEnemyDead)
             return;
 
         //Check if this object is dead or alive
@@ -116,6 +119,7 @@ public class EnemyController : MonoBehaviour
             print("Enemy is dead...");
             enemyCurrentHealth = 0;
             isEnemyDead = true;
+            poolRef.KillEnemy(enemyId);
             return;
         }
 
@@ -136,20 +140,20 @@ public class EnemyController : MonoBehaviour
     }
 
 
-    /// <summary>
-    /// This function will be called when this object is hit by an arrow. It will check if this is still alive after the hit.
-    /// if ture, changes the turn. if not, this is dead and game should finish.
-    /// </summary>
-    public void changeTurns()
-    {
+    ///// <summary>
+    ///// This function will be called when this object is hit by an arrow. It will check if this is still alive after the hit.
+    ///// if ture, changes the turn. if not, this is dead and game should finish.
+    ///// </summary>
+    //public void changeTurns()
+    //{
 
-        print("enemyCurrentHealth: " + enemyCurrentHealth);
+    //    print("enemyCurrentHealth: " + enemyCurrentHealth);
 
-        if (enemyCurrentHealth > 0)
-            StartCoroutine(gc.GetComponent<GameController>().roundTurnManager());
-        else
-            GameController.noMoreShooting = true;
-    }
+    //    if (enemyCurrentHealth > 0)
+    //        StartCoroutine(gc.GetComponent<GameController>().roundTurnManager());
+    //    else
+    //        GameController.noMoreShooting = true;
+    //}
 
 
     /// <summary>

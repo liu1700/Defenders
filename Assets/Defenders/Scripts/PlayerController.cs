@@ -153,21 +153,21 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    /// <summary>
-    /// This function will be called when this object is hit by an arrow. It will check if this is still alive after the hit.
-    /// if ture, changes the turn. if not, this is dead and game should finish.
-    /// </summary>
-    public void changeTurns()
-    {
+    ///// <summary>
+    ///// This function will be called when this object is hit by an arrow. It will check if this is still alive after the hit.
+    ///// if ture, changes the turn. if not, this is dead and game should finish.
+    ///// </summary>
+    //public void changeTurns()
+    //{
 
-        print("playerCurrentHealth: " + playerCurrentHealth);
+    //    //print("playerCurrentHealth: " + playerCurrentHealth);
 
-        if (playerCurrentHealth > 0)
-            StartCoroutine(gc.GetComponent<GameController>().roundTurnManager());
-        else
-            GameController.noMoreShooting = true;
+    //    //if (playerCurrentHealth > 0)
+    //    //    StartCoroutine(gc.GetComponent<GameController>().roundTurnManager());
+    //    //else
+    //    //    GameController.noMoreShooting = true;
 
-    }
+    //}
 
 
     /// <summary>

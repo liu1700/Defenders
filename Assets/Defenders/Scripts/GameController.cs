@@ -18,6 +18,7 @@ public class GameController : MonoBehaviour
     public groundTypes groundType = groundTypes.flat;   //we have two options here. default is flat ground.
     public GameObject flatBg;                           //reference to flag ground object.
     //public GameObject curvedBg;                         //reference to curved ground holder object.
+    public EnemyPool enemies;
 
 
     // Static variables //
@@ -183,7 +184,8 @@ public class GameController : MonoBehaviour
             return;
 
         //fast game finish checking...
-        if (EnemyController.isEnemyDead)
+        //if (EnemyController.isEnemyDead)
+        if (enemies.AllEnemiesDead())
         {
             //player is winner
             StartCoroutine(finishTheGame(1));
@@ -326,7 +328,8 @@ public class GameController : MonoBehaviour
 
         //2. then check if the situation meets a game over
         //check for game finish state
-        if (EnemyController.isEnemyDead)
+        //if (EnemyController.isEnemyDead)
+        if (enemies.AllEnemiesDead())
         {
 
             //player is winner
