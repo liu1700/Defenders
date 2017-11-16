@@ -451,30 +451,30 @@ public class GameController : MonoBehaviour
 
         }
 
-        //calculate score and grants player some coins
-        int shotBonus = 0;
-        int timeBonus = 0;
+        ////calculate score and grants player some coins
+        //int shotBonus = 0;
+        //int timeBonus = 0;
 
-        if (playerArrowShot <= 3)
-            shotBonus = 150;
-        else if (playerArrowShot > 3 && playerArrowShot <= 6)
-            shotBonus = 75;
-        else if (playerArrowShot > 6 && playerArrowShot <= 10)
-            shotBonus = 25;
+        //if (playerArrowShot <= 3)
+        //    shotBonus = 150;
+        //else if (playerArrowShot > 3 && playerArrowShot <= 6)
+        //    shotBonus = 75;
+        //else if (playerArrowShot > 6 && playerArrowShot <= 10)
+        //    shotBonus = 25;
 
-        if (Time.timeSinceLevelLoad <= 30)
-            timeBonus = 250;
-        else if (Time.timeSinceLevelLoad > 30 && Time.timeSinceLevelLoad < 60)
-            timeBonus = 100;
-        else if (Time.timeSinceLevelLoad > 60 && Time.timeSinceLevelLoad < 90)
-            timeBonus = 50;
+        //if (Time.timeSinceLevelLoad <= 30)
+        //    timeBonus = 250;
+        //else if (Time.timeSinceLevelLoad > 30 && Time.timeSinceLevelLoad < 60)
+        //    timeBonus = 100;
+        //else if (Time.timeSinceLevelLoad > 60 && Time.timeSinceLevelLoad < 90)
+        //    timeBonus = 50;
 
-        //Final coin formula (normal game)
-        playerCoins = shotBonus + timeBonus + (res * 200);
+        ////Final coin formula (normal game)
+        //playerCoins = shotBonus + timeBonus + (res * 200);
 
-        //Override - Final coin formula (Birdhunt game mode)
-        if (res == 2)
-            playerCoins = birdsHit * 100;
+        ////Override - Final coin formula (Birdhunt game mode)
+        //if (res == 2)
+        //    playerCoins = birdsHit * 100;
 
         //set the score/coins on UI
         uiYouWon.GetComponent<TextMesh>().text = playerCoins.ToString();

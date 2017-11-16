@@ -2,6 +2,7 @@
 using System.Collections;
 using System;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MenuController : MonoBehaviour
 {
@@ -23,7 +24,8 @@ public class MenuController : MonoBehaviour
     private bool canTap = true;                 //flag to prevent double tap
     public AudioClip tapSfx;                    //tap sound for buttons click
 
-    public GameObject coinLabel;                //coin text on menu scene
+    //public GameObject coinLabel;                //coin text on menu scene
+    public Text coinText;
     private GameObject cam;                         //main camera
 
     void Awake()
@@ -36,7 +38,8 @@ public class MenuController : MonoBehaviour
         Time.fixedDeltaTime = 0.002f;
 
         //show avilable player coins in menu scene
-        coinLabel.GetComponent<TextMesh>().text = PlayerPrefs.GetInt("PlayerCoins", 0).ToString();
+        //coinLabel.GetComponent<TextMesh>().text = PlayerPrefs.GetInt("PlayerCoins", 0).ToString();
+        coinText.text = PlayerPrefs.GetInt("PlayerCoins", 0).ToString();
 
         cam = GameObject.FindGameObjectWithTag("MainCamera");
     }
