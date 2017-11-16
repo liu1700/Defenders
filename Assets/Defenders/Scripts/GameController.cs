@@ -19,6 +19,7 @@ public class GameController : MonoBehaviour
     public GameObject flatBg;                           //reference to flag ground object.
     //public GameObject curvedBg;                         //reference to curved ground holder object.
     public EnemyPool enemies;
+    public LevelUI levelUI;
 
 
     // Static variables //
@@ -73,7 +74,6 @@ public class GameController : MonoBehaviour
     //private Vector3 enemyHBSC;                      //enemy health bar starting scale
     private float playerHealthScale;                //player health bar real-time scale
     private float enemyHealthScale;                 //enemy health bar real-time scale
-
 
 
     /// <summary>
@@ -399,6 +399,7 @@ public class GameController : MonoBehaviour
     void nextTurn()
     {
         round++;
+        levelUI.levelNum.text = round.ToString();
         enemies.ReGenerateEnemies(round);
     }
 
@@ -595,6 +596,13 @@ public class GameController : MonoBehaviour
     public static void addBonusTime()
     {
         gameTimer += bonusTime;
+    }
+
+    public void AddGold(int count)
+    {
+        playerCoins += count;
+        levelUI.goldNum.text = playerCoins.ToString();
+        levelUI.performAddGoldAnim();
     }
 
 }
