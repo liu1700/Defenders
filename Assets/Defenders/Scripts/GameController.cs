@@ -155,7 +155,7 @@ public class GameController : MonoBehaviour
 
         var ctrl = cam.GetComponent<CameraController>();
         ctrl.SetCameraProjectionSize(15f);
-        ctrl.SetcameraCurrentPos(new Vector3(3, 7, -10));
+        ctrl.SetcameraCurrentPos(new Vector3(3, 9, -10));
     }
 
 

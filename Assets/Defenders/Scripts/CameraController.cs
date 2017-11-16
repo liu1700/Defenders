@@ -35,9 +35,9 @@ public class CameraController : MonoBehaviour
             performStartMove = false;
         }
 
-        cameraStartingPos = new Vector3(3, 7, -10);
-        cameraCurrentPos = cameraStartingPos;
-        transform.position = cameraStartingPos;
+        //cameraStartingPos = new Vector3(3, 9, -10);
+        //cameraCurrentPos = cameraStartingPos;
+        //transform.position = cameraStartingPos;
         targetToLock = null;
         targetToFollow = null;
         startMoveIsDoneFlag = false;
