@@ -6,12 +6,12 @@ using UnityEngine;
 public class EnemyPool : MonoBehaviour
 {
 
-    List<EnemyController> list;
+    private List<EnemyController> list;
     public GameObject enemyObject;
     public Vector3 center;
     public float minX, maxX;
     public float minY, maxY;
-    List<Vector3> positions;
+    private List<Vector3> positions;
 
     float minEnemyCount, maxEnemyCount;
     List<EnemyController.enemySkillLevels> skillLevels;
@@ -19,10 +19,18 @@ public class EnemyPool : MonoBehaviour
     Dictionary<int, EnemyController.enemySkillLevels> levelUnlock;
     Dictionary<int, int[]> enemyCountUnlock;
 
-    private void Start()
+    void Awake()
     {
-        skillLevels = new List<EnemyController.enemySkillLevels>();
-        list = new List<EnemyController>();
+        if (skillLevels == null)
+        {
+            skillLevels = new List<EnemyController.enemySkillLevels>();
+        }
+
+        if (list == null)
+        {
+            list = new List<EnemyController>();
+        }
+
         levelUnlock = new Dictionary<int, EnemyController.enemySkillLevels>();
         // key: 第几回合, val: 解锁生成难度
         levelUnlock.Add(1, EnemyController.enemySkillLevels.easy);

@@ -144,6 +144,10 @@ public class GameController : MonoBehaviour
         birdsHit = 0;
 
         AdManagerObject = GameObject.FindGameObjectWithTag("AdManager");
+
+        var ctrl = cam.GetComponent<CameraController>();
+        ctrl.SetCameraProjectionSize(15f);
+        ctrl.SetcameraCurrentPos(new Vector3(3, 9, -10));
     }
 
 
@@ -151,11 +155,7 @@ public class GameController : MonoBehaviour
     void Start()
     {
         StartCoroutine(activateTap());
-        StartCoroutine(roundTurnManager());
-
-        var ctrl = cam.GetComponent<CameraController>();
-        ctrl.SetCameraProjectionSize(15f);
-        ctrl.SetcameraCurrentPos(new Vector3(3, 9, -10));
+        //StartCoroutine(roundTurnManager());
     }
 
 
