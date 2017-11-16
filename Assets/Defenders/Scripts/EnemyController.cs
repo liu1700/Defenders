@@ -42,7 +42,9 @@ public class EnemyController : MonoBehaviour
     //Enemy shoot settings
     private bool canShoot;
 
-    public EnemyPool poolRef;
+    EnemyPool poolRef;
+
+    int enemyLayer;
 
     //Init
     void Awake()
@@ -60,6 +62,7 @@ public class EnemyController : MonoBehaviour
         gotLastHit = false;
         gc = GameObject.FindGameObjectWithTag("GameController");
         cam = GameObject.FindGameObjectWithTag("MainCamera");
+
 
         //Increase difficulty by decreasing the enemy error when shooting
         //Please note that "shootAngleError" is not editable. If you want to change the precision, you need to edit "fakeWindPower"
@@ -83,7 +86,9 @@ public class EnemyController : MonoBehaviour
                 break;
         }
 
-        setStartingPosition();
+        //setStartingPosition();
+        poolRef = GetComponentInParent<EnemyPool>();
+        enemyLayer = LayerMask.NameToLayer("enemy");
     }
 
 
@@ -96,10 +101,10 @@ public class EnemyController : MonoBehaviour
     /// <summary>
     /// move the enemy to a random position, each time the game begins
     /// </summary>
-    void setStartingPosition()
+    public void setStartingPosition(Vector3 pos)
     {
         //float randomX = Random.Range(15, 60);
-        //transform.position = new Vector3(randomX, transform.position.y, transform.position.z);
+        transform.position = pos;
     }
 
 
@@ -214,6 +219,7 @@ public class EnemyController : MonoBehaviour
 
         //shoot calculations
         GameObject ea = Instantiate(arrow, enemyShootPosition.transform.position, Quaternion.Euler(0, 0, -45)) as GameObject;
+        ea.layer = enemyLayer;
         ea.name = "EnemyProjectile";
         ea.GetComponent<MainLauncherController>().ownerID = 1;
 

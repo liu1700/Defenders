@@ -27,7 +27,7 @@ public class GameController : MonoBehaviour
     public static bool gameIsStarted;               //global flag for game start state
     public static bool gameIsFinished;              //global flag for game finish state
     public static bool noMoreShooting;              //We use this to stop the shoots when someone has been killed but the game is yet to finish
-    //public static int round;                        //internal counter to assign turn to player and AI
+    public static int round;                        //internal counter to assign turn to player and AI
     //public static bool playersTurn;                 //flag to check if this is player's turn
     //public static bool enemysTurn;                  //flag to check if this is opponent's turn
     //public static string whosTurn;                  //current turn holder in string. useful if you want to extend the game.
@@ -134,7 +134,7 @@ public class GameController : MonoBehaviour
         gameIsStarted = false;
         gameIsFinished = false;
         noMoreShooting = false;
-        //round = 0;
+        round = 0;
         playerArrowShot = 0;
         playerCoins = 0;
 
@@ -150,7 +150,6 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
-
         StartCoroutine(activateTap());
         StartCoroutine(roundTurnManager());
 
@@ -187,8 +186,8 @@ public class GameController : MonoBehaviour
         //if (EnemyController.isEnemyDead)
         if (enemies.AllEnemiesDead())
         {
-            //player is winner
-            StartCoroutine(finishTheGame(1));
+            //next turn
+            nextTurn();
         }
         else if (PlayerController.isPlayerDead)
         {
@@ -332,8 +331,8 @@ public class GameController : MonoBehaviour
         if (enemies.AllEnemiesDead())
         {
 
-            //player is winner
-            StartCoroutine(finishTheGame(1));
+            //next turn
+            nextTurn();
             yield break;
 
         }
@@ -393,6 +392,15 @@ public class GameController : MonoBehaviour
         //print("whosTurn: " + whosTurn);
     }
 
+
+    /// <summary>
+    /// Next turn
+    /// </summary>
+    void nextTurn()
+    {
+        round++;
+        enemies.ReGenerateEnemies(round);
+    }
 
     /// <summary>
     /// Gameover sequence.
