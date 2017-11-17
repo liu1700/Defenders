@@ -1,0 +1,194 @@
+fileFormatVersion: 2
+guid: 0228f5f3c1a99e246ba869cfd1ad3152
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: upper arm 1
+    21300002: head
+    21300004: upper arm 2
+    21300006: lower arm 1
+    21300008: neck
+    21300010: wrist 1
+    21300012: thigh 2
+    21300014: body
+    21300016: thigh 1
+    21300018: wrist 2
+    21300020: leg 2
+    21300022: leg 1
+    21300024: lower arm 2
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 1024
+  textureSettings:
+    filterMode: -1
+    aniso: 1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings:
+  - buildTarget: iPhone
+    maxTextureSize: 1024
+    textureFormat: -2
+    compressionQuality: 50
+  spriteSheet:
+    sprites:
+    - name: upper arm 1
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 383
+        width: 76
+        height: 62
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: head
+      rect:
+        serializedVersion: 2
+        x: 204
+        y: 400
+        width: 76
+        height: 108
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: upper arm 2
+      rect:
+        serializedVersion: 2
+        x: 291
+        y: 384
+        width: 73
+        height: 64
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: lower arm 1
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 320
+        width: 73
+        height: 64
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: neck
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 333
+        width: 21
+        height: 59
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: wrist 1
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 284
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: thigh 2
+      rect:
+        serializedVersion: 2
+        x: 114
+        y: 159
+        width: 27
+        height: 158
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: body
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 148
+        width: 100
+        height: 181
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: thigh 1
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 155
+        width: 28
+        height: 158
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: wrist 2
+      rect:
+        serializedVersion: 2
+        x: 436
+        y: 284
+        width: 38
+        height: 42
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: leg 2
+      rect:
+        serializedVersion: 2
+        x: 107
+        y: 23
+        width: 41
+        height: 125
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: leg 1
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 14
+        width: 44
+        height: 130
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: lower arm 2
+      rect:
+        serializedVersion: 2
+        x: 361
+        y: 329
+        width: 68
+        height: 64
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 

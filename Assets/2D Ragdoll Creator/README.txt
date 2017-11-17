@@ -1,0 +1,1 @@
+Unzip "ProjectSettings.zip" content into ProjectSettings folder (it's in same root folder there the "Assets" folder is) if you want to set Physics2D, Tags & Layers settings as I had them.

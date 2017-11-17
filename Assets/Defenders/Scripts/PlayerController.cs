@@ -219,9 +219,9 @@ public class PlayerController : MonoBehaviour
             //modify camera cps - next update
             //CameraController.cps = 5 + (shootPower / 100);
 
-            //show informations on the UI text elements
-            UiDynamicDegree.GetComponent<TextMesh>().text = ((int)shootDirection).ToString();
-            UiDynamicPower.GetComponent<TextMesh>().text = ((int)shootPower).ToString() + "%";
+            ////show informations on the UI text elements
+            //UiDynamicDegree.GetComponent<TextMesh>().text = ((int)shootDirection).ToString();
+            //UiDynamicPower.GetComponent<TextMesh>().text = ((int)shootPower).ToString() + "%";
 
             if (useHelper)
             {
