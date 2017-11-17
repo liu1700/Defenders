@@ -152,6 +152,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void RefillPlayerHealth()
+    {
+        playerCurrentHealth = playerHealth;
+        isPlayerDead = false;
+    }
+
 
     ///// <summary>
     ///// This function will be called when this object is hit by an arrow. It will check if this is still alive after the hit.

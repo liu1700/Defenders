@@ -132,7 +132,7 @@ public class GameController : MonoBehaviour
         //playerHBSC = uiPlayerHealthBar.transform.localScale;
         //enemyHBSC = uiEnemyHealthBar.transform.localScale;
 
-        canTap = false;
+        canTap = true;
         gameIsStarted = false;
         gameIsFinished = false;
         noMoreShooting = false;
@@ -169,8 +169,8 @@ public class GameController : MonoBehaviour
     void Update()
     {
 
-        //receive inputs at all times
-        StartCoroutine(inputManager());
+        ////receive inputs at all times
+        //StartCoroutine(inputManager());
 
         ////manage health bar status
         //updateUiHealthBars ();
@@ -218,6 +218,62 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public void TapReduceGold()
+    {
+        if (!canTap)
+            return;
+
+        if (playerCoins < 10)
+        {
+            return;
+        }
+
+        playSfx(tapSfx);                            //play touch sound
+        canTap = false;                             //prevent double touch
+        StartCoroutine(waitAnimation());
+        AddGold(-10);
+        OnPlayerReviveOver();
+        StartCoroutine(activateTap());
+    }
+
+    public void TapToMenu()
+    {
+        if (!canTap)
+            return;
+
+        playSfx(tapSfx);                            //play touch sound
+        canTap = false;                             //prevent double touch
+        StartCoroutine(waitAnimation());
+        SceneManager.LoadScene("Menu");
+        StartCoroutine(activateTap());
+    }
+
+    public void TapViewVideo()
+    {
+        if (!canTap)
+            return;
+
+        playSfx(tapSfx);                            //play touch sound
+        canTap = false;                             //prevent double touch
+        StartCoroutine(waitAnimation());
+
+        if (AdManagerObject)
+        {
+            AdManagerObject.GetComponent<AdManager>().showRewardVideo(OnPlayerReviveOver);
+        }
+
+        StartCoroutine(activateTap());
+    }
+
+    public void OnPlayerReviveOver()
+    {
+        player.GetComponent<PlayerController>().RefillPlayerHealth();
+    }
+
+    IEnumerator waitAnimation()
+    {
+        yield return new WaitForSeconds(1.2f);      //Wait for the animation to end
+    }
 
     //*****************************************************************************
     // This function monitors player touches on menu buttons.
@@ -257,12 +313,12 @@ public class GameController : MonoBehaviour
                     StartCoroutine(activateTap());
                     break;
                 case "Button-Menu":
-                    playSfx(tapSfx);                            //play touch sound
-                    canTap = false;                             //prevent double touch
-                    StartCoroutine(animateButton(objectHit));   //touch animation effect
-                    yield return new WaitForSeconds(0.25f);     //Wait for the animation to end
-                    SceneManager.LoadScene("Menu");
-                    StartCoroutine(activateTap());
+                    //playSfx(tapSfx);                            //play touch sound
+                    //canTap = false;                             //prevent double touch
+                    //StartCoroutine(animateButton(objectHit));   //touch animation effect
+                    //yield return new WaitForSeconds(0.25f);     //Wait for the animation to end
+                    //SceneManager.LoadScene("Menu");
+                    //StartCoroutine(activateTap());
                     break;
                 case "Button-Retry":
                     playSfx(tapSfx);                            //play touch sound
@@ -497,7 +553,7 @@ public class GameController : MonoBehaviour
         gameOverManager.killText.text = playerKilled.ToString();
         gameOverManager.bestText.text = maxKilled.ToString();
         gameOverManager.addGoldText.text = "+" + addedPlayerCoins.ToString();
-        gameOverManager.ActivatePanel();
+        gameOverManager.ActivatePanel(playerCoins);
         //bring the panel inside game view
         //float t = 0;
         //while (t < 1)
@@ -616,9 +672,12 @@ public class GameController : MonoBehaviour
     public void AddGold(int count)
     {
         playerCoins += count;
-        addedPlayerCoins += count;
+        if (count > 0)
+        {
+            addedPlayerCoins += count;
+            levelUI.performAddGoldAnim();
+        }
         levelUI.goldNum.text = playerCoins.ToString();
-        levelUI.performAddGoldAnim();
     }
 
     public void KillEnemies(int count)

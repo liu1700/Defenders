@@ -22,11 +22,17 @@ public class GameOverManager : MonoBehaviour
         showAddMoreGold = false;
     }
 
-    public void ActivatePanel()
+    public void ActivatePanel(int playerCoine)
     {
         if (showRevive)
         {
             revive.SetActive(true);
+            if (playerCoine < 10)
+            {
+                var useGoldObj = revive.transform.Find("UseGold");
+                useGoldObj.gameObject.GetComponent<Button>().interactable = false;
+                useGoldObj.gameObject.GetComponent<Image>().raycastTarget = false;
+            }
             showRevive = false;
             showAddMoreGold = true;
             return;

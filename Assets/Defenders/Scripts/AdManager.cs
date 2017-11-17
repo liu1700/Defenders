@@ -20,6 +20,8 @@ public class AdManager : MonoBehaviour
     string admobInterstitialID = "ca-app-pub-3940256099942544/1033173712";
     string admobVideoID = "ca-app-pub-3940256099942544/5224354917";
 
+    public delegate void CompleteEvent();
+
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -51,17 +53,29 @@ public class AdManager : MonoBehaviour
 
         //cache an Interstitial ad for later use
         ad.loadInterstitial();
+        ad.loadRewardedVideo(admobVideoID);
     }
 
     //gets called from other classes inside the game
     public void showInterstitial()
     {
-
         print("Request for Full AD.");
         if (ad.isInterstitialReady())
         {
             ad.showInterstitial();
         }
+        ad.loadInterstitial();
+    }
+
+    public void showRewardVideo(CompleteEvent cb)
+    {
+        print("Request for Reward AD.");
+        if (ad.isRewardedVideoReady())
+        {
+            ad.showRewardedVideo();
+        }
+        cb();
+        ad.loadRewardedVideo(admobVideoID);
     }
 
 
