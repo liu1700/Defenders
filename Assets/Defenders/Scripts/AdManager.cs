@@ -46,8 +46,8 @@ public class AdManager : MonoBehaviour
         //ad.setTesting(true);
         Debug.Log("Admob Inited.");
 
-        //showBannerAd (always)
-        Admob.Instance().showBannerRelative(AdSize.Banner, AdPosition.BOTTOM_CENTER, 0);
+        ////showBannerAd (always)
+        //Admob.Instance().showBannerRelative(AdSize.Banner, AdPosition.BOTTOM_CENTER, 0);
 
         //cache an Interstitial ad for later use
         ad.loadInterstitial();
