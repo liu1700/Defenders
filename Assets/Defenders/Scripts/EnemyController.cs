@@ -204,16 +204,16 @@ public class EnemyController : MonoBehaviour
         //wait a little for the camera to correctly get in position
         yield return new WaitForSeconds(0.95f);
 
-        //we need to rotate enemy body to a random/calculated rotation angle
-        float targetAngle = Random.Range(55, 75) * -1;  //important! (originate from 65)
-        float t = 0;
-        while (t < 1)
-        {
-            t += Time.deltaTime;
-            enemyTurnPivot.transform.rotation = Quaternion.Euler(0, 0, Mathf.SmoothStep(0, targetAngle, t));
-            yield return 0;
-        }
-
+//        //we need to rotate enemy body to a random/calculated rotation angle
+//        float targetAngle = Random.Range(55, 75) * -1;  //important! (originate from 65)
+//        float t = 0;
+//        while (t < 1)
+//        {
+//            t += Time.deltaTime;
+//            enemyTurnPivot.transform.rotation = Quaternion.Euler(0, 0, Mathf.SmoothStep(0, targetAngle, t));
+//            yield return 0;
+//        }
+//
         print("Enemy Fired!");
 
         //play shoot sound

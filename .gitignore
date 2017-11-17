@@ -33,3 +33,4 @@ sysinfo.txt
 *.apk
 *.unitypackage
 Assets/.DS_Store
+Assets/Resources/.DS_Store
