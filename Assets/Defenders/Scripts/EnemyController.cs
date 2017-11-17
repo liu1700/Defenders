@@ -125,6 +125,7 @@ public class EnemyController : MonoBehaviour
             enemyCurrentHealth = 0;
             isEnemyDead = true;
             gc.GetComponent<GameController>().AddGold(1);
+            gc.GetComponent<GameController>().KillEnemies(1);
             poolRef.KillEnemy(enemyId);
             return;
         }

@@ -20,7 +20,7 @@ public class GameController : MonoBehaviour
     //public GameObject curvedBg;                         //reference to curved ground holder object.
     public EnemyPool enemies;
     public LevelUI levelUI;
-
+    public GameOverManager gameOverManager;
 
     // Static variables //
     public static int gameMode;                     //current game mode
@@ -32,7 +32,9 @@ public class GameController : MonoBehaviour
     //public static bool playersTurn;                 //flag to check if this is player's turn
     //public static bool enemysTurn;                  //flag to check if this is opponent's turn
     //public static string whosTurn;                  //current turn holder in string. useful if you want to extend the game.
-    public static int playerCoins;                  //available player coins
+    int playerCoins;                  //available player coins
+    int addedPlayerCoins;                  //available player coins
+    int playerKilled;                  //available player coins
     public static int playerArrowShot;              //how many arrows player shot in this game
                                                     // Static variables //
 
@@ -51,9 +53,9 @@ public class GameController : MonoBehaviour
     private GameObject enemy;
     private GameObject cam;
     private GameObject uiCam;
-    public GameObject gameoverManager;
-    public GameObject uiGameStateLabel;
-    public GameObject uiYouWon;
+    //public GameObject gameoverManager;
+    //public GameObject uiGameStateLabel;
+    //public GameObject uiYouWon;
 
     [Header("BirdHunt Game Mode settings")]
     public GameObject uiBirdhuntStatPanel;
@@ -75,7 +77,7 @@ public class GameController : MonoBehaviour
     private float playerHealthScale;                //player health bar real-time scale
     private float enemyHealthScale;                 //enemy health bar real-time scale
 
-
+    int maxKilled;
     /// <summary>
     /// INIT
     /// </summary>
@@ -121,7 +123,7 @@ public class GameController : MonoBehaviour
         cam = GameObject.FindGameObjectWithTag("MainCamera");
         uiCam = GameObject.FindGameObjectWithTag("uiCamera");
 
-        gameoverManager.SetActive(false);
+        //gameoverManager.SetActive(false);
 
         if (uiBirdhuntStatPanel)
             uiBirdhuntStatPanel.SetActive(false);
@@ -136,7 +138,8 @@ public class GameController : MonoBehaviour
         noMoreShooting = false;
         round = 0;
         playerArrowShot = 0;
-        playerCoins = 0;
+        playerCoins = PlayerPrefs.GetInt("PlayerCoins");
+        playerKilled = 0;
 
         gameTimer = availableTime;
         seconds = 0;
@@ -156,6 +159,7 @@ public class GameController : MonoBehaviour
     {
         StartCoroutine(activateTap());
         //StartCoroutine(roundTurnManager());
+        levelUI.goldNum.text = playerCoins.ToString();
     }
 
 
@@ -399,7 +403,7 @@ public class GameController : MonoBehaviour
     void nextTurn()
     {
         round++;
-        levelUI.levelNum.text = round.ToString();
+        //levelUI.levelNum.text = round.ToString();
         enemies.ReGenerateEnemies(round);
     }
 
@@ -423,33 +427,34 @@ public class GameController : MonoBehaviour
         uiCam.SetActive(false);
 
         //activate game finish plane
-        gameoverManager.SetActive(true);
+        //gameoverManager.SetActive(true);
+        gameOverManager.gameObject.SetActive(true);
 
-        //set the label
-        if (res == 0)
-        {
-            uiGameStateLabel.GetComponent<TextMesh>().text = "You have Lost :(";
-        }
-        else if (res == 1)
-        {
-            uiGameStateLabel.GetComponent<TextMesh>().text = "You have Won !";
-        }
-        else if (res == 2)
-        {
-            uiGameStateLabel.GetComponent<TextMesh>().text = "Did you have a good hunt?";
-            //set stat info
-            uiBirdhuntStatPanel.SetActive(true);
-            uiStatBirdHits.GetComponent<TextMesh>().text = birdsHit.ToString();
-            int BirdHuntBestScore = PlayerPrefs.GetInt("BirdHuntBestScore");
-            uiStatBestScore.GetComponent<TextMesh>().text = BirdHuntBestScore.ToString();
-            //save new best score
-            if (birdsHit > BirdHuntBestScore)
-            {
-                PlayerPrefs.SetInt("BirdHuntBestScore", birdsHit);
-                uiStatBestScore.GetComponent<TextMesh>().text = birdsHit.ToString();
-            }
+        ////set the label
+        //if (res == 0)
+        //{
+        //    uiGameStateLabel.GetComponent<TextMesh>().text = "You have Lost :(";
+        //}
+        //else if (res == 1)
+        //{
+        //    uiGameStateLabel.GetComponent<TextMesh>().text = "You have Won !";
+        //}
+        //else if (res == 2)
+        //{
+        //    uiGameStateLabel.GetComponent<TextMesh>().text = "Did you have a good hunt?";
+        //    //set stat info
+        //    uiBirdhuntStatPanel.SetActive(true);
+        //    uiStatBirdHits.GetComponent<TextMesh>().text = birdsHit.ToString();
+        //    int BirdHuntBestScore = PlayerPrefs.GetInt("BirdHuntBestScore");
+        //    uiStatBestScore.GetComponent<TextMesh>().text = BirdHuntBestScore.ToString();
+        //    //save new best score
+        //    if (birdsHit > BirdHuntBestScore)
+        //    {
+        //        PlayerPrefs.SetInt("BirdHuntBestScore", birdsHit);
+        //        uiStatBestScore.GetComponent<TextMesh>().text = birdsHit.ToString();
+        //    }
 
-        }
+        //}
 
         ////calculate score and grants player some coins
         //int shotBonus = 0;
@@ -476,23 +481,33 @@ public class GameController : MonoBehaviour
         //if (res == 2)
         //    playerCoins = birdsHit * 100;
 
-        //set the score/coins on UI
-        uiYouWon.GetComponent<TextMesh>().text = playerCoins.ToString();
+        ////set the score/coins on UI
+        //uiYouWon.GetComponent<TextMesh>().text = playerCoins.ToString();
 
         //Save new coin amount
-        int savedCoins = PlayerPrefs.GetInt("PlayerCoins");
-        PlayerPrefs.SetInt("PlayerCoins", playerCoins + savedCoins);
+        PlayerPrefs.SetInt("PlayerCoins", playerCoins);
 
-        //bring the panel inside game view
-        float t = 0;
-        while (t < 1)
+        maxKilled = PlayerPrefs.GetInt("PlayerKilled", 0);
+        if (playerKilled > maxKilled)
         {
-            t += Time.deltaTime;
-            gameoverManager.transform.position = new Vector3(cam.transform.position.x,
-                                                                Mathf.SmoothStep(-15, 0, t),
-                                                                gameoverManager.transform.position.z);
-            yield return 0;
+            maxKilled = playerKilled;
+            PlayerPrefs.SetInt("PlayerKilled", playerKilled);
         }
+
+        gameOverManager.killText.text = playerKilled.ToString();
+        gameOverManager.bestText.text = maxKilled.ToString();
+        gameOverManager.addGoldText.text = "+" + addedPlayerCoins.ToString();
+        gameOverManager.ActivatePanel();
+        //bring the panel inside game view
+        //float t = 0;
+        //while (t < 1)
+        //{
+        //    t += Time.deltaTime;
+        //    gameoverManager.transform.position = new Vector3(cam.transform.position.x,
+        //                                                        Mathf.SmoothStep(-15, 0, t),
+        //                                                        gameoverManager.transform.position.z);
+        //    yield return 0;
+        //}
 
         //show an Interstitial Ad when the game is finished
         if (AdManagerObject)
@@ -601,8 +616,15 @@ public class GameController : MonoBehaviour
     public void AddGold(int count)
     {
         playerCoins += count;
+        addedPlayerCoins += count;
         levelUI.goldNum.text = playerCoins.ToString();
         levelUI.performAddGoldAnim();
+    }
+
+    public void KillEnemies(int count)
+    {
+        playerKilled += count;
+        levelUI.levelNum.text = playerKilled.ToString();
     }
 
 }
