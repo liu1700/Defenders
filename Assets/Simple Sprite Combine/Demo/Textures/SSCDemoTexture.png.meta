@@ -1,0 +1,143 @@
+fileFormatVersion: 2
+guid: ed0260e352ea0a844a76a7491da98111
+timeCreated: 1465263586
+licenseType: Store
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: SSCDemoTexture_0
+    21300002: SSCDemoTexture_1
+    21300004: SSCDemoTexture_2
+    21300006: SSCDemoTexture_3
+    21300008: SSCDemoTexture_4
+    21300010: SSCDemoTexture_5
+    21300012: SSCDemoTexture_6
+    21300014: SSCDemoTexture_7
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 1
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 8
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 0
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 25
+  alphaIsTransparency: 1
+  textureType: 5
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: SSCDemoTexture_0
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 220
+        width: 32
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: SSCDemoTexture_1
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 216
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: SSCDemoTexture_2
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 217
+        width: 32
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: SSCDemoTexture_3
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 214
+        width: 41
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: SSCDemoTexture_4
+      rect:
+        serializedVersion: 2
+        x: 212
+        y: 211
+        width: 28
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: SSCDemoTexture_5
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 166
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: SSCDemoTexture_6
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 165
+        width: 26
+        height: 39
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: SSCDemoTexture_7
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 167
+        width: 24
+        height: 35
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: Things
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

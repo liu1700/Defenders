@@ -296,14 +296,14 @@ public class MainLauncherController : MonoBehaviour
 
         isChecking = true;
 
-        var layerMask = collision.collider.gameObject.layer;
+        var layerMask = collision.gameObject.layer;
         if (layerMask == GameController.enemyLayer)
         {
             //disable the arrow
             stopUpdate = true;
 
             arrRigid.gravityScale = 0;
-            arrRigid.isKinematic = true;
+            //arrRigid.isKinematic = true;
 
             if (arrCollider)
                 arrCollider.enabled = false;
@@ -332,12 +332,49 @@ public class MainLauncherController : MonoBehaviour
 
             //manage victim's helath status
             enemy.enemyCurrentHealth -= damage;
+            if (enemy.enemyCurrentHealth <= 0)
+            {
+                enemy.LetMeFly();
+                var bodyPart = collision.collider.gameObject.GetComponent<Rigidbody2D>();
+
+                bodyPart.velocity = arrRigid.velocity * 60;
+            }
 
             //save enemy state for lastHit. will be used if we need to move the enemy after getting hit
             enemy.gotLastHit = true;
 
             //play hit sfx
             enemy.playRandomHitSound();
+
+            // sleep it
+            arrRigid.Sleep();
+        }
+        else if (layerMask == GameController.environmentLayer)
+        {
+            //disable the arrow
+            stopUpdate = true;
+            //arrRigid.useGravity = false;
+            arrRigid.gravityScale = 0;
+            //arrRigid.bodyType = RigidbodyType2D.Static;
+            arrRigid.Sleep();
+
+            if (arrCollider)
+                arrCollider.enabled = false;
+
+            //if (GetComponent<SphereCollider>())
+            //    GetComponent<SphereCollider>().enabled = false;
+
+            trailFx.SetActive(false);
+
+            ////if this is a bomb weapon, we need an explosion after collision
+            //if (gameObject.tag == "bomb")
+            //{
+            //    GameObject exp = Instantiate(explosionFx, other.contacts[0].point + new Vector3(0, 0, -1.5f), Quaternion.Euler(0, 0, 0)) as GameObject;
+            //    exp.name = "Explosion";
+            //    Destroy(gameObject, 0.01f);
+            //}
+
+            GameController.isArrowInScene = false;
         }
     }
 
@@ -357,45 +394,45 @@ public class MainLauncherController : MonoBehaviour
         isChecking = true;
         string oTag = other.collider.gameObject.tag;    //tag of the object we had collision with
 
-        //Collision with all non-player & non-enemy objects
-        if ((oTag == "ground" || oTag == "rock" || oTag == "bird") && (gameObject.tag == "arrow" || gameObject.tag == "axe" || gameObject.tag == "bomb"))
-        {
+        ////Collision with all non-player & non-enemy objects
+        //if ((oTag == "ground" || oTag == "rock" || oTag == "bird") && (gameObject.tag == "arrow" || gameObject.tag == "axe" || gameObject.tag == "bomb"))
+        //{
 
-            //disable the arrow
-            stopUpdate = true;
-            //arrRigid.useGravity = false;
-            arrRigid.gravityScale = 0;
-            arrRigid.isKinematic = true;
+        //    //disable the arrow
+        //    stopUpdate = true;
+        //    //arrRigid.useGravity = false;
+        //    arrRigid.gravityScale = 0;
+        //    arrRigid.isKinematic = true;
 
-            if (arrCollider)
-                arrCollider.enabled = false;
+        //    if (arrCollider)
+        //        arrCollider.enabled = false;
 
-            //if (GetComponent<SphereCollider>())
-            //    GetComponent<SphereCollider>().enabled = false;
+        //    //if (GetComponent<SphereCollider>())
+        //    //    GetComponent<SphereCollider>().enabled = false;
 
-            trailFx.SetActive(false);
+        //    trailFx.SetActive(false);
 
-            //if this is a bomb weapon, we need an explosion after collision
-            if (gameObject.tag == "bomb")
-            {
-                GameObject exp = Instantiate(explosionFx, other.contacts[0].point + new Vector3(0, 0, -1.5f), Quaternion.Euler(0, 0, 0)) as GameObject;
-                exp.name = "Explosion";
-                Destroy(gameObject, 0.01f);
-            }
+        //    //if this is a bomb weapon, we need an explosion after collision
+        //    if (gameObject.tag == "bomb")
+        //    {
+        //        GameObject exp = Instantiate(explosionFx, other.contacts[0].point + new Vector3(0, 0, -1.5f), Quaternion.Euler(0, 0, 0)) as GameObject;
+        //        exp.name = "Explosion";
+        //        Destroy(gameObject, 0.01f);
+        //    }
 
-            GameController.isArrowInScene = false;
+        //    GameController.isArrowInScene = false;
 
-            ////We only change turns if this game more requires an enemy
-            //if (!bypassCode)
-            //{
+        //    ////We only change turns if this game more requires an enemy
+        //    //if (!bypassCode)
+        //    //{
 
-            //    if (ownerID == 0)
-            //        enemy.GetComponent<EnemyController>().changeTurns();
-            //    else if (ownerID == 1)
-            //        player.GetComponent<PlayerController>().changeTurns();
-            //}
+        //    //    if (ownerID == 0)
+        //    //        enemy.GetComponent<EnemyController>().changeTurns();
+        //    //    else if (ownerID == 1)
+        //    //        player.GetComponent<PlayerController>().changeTurns();
+        //    //}
 
-        }
+        //}
 
 
 

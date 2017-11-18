@@ -77,7 +77,9 @@ public class GameController : MonoBehaviour
     private float playerHealthScale;                //player health bar real-time scale
     private float enemyHealthScale;                 //enemy health bar real-time scale
 
+    // collision layer
     public static int enemyLayer;
+    public static int environmentLayer;
 
     int maxKilled;
     /// <summary>
@@ -155,6 +157,7 @@ public class GameController : MonoBehaviour
         ctrl.SetcameraCurrentPos(new Vector3(3, 9, -10));
 
         enemyLayer = LayerMask.NameToLayer("enemy");
+        environmentLayer = LayerMask.NameToLayer("environment");
     }
 
 

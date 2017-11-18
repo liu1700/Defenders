@@ -16,6 +16,8 @@ public class EnemyController : MonoBehaviour
 
     public int enemyId;
 
+    public BodyController bodyController;
+
     [Header("Public GamePlay settings")]
     public int enemyHealth = 100;                   //initial (full) health. can be edited.
     private float baseShootAngle = 61.5f;           //Very important! - avoid editing this value! (it has been calculated based on the size/shape/weight of the arrow)
@@ -44,7 +46,7 @@ public class EnemyController : MonoBehaviour
 
     EnemyPool poolRef;
 
-    int enemyLayer;
+    private Vector2 applyForceWhenDead;
 
     //Init
     void Awake()
@@ -88,7 +90,6 @@ public class EnemyController : MonoBehaviour
 
         //setStartingPosition();
         poolRef = GetComponentInParent<EnemyPool>();
-        enemyLayer = LayerMask.NameToLayer("enemy");
     }
 
 
@@ -108,6 +109,11 @@ public class EnemyController : MonoBehaviour
     }
 
 
+    public void LetMeFly()
+    {
+        bodyController.ActiveRigidBodys();
+    }
+
     /// <summary>
     /// FSM
     /// </summary>
@@ -126,7 +132,10 @@ public class EnemyController : MonoBehaviour
             isEnemyDead = true;
             gc.GetComponent<GameController>().AddGold(1);
             gc.GetComponent<GameController>().KillEnemies(1);
-            poolRef.KillEnemy(enemyId);
+            if (poolRef != null)
+            {
+                poolRef.KillEnemy(enemyId);
+            }
             return;
         }
 
@@ -204,16 +213,16 @@ public class EnemyController : MonoBehaviour
         //wait a little for the camera to correctly get in position
         yield return new WaitForSeconds(0.95f);
 
-//        //we need to rotate enemy body to a random/calculated rotation angle
-//        float targetAngle = Random.Range(55, 75) * -1;  //important! (originate from 65)
-//        float t = 0;
-//        while (t < 1)
-//        {
-//            t += Time.deltaTime;
-//            enemyTurnPivot.transform.rotation = Quaternion.Euler(0, 0, Mathf.SmoothStep(0, targetAngle, t));
-//            yield return 0;
-//        }
-//
+        //        //we need to rotate enemy body to a random/calculated rotation angle
+        //        float targetAngle = Random.Range(55, 75) * -1;  //important! (originate from 65)
+        //        float t = 0;
+        //        while (t < 1)
+        //        {
+        //            t += Time.deltaTime;
+        //            enemyTurnPivot.transform.rotation = Quaternion.Euler(0, 0, Mathf.SmoothStep(0, targetAngle, t));
+        //            yield return 0;
+        //        }
+        //
         print("Enemy Fired!");
 
         //play shoot sound
@@ -221,7 +230,7 @@ public class EnemyController : MonoBehaviour
 
         //shoot calculations
         GameObject ea = Instantiate(arrow, enemyShootPosition.transform.position, Quaternion.Euler(0, 0, -45)) as GameObject;
-        ea.layer = enemyLayer;
+        //ea.layer = GameController.enemyLayer;
         ea.name = "EnemyProjectile";
         ea.GetComponent<MainLauncherController>().ownerID = 1;
 

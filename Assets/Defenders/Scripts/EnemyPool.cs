@@ -87,7 +87,7 @@ public class EnemyPool : MonoBehaviour
             if (e.enemyId == id)
             {
                 list.RemoveAt(i);
-                Destroy(e.gameObject);
+                Destroy(e.gameObject, 3f);
                 return;
             }
         }
