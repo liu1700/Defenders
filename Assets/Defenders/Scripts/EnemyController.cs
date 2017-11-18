@@ -17,6 +17,7 @@ public class EnemyController : MonoBehaviour
     public int enemyId;
 
     public BodyController bodyController;
+    public PlateformController plateformController;
 
     [Header("Public GamePlay settings")]
     public int enemyHealth = 100;                   //initial (full) health. can be edited.
@@ -111,6 +112,7 @@ public class EnemyController : MonoBehaviour
 
     public void LetMeFly()
     {
+        plateformController.Break();
         bodyController.ActiveRigidBodys();
     }
 

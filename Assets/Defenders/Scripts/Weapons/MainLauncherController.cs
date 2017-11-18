@@ -55,6 +55,9 @@ public class MainLauncherController : MonoBehaviour
     Rigidbody2D arrRigid;
     BoxCollider2D arrCollider;
 
+    int enemyShootingLayer;
+    int playerShootingLayer;
+
     void Awake()
     {
 
@@ -91,6 +94,9 @@ public class MainLauncherController : MonoBehaviour
                 damage = MasterWeaponManager.swordDamage;
                 break;
         }
+
+        enemyShootingLayer = LayerMask.NameToLayer("enemyShooting");
+        playerShootingLayer = LayerMask.NameToLayer("playerShooting");
     }
 
     void Start()
@@ -108,13 +114,16 @@ public class MainLauncherController : MonoBehaviour
 
             //add force and let the weapon fly
             if (playerShootVector.magnitude > 0)
+            {
                 //GetComponent<Rigidbody>().AddForce(playerShootVector, ForceMode.Impulse);
                 arrRigid.AddForce(playerShootVector, ForceMode2D.Impulse);
-
+                gameObject.layer = playerShootingLayer;
+            }
         }
         else if (ownerID == 1)
         {
             enemyShoot();
+            gameObject.layer = enemyShootingLayer;
         }
 
         /*GetComponent<BoxCollider> ().enabled = false;
@@ -336,8 +345,9 @@ public class MainLauncherController : MonoBehaviour
             {
                 enemy.LetMeFly();
                 var bodyPart = collision.collider.gameObject.GetComponent<Rigidbody2D>();
-
-                bodyPart.velocity = arrRigid.velocity * 60;
+                //bodyPart.AddForce(arrRigid.velocity * 1000);
+                //bodyPart.velocity = arrRigid.velocity * 10;
+                bodyPart.velocity = Vector2.right * 70;
             }
 
             //save enemy state for lastHit. will be used if we need to move the enemy after getting hit
