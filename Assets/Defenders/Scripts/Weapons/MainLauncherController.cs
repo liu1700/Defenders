@@ -93,7 +93,6 @@ public class MainLauncherController : MonoBehaviour
         }
     }
 
-
     void Start()
     {
 
@@ -282,7 +281,66 @@ public class MainLauncherController : MonoBehaviour
     /// <summary>
     /// Check for collisions
     /// </summary>
+    /// 
     private bool isChecking = false;
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (Time.time < timeOfShot + collisionCheckDelay)
+        {
+            print("Can't check for collision at this moment!");
+            return;
+        }
+
+        if (isChecking)
+            return;
+
+        isChecking = true;
+
+        var layerMask = collision.collider.gameObject.layer;
+        if (layerMask == GameController.enemyLayer)
+        {
+            //disable the arrow
+            stopUpdate = true;
+
+            arrRigid.gravityScale = 0;
+            arrRigid.isKinematic = true;
+
+            if (arrCollider)
+                arrCollider.enabled = false;
+
+            trailFx.SetActive(false);
+            GameController.isArrowInScene = false;
+            transform.parent = collision.collider.gameObject.transform;
+
+            //create blood fx
+            if (gameObject.tag == "arrow" || gameObject.tag == "axe")
+            {
+                GameObject blood = Instantiate(bloodFx, collision.contacts[0].point + new Vector2(0, -1.5f), Quaternion.Euler(0, 0, 0)) as GameObject;
+                blood.name = "BloodFX";
+                Destroy(blood, 1.5f);
+            }
+
+            ////if this is a bomb weapon, we need an explosion after collision
+            //if (gameObject.tag == "bomb")
+            //{
+            //    GameObject exp = Instantiate(explosionFx, collision.contacts[0].point + new Vector3(0, 0, -1.5f), Quaternion.Euler(0, 0, 0)) as GameObject;
+            //    exp.name = "Explosion";
+            //    Destroy(gameObject, 0.01f);
+            //}
+
+            var enemy = collision.collider.gameObject.GetComponentInParent<EnemyController>();
+
+            //manage victim's helath status
+            enemy.enemyCurrentHealth -= damage;
+
+            //save enemy state for lastHit. will be used if we need to move the enemy after getting hit
+            enemy.gotLastHit = true;
+
+            //play hit sfx
+            enemy.playRandomHitSound();
+        }
+    }
+
     IEnumerator OnCollisionEnter(Collision other)
     {
 
@@ -341,62 +399,62 @@ public class MainLauncherController : MonoBehaviour
 
 
 
-        //Collision with enemy
-        if ((oTag == "enemyBody" || oTag == "enemyLeg" || oTag == "enemyHead") &&
-             (gameObject.tag == "arrow" || gameObject.tag == "axe" || gameObject.tag == "bomb"))
-        {
+        ////Collision with enemy
+        //if ((oTag == "enemyBody" || oTag == "enemyLeg" || oTag == "enemyHead") &&
+        //     (gameObject.tag == "arrow" || gameObject.tag == "axe" || gameObject.tag == "bomb"))
+        //{
 
-            //disable the arrow
-            stopUpdate = true;
-            //GetComponent<Rigidbody>().useGravity = false;
-            //GetComponent<Rigidbody>().isKinematic = true;
+        //    //disable the arrow
+        //    stopUpdate = true;
+        //    //GetComponent<Rigidbody>().useGravity = false;
+        //    //GetComponent<Rigidbody>().isKinematic = true;
 
-            //if (GetComponent<BoxCollider>())
-            //    GetComponent<BoxCollider>().enabled = false;
+        //    //if (GetComponent<BoxCollider>())
+        //    //    GetComponent<BoxCollider>().enabled = false;
 
-            //if (GetComponent<SphereCollider>())
-            //    GetComponent<SphereCollider>().enabled = false;
+        //    //if (GetComponent<SphereCollider>())
+        //    //    GetComponent<SphereCollider>().enabled = false;
 
-            arrRigid.gravityScale = 0;
-            arrRigid.isKinematic = true;
+        //    arrRigid.gravityScale = 0;
+        //    arrRigid.isKinematic = true;
 
-            if (arrCollider)
-                arrCollider.enabled = false;
+        //    if (arrCollider)
+        //        arrCollider.enabled = false;
 
-            trailFx.SetActive(false);
-            GameController.isArrowInScene = false;
-            transform.parent = other.collider.gameObject.transform;
+        //    trailFx.SetActive(false);
+        //    GameController.isArrowInScene = false;
+        //    transform.parent = other.collider.gameObject.transform;
 
-            //create blood fx
-            if (gameObject.tag == "arrow" || gameObject.tag == "axe")
-            {
-                GameObject blood = Instantiate(bloodFx, other.contacts[0].point + new Vector3(0, 0, -1.5f), Quaternion.Euler(0, 0, 0)) as GameObject;
-                blood.name = "BloodFX";
-                Destroy(blood, 1.5f);
-            }
+        //    //create blood fx
+        //    if (gameObject.tag == "arrow" || gameObject.tag == "axe")
+        //    {
+        //        GameObject blood = Instantiate(bloodFx, other.contacts[0].point + new Vector3(0, 0, -1.5f), Quaternion.Euler(0, 0, 0)) as GameObject;
+        //        blood.name = "BloodFX";
+        //        Destroy(blood, 1.5f);
+        //    }
 
-            //if this is a bomb weapon, we need an explosion after collision
-            if (gameObject.tag == "bomb")
-            {
-                GameObject exp = Instantiate(explosionFx, other.contacts[0].point + new Vector3(0, 0, -1.5f), Quaternion.Euler(0, 0, 0)) as GameObject;
-                exp.name = "Explosion";
-                Destroy(gameObject, 0.01f);
-            }
+        //    //if this is a bomb weapon, we need an explosion after collision
+        //    if (gameObject.tag == "bomb")
+        //    {
+        //        GameObject exp = Instantiate(explosionFx, other.contacts[0].point + new Vector3(0, 0, -1.5f), Quaternion.Euler(0, 0, 0)) as GameObject;
+        //        exp.name = "Explosion";
+        //        Destroy(gameObject, 0.01f);
+        //    }
 
-            var enemy = other.collider.gameObject.GetComponentInParent<EnemyController>();
+        //    var enemy = other.collider.gameObject.GetComponentInParent<EnemyController>();
 
-            //manage victim's helath status
-            enemy.enemyCurrentHealth -= damage;
+        //    //manage victim's helath status
+        //    enemy.enemyCurrentHealth -= damage;
 
-            //save enemy state for lastHit. will be used if we need to move the enemy after getting hit
-            enemy.gotLastHit = true;
+        //    //save enemy state for lastHit. will be used if we need to move the enemy after getting hit
+        //    enemy.gotLastHit = true;
 
-            //play hit sfx
-            enemy.playRandomHitSound();
+        //    //play hit sfx
+        //    enemy.playRandomHitSound();
 
-            ////change the turn
-            //enemy.GetComponent<EnemyController>().changeTurns();
-        }
+        //    ////change the turn
+        //    //enemy.GetComponent<EnemyController>().changeTurns();
+        //}
 
 
         //Collision with player

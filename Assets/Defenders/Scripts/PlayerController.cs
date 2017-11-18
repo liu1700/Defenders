@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Public GamePlay settings")]
     public bool useHelper = true;                   //use helper dots when player is aiming to shoot
-    public int baseShootPower = 30;                 //base power. edit with care.
+    public int baseShootPower = 1000;                 //base power. edit with care.
     public int playerHealth = 100;                  //starting (full) health. can be edited.
     private int minShootPower = 15;                 //powers lesser than this amount are ignored. (used to cancel shoots)
     internal int playerCurrentHealth;               //real-time health. not editable.
