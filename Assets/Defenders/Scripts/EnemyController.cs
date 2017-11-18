@@ -47,8 +47,6 @@ public class EnemyController : MonoBehaviour
 
     EnemyPool poolRef;
 
-    private Vector2 applyForceWhenDead;
-
     //Init
     void Awake()
     {

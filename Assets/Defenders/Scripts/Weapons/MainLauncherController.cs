@@ -305,8 +305,8 @@ public class MainLauncherController : MonoBehaviour
 
         isChecking = true;
 
-        var layerMask = collision.gameObject.layer;
-        if (layerMask == GameController.enemyLayer)
+        var collisionLayerMask = collision.gameObject.layer;
+        if (collisionLayerMask == GameController.enemyLayer && gameObject.layer == playerShootingLayer)
         {
             //disable the arrow
             stopUpdate = true;
@@ -324,8 +324,9 @@ public class MainLauncherController : MonoBehaviour
             //create blood fx
             if (gameObject.tag == "arrow" || gameObject.tag == "axe")
             {
-                GameObject blood = Instantiate(bloodFx, collision.contacts[0].point + new Vector2(0, -1.5f), Quaternion.Euler(0, 0, 0)) as GameObject;
+                GameObject blood = Instantiate(bloodFx, collision.contacts[0].point, Quaternion.Euler(0, 0, 0)) as GameObject;
                 blood.name = "BloodFX";
+                blood.transform.parent = collision.gameObject.transform;
                 Destroy(blood, 1.5f);
             }
 
@@ -348,6 +349,7 @@ public class MainLauncherController : MonoBehaviour
                 //bodyPart.AddForce(arrRigid.velocity * 1000);
                 //bodyPart.velocity = arrRigid.velocity * 10;
                 bodyPart.velocity = Vector2.right * 70;
+                bodyPart.gravityScale = 3f;
             }
 
             //save enemy state for lastHit. will be used if we need to move the enemy after getting hit
@@ -359,13 +361,13 @@ public class MainLauncherController : MonoBehaviour
             // sleep it
             arrRigid.Sleep();
         }
-        else if (layerMask == GameController.environmentLayer)
+        else if (collisionLayerMask == GameController.environmentLayer)
         {
             //disable the arrow
             stopUpdate = true;
             //arrRigid.useGravity = false;
             arrRigid.gravityScale = 0;
-            //arrRigid.bodyType = RigidbodyType2D.Static;
+            arrRigid.bodyType = RigidbodyType2D.Static;
             arrRigid.Sleep();
 
             if (arrCollider)

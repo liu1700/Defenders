@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Public GamePlay settings")]
     public bool useHelper = true;                   //use helper dots when player is aiming to shoot
-    public int baseShootPower = 1000;                 //base power. edit with care.
+    public int baseShootPower = 500;                 //base power. edit with care.
     public int playerHealth = 100;                  //starting (full) health. can be edited.
     private int minShootPower = 15;                 //powers lesser than this amount are ignored. (used to cancel shoots)
     internal int playerCurrentHealth;               //real-time health. not editable.
@@ -212,7 +212,7 @@ public class PlayerController : MonoBehaviour
 
             //calculate shoot power
             distanceFromFirstClick = inputDirection.magnitude / 4;
-            shootPower = Mathf.Clamp(distanceFromFirstClick, 0, 1) * 100;
+            shootPower = Mathf.Clamp(distanceFromFirstClick, 0, 1) * 500;
             //print ("distanceFromFirstClick: " + distanceFromFirstClick);
             //print("shootPower: " + shootPower);
 
