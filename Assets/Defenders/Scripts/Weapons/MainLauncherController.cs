@@ -387,6 +387,8 @@ public class MainLauncherController : MonoBehaviour
             //}
 
             GameController.isArrowInScene = false;
+
+            Destroy(gameObject, 2f);
         }
     }
 
