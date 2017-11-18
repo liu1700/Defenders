@@ -19,7 +19,8 @@ public class MainLauncherController : MonoBehaviour
     /// Player specific variables
     /// </summary>
     //We set this variable from PlayerController class upon shoot command (releasing the touch)
-    internal Vector3 playerShootVector;
+    //internal Vector3 playerShootVector;
+    internal Vector2 playerShootVector;
 
     /// <summary>
     /// Enemy specific variables
@@ -51,6 +52,8 @@ public class MainLauncherController : MonoBehaviour
     //private bool bombExplosionByPlayer;		//flag to set if explosion has been done by player input
     //private bool bombExplosionByEnemy;		//flag to set if explosion has been done by enemy AI
 
+    Rigidbody2D arrRigid;
+    BoxCollider2D arrCollider;
 
     void Awake()
     {
@@ -67,6 +70,8 @@ public class MainLauncherController : MonoBehaviour
 
         //enemy = GameObject.FindGameObjectWithTag("enemy");
         player = GameObject.FindGameObjectWithTag("Player");
+        arrRigid = GetComponent<Rigidbody2D>();
+        arrCollider = GetComponent<BoxCollider2D>();
 
         switch (arrowType)
         {
@@ -104,7 +109,8 @@ public class MainLauncherController : MonoBehaviour
 
             //add force and let the weapon fly
             if (playerShootVector.magnitude > 0)
-                GetComponent<Rigidbody>().AddForce(playerShootVector, ForceMode.Impulse);
+                //GetComponent<Rigidbody>().AddForce(playerShootVector, ForceMode.Impulse);
+                arrRigid.AddForce(playerShootVector, ForceMode2D.Impulse);
 
         }
         else if (ownerID == 1)
@@ -178,11 +184,17 @@ public class MainLauncherController : MonoBehaviour
         Vector3 localVelocity = new Vector3(-Vx, Vy, 0);
         Vector3 globalVelocity = transform.TransformVector(localVelocity);
 
+        //// shoot the arrow
+        //GetComponent<Rigidbody>().velocity = globalVelocity;
+
+        ////add a little wind (stochastic destination) to make the enemy weapon more realistic
+        //GetComponent<Rigidbody>().AddForce(new Vector3(EnemyController.fakeWindPower, 0, 0), ForceMode.Force);
+
         // shoot the arrow
-        GetComponent<Rigidbody>().velocity = globalVelocity;
+        arrRigid.velocity = globalVelocity;
 
         //add a little wind (stochastic destination) to make the enemy weapon more realistic
-        GetComponent<Rigidbody>().AddForce(new Vector3(EnemyController.fakeWindPower, 0, 0), ForceMode.Force);
+        arrRigid.AddForce(new Vector3(EnemyController.fakeWindPower, 0, 0), ForceMode2D.Force);
     }
 
 
@@ -195,9 +207,11 @@ public class MainLauncherController : MonoBehaviour
     void manageArrowRotation()
     {
 
-        if (GetComponent<Rigidbody>().velocity != Vector3.zero && !stopUpdate)
+        //if (GetComponent<Rigidbody>().velocity != Vector3.zero && !stopUpdate)
+        if (arrRigid.velocity != Vector2.zero && !stopUpdate)
         {
-            v = GetComponent<Rigidbody>().velocity;
+            //v = GetComponent<Rigidbody>().velocity;
+            v = arrRigid.velocity;
 
             if (ownerID == 0 || ownerID == 2)
             {
@@ -222,7 +236,8 @@ public class MainLauncherController : MonoBehaviour
     void rotateWeapon(float rotationSpeed)
     {
 
-        if (GetComponent<Rigidbody>().velocity != Vector3.zero && !stopUpdate)
+        //if (GetComponent<Rigidbody>().velocity != Vector3.zero && !stopUpdate)
+        if (arrRigid.velocity != Vector2.zero && !stopUpdate)
         {
             transform.eulerAngles = new Vector3(0, 180, Time.timeSinceLevelLoad * rotationSpeed);
         }
@@ -290,14 +305,15 @@ public class MainLauncherController : MonoBehaviour
 
             //disable the arrow
             stopUpdate = true;
-            GetComponent<Rigidbody>().useGravity = false;
-            GetComponent<Rigidbody>().isKinematic = true;
+            //arrRigid.useGravity = false;
+            arrRigid.gravityScale = 0;
+            arrRigid.isKinematic = true;
 
-            if (GetComponent<BoxCollider>())
-                GetComponent<BoxCollider>().enabled = false;
+            if (arrCollider)
+                arrCollider.enabled = false;
 
-            if (GetComponent<SphereCollider>())
-                GetComponent<SphereCollider>().enabled = false;
+            //if (GetComponent<SphereCollider>())
+            //    GetComponent<SphereCollider>().enabled = false;
 
             trailFx.SetActive(false);
 
@@ -332,14 +348,20 @@ public class MainLauncherController : MonoBehaviour
 
             //disable the arrow
             stopUpdate = true;
-            GetComponent<Rigidbody>().useGravity = false;
-            GetComponent<Rigidbody>().isKinematic = true;
+            //GetComponent<Rigidbody>().useGravity = false;
+            //GetComponent<Rigidbody>().isKinematic = true;
 
-            if (GetComponent<BoxCollider>())
-                GetComponent<BoxCollider>().enabled = false;
+            //if (GetComponent<BoxCollider>())
+            //    GetComponent<BoxCollider>().enabled = false;
 
-            if (GetComponent<SphereCollider>())
-                GetComponent<SphereCollider>().enabled = false;
+            //if (GetComponent<SphereCollider>())
+            //    GetComponent<SphereCollider>().enabled = false;
+
+            arrRigid.gravityScale = 0;
+            arrRigid.isKinematic = true;
+
+            if (arrCollider)
+                arrCollider.enabled = false;
 
             trailFx.SetActive(false);
             GameController.isArrowInScene = false;
@@ -387,14 +409,20 @@ public class MainLauncherController : MonoBehaviour
 
             //disable the arrow
             stopUpdate = true;
-            GetComponent<Rigidbody>().useGravity = false;
-            GetComponent<Rigidbody>().isKinematic = true;
+            //GetComponent<Rigidbody>().useGravity = false;
+            //GetComponent<Rigidbody>().isKinematic = true;
 
-            if (GetComponent<BoxCollider>())
-                GetComponent<BoxCollider>().enabled = false;
+            //if (GetComponent<BoxCollider>())
+            //    GetComponent<BoxCollider>().enabled = false;
 
-            if (GetComponent<SphereCollider>())
-                GetComponent<SphereCollider>().enabled = false;
+            //if (GetComponent<SphereCollider>())
+            //    GetComponent<SphereCollider>().enabled = false;
+
+            arrRigid.gravityScale = 0;
+            arrRigid.isKinematic = true;
+
+            if (arrCollider)
+                arrCollider.enabled = false;
 
             trailFx.SetActive(false);
             GameController.isArrowInScene = false;
