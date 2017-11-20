@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Anima2D;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -22,11 +23,11 @@ public class PlayerController : MonoBehaviour
     //Reference to game objects (childs and prefabs)
     public GameObject arrow;
     public GameObject trajectoryHelper;
-    public GameObject playerTurnPivot;
+    public Control playerTurnPivot;
     public GameObject playerShootPosition;
-    public GameObject infoPanel;
-    public GameObject UiDynamicPower;
-    public GameObject UiDynamicDegree;
+    //public GameObject infoPanel;
+    //public GameObject UiDynamicPower;
+    //public GameObject UiDynamicDegree;
     //Hidden gameobjects
     private GameObject gc;  //game controller object
     private GameObject cam; //main camera
@@ -62,7 +63,7 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         icp = new Vector2(0, 0);
-        infoPanel.SetActive(false);
+        //infoPanel.SetActive(false);
         shootDirectionVector = new Vector3(0, 0, 0);
         playerCurrentHealth = playerHealth;
         isPlayerDead = false;
@@ -146,7 +147,7 @@ public class PlayerController : MonoBehaviour
 
             //reset variables
             icp = new Vector2(0, 0);
-            infoPanel.SetActive(false);
+            //infoPanel.SetActive(false);
             helperShowTimer = 0;
             helperDelayIsDone = false;
         }
@@ -194,22 +195,31 @@ public class PlayerController : MonoBehaviour
             inputDirection = new Vector2(icp.x - inputPosX, icp.y - inputPosY);
             //print("Dir X-Y: " + inputDirection.x + " / " + inputDirection.y);
 
-            shootDirection = Mathf.Atan2(inputDirection.y, inputDirection.x) * Mathf.Rad2Deg;
+            shootDirection = (Mathf.Atan2(inputDirection.y, inputDirection.x) * Mathf.Rad2Deg) + 90;
+            if (shootDirection > 180)
+            {
+                shootDirection -= 180;
+                if (shootDirection <= 90)
+                {
+                    shootDirection = 180;
+                }
+                else
+                {
+                    shootDirection = 0;
+                }
+            }
 
-            ////for an optimal experience, we need to limit the rotation to 0 ~ 90 euler angles.
-            ////so...
-            //if (shootDirection > 90)
-            //    shootDirection = 90;
-            //if (shootDirection < 0)
-            //    shootDirection = 0;
-            if (shootDirection > 90)
-                shootDirection = 90;
-            if (shootDirection < -90)
-                shootDirection = -90;
+            if (shootDirection < 0)
+            {
+                shootDirection = 0;
+            }
 
             //apply the rotation
-            playerTurnPivot.transform.eulerAngles = new Vector3(0, 0, shootDirection);
-
+            //playerTurnPivot.transform.eulerAngles = new Vector3(0, 0, shootDirection);
+            playerTurnPivot.bone.transform.rotation = Quaternion.Euler(0, 0, shootDirection);
+            //var a = new Quaternion();
+            //a.eulerAngles = new Vector3(0, 0, shootDirection);
+            //Debug.Log(a.ToString());
             //calculate shoot power
             distanceFromFirstClick = inputDirection.magnitude / 4;
             shootPower = Mathf.Clamp(distanceFromFirstClick, 0, 1) * 500;
@@ -284,7 +294,7 @@ public class PlayerController : MonoBehaviour
         while (t < 1)
         {
             t += Time.deltaTime * 3;
-            playerTurnPivot.transform.rotation = Quaternion.Euler(0, 0, Mathf.SmoothStep(currentRotationAngle, 0, t));
+            playerTurnPivot.transform.rotation = Quaternion.Euler(0, 0, Mathf.SmoothStep(currentRotationAngle, 90, t));
             yield return 0;
         }
     }

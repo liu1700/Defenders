@@ -467,7 +467,7 @@ public class GameController : MonoBehaviour
     {
         round++;
         //levelUI.levelNum.text = round.ToString();
-        enemies.ReGenerateEnemies(round);
+        //enemies.ReGenerateEnemies(round);
     }
 
     /// <summary>
