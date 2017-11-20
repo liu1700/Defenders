@@ -360,7 +360,35 @@ public class MainLauncherController : MonoBehaviour
 
             // sleep it
             arrRigid.Sleep();
-        }
+		}
+		else if(collisionLayerMask == GameController.playerLayer && gameObject.layer == enemyShootingLayer){
+			stopUpdate = true;
+			arrRigid.gravityScale = 0;
+			arrRigid.bodyType = RigidbodyType2D.Static;
+			arrRigid.Sleep();
+
+			if (arrCollider)
+				arrCollider.enabled = false;
+
+			trailFx.SetActive(false);
+
+			GameController.isArrowInScene = false;
+
+			transform.parent = collision.gameObject.transform;
+
+			//create blood fx
+			GameObject blood = Instantiate(bloodFx, collision.contacts[0].point, Quaternion.Euler(0, 0, 0)) as GameObject;
+			blood.name = "BloodFX";
+			Destroy(blood, 1.5f);
+
+			//manage victim's helath status
+			player.GetComponent<PlayerController>().playerCurrentHealth -= damage;
+
+			//play hit sfx
+			player.GetComponent<PlayerController>().playRandomHitSound();
+
+			Destroy(gameObject, 10f);
+		}
         else if (collisionLayerMask == GameController.environmentLayer)
         {
             //disable the arrow

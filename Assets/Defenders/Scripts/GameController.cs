@@ -80,6 +80,7 @@ public class GameController : MonoBehaviour
     // collision layer
     public static int enemyLayer;
     public static int environmentLayer;
+	public static int playerLayer;
 
     int maxKilled;
     /// <summary>
@@ -157,7 +158,8 @@ public class GameController : MonoBehaviour
         ctrl.SetcameraCurrentPos(new Vector3(3, 9, -10));
 
         enemyLayer = LayerMask.NameToLayer("enemy");
-        environmentLayer = LayerMask.NameToLayer("environment");
+		environmentLayer = LayerMask.NameToLayer("environment");
+		playerLayer = LayerMask.NameToLayer("player");
     }
 
 
@@ -467,7 +469,7 @@ public class GameController : MonoBehaviour
     {
         round++;
         //levelUI.levelNum.text = round.ToString();
-        //enemies.ReGenerateEnemies(round);
+        enemies.ReGenerateEnemies(round);
     }
 
     /// <summary>
