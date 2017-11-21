@@ -20,8 +20,8 @@ public class MenuController : MonoBehaviour
     /// </summary>
     public int gameMode = 1;
 
-    private float buttonAnimationSpeed = 12;    //speed on animation effect when tapped on button
-    private bool canTap = true;                 //flag to prevent double tap
+    //private float buttonAnimationSpeed = 12;    //speed on animation effect when tapped on button
+    //private bool canTap = true;                 //flag to prevent double tap
     public AudioClip tapSfx;                    //tap sound for buttons click
 
     //public GameObject coinLabel;                //coin text on menu scene

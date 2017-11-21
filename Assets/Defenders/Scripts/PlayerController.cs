@@ -50,8 +50,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 shootDirectionVector;
 
     //helper trajectory variables
-    private float helperCreationDelay = 0.12f;
-    private bool canCreateHelper;
+    //private float helperCreationDelay = 0.12f;
+    //private bool canCreateHelper;
     private float helperShowDelay = 0.2f;
     private float helperShowTimer;
     private bool helperDelayIsDone;
@@ -71,7 +71,7 @@ public class PlayerController : MonoBehaviour
         gc = GameObject.FindGameObjectWithTag("GameController");
         cam = GameObject.FindGameObjectWithTag("MainCamera");
 
-        canCreateHelper = true;
+        //canCreateHelper = true;
         helperShowTimer = 0;
         helperDelayIsDone = false;
     }

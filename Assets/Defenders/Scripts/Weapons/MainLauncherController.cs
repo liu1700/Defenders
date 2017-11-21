@@ -402,6 +402,12 @@ public class MainLauncherController : MonoBehaviour
         {
             // 敌我的箭相撞
             explodeOnTouch(collision.contacts[0].point);
+            Destroy(gameObject, .1f);
+            Destroy(collision.gameObject, .1f);
+
+            var gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+            gc.AddGold(5);
+            gc.addBonusTime(5);
         }
         else if (collisionLayerMask == GameController.environmentLayer)
         {
@@ -434,178 +440,178 @@ public class MainLauncherController : MonoBehaviour
         }
     }
 
-    IEnumerator OnCollisionEnter(Collision other)
-    {
+    //IEnumerator OnCollisionEnter(Collision other)
+    //{
 
-        if (Time.time < timeOfShot + collisionCheckDelay)
-        {
-            print("Can't check for collision at this moment!");
-            yield break;
-        }
+    //    if (Time.time < timeOfShot + collisionCheckDelay)
+    //    {
+    //        print("Can't check for collision at this moment!");
+    //        yield break;
+    //    }
 
-        //check for collision just once
-        if (isChecking)
-            yield break;
+    //    //check for collision just once
+    //    if (isChecking)
+    //        yield break;
 
-        isChecking = true;
-        string oTag = other.collider.gameObject.tag;    //tag of the object we had collision with
+    //    isChecking = true;
+    //    string oTag = other.collider.gameObject.tag;    //tag of the object we had collision with
 
-        ////Collision with all non-player & non-enemy objects
-        //if ((oTag == "ground" || oTag == "rock" || oTag == "bird") && (gameObject.tag == "arrow" || gameObject.tag == "axe" || gameObject.tag == "bomb"))
-        //{
+    //    ////Collision with all non-player & non-enemy objects
+    //    //if ((oTag == "ground" || oTag == "rock" || oTag == "bird") && (gameObject.tag == "arrow" || gameObject.tag == "axe" || gameObject.tag == "bomb"))
+    //    //{
 
-        //    //disable the arrow
-        //    stopUpdate = true;
-        //    //arrRigid.useGravity = false;
-        //    arrRigid.gravityScale = 0;
-        //    arrRigid.isKinematic = true;
+    //    //    //disable the arrow
+    //    //    stopUpdate = true;
+    //    //    //arrRigid.useGravity = false;
+    //    //    arrRigid.gravityScale = 0;
+    //    //    arrRigid.isKinematic = true;
 
-        //    if (arrCollider)
-        //        arrCollider.enabled = false;
+    //    //    if (arrCollider)
+    //    //        arrCollider.enabled = false;
 
-        //    //if (GetComponent<SphereCollider>())
-        //    //    GetComponent<SphereCollider>().enabled = false;
+    //    //    //if (GetComponent<SphereCollider>())
+    //    //    //    GetComponent<SphereCollider>().enabled = false;
 
-        //    trailFx.SetActive(false);
+    //    //    trailFx.SetActive(false);
 
-        //    //if this is a bomb weapon, we need an explosion after collision
-        //    if (gameObject.tag == "bomb")
-        //    {
-        //        GameObject exp = Instantiate(explosionFx, other.contacts[0].point + new Vector3(0, 0, -1.5f), Quaternion.Euler(0, 0, 0)) as GameObject;
-        //        exp.name = "Explosion";
-        //        Destroy(gameObject, 0.01f);
-        //    }
+    //    //    //if this is a bomb weapon, we need an explosion after collision
+    //    //    if (gameObject.tag == "bomb")
+    //    //    {
+    //    //        GameObject exp = Instantiate(explosionFx, other.contacts[0].point + new Vector3(0, 0, -1.5f), Quaternion.Euler(0, 0, 0)) as GameObject;
+    //    //        exp.name = "Explosion";
+    //    //        Destroy(gameObject, 0.01f);
+    //    //    }
 
-        //    GameController.isArrowInScene = false;
+    //    //    GameController.isArrowInScene = false;
 
-        //    ////We only change turns if this game more requires an enemy
-        //    //if (!bypassCode)
-        //    //{
+    //    //    ////We only change turns if this game more requires an enemy
+    //    //    //if (!bypassCode)
+    //    //    //{
 
-        //    //    if (ownerID == 0)
-        //    //        enemy.GetComponent<EnemyController>().changeTurns();
-        //    //    else if (ownerID == 1)
-        //    //        player.GetComponent<PlayerController>().changeTurns();
-        //    //}
+    //    //    //    if (ownerID == 0)
+    //    //    //        enemy.GetComponent<EnemyController>().changeTurns();
+    //    //    //    else if (ownerID == 1)
+    //    //    //        player.GetComponent<PlayerController>().changeTurns();
+    //    //    //}
 
-        //}
-
-
-
-        ////Collision with enemy
-        //if ((oTag == "enemyBody" || oTag == "enemyLeg" || oTag == "enemyHead") &&
-        //     (gameObject.tag == "arrow" || gameObject.tag == "axe" || gameObject.tag == "bomb"))
-        //{
-
-        //    //disable the arrow
-        //    stopUpdate = true;
-        //    //GetComponent<Rigidbody>().useGravity = false;
-        //    //GetComponent<Rigidbody>().isKinematic = true;
-
-        //    //if (GetComponent<BoxCollider>())
-        //    //    GetComponent<BoxCollider>().enabled = false;
-
-        //    //if (GetComponent<SphereCollider>())
-        //    //    GetComponent<SphereCollider>().enabled = false;
-
-        //    arrRigid.gravityScale = 0;
-        //    arrRigid.isKinematic = true;
-
-        //    if (arrCollider)
-        //        arrCollider.enabled = false;
-
-        //    trailFx.SetActive(false);
-        //    GameController.isArrowInScene = false;
-        //    transform.parent = other.collider.gameObject.transform;
-
-        //    //create blood fx
-        //    if (gameObject.tag == "arrow" || gameObject.tag == "axe")
-        //    {
-        //        GameObject blood = Instantiate(bloodFx, other.contacts[0].point + new Vector3(0, 0, -1.5f), Quaternion.Euler(0, 0, 0)) as GameObject;
-        //        blood.name = "BloodFX";
-        //        Destroy(blood, 1.5f);
-        //    }
-
-        //    //if this is a bomb weapon, we need an explosion after collision
-        //    if (gameObject.tag == "bomb")
-        //    {
-        //        GameObject exp = Instantiate(explosionFx, other.contacts[0].point + new Vector3(0, 0, -1.5f), Quaternion.Euler(0, 0, 0)) as GameObject;
-        //        exp.name = "Explosion";
-        //        Destroy(gameObject, 0.01f);
-        //    }
-
-        //    var enemy = other.collider.gameObject.GetComponentInParent<EnemyController>();
-
-        //    //manage victim's helath status
-        //    enemy.enemyCurrentHealth -= damage;
-
-        //    //save enemy state for lastHit. will be used if we need to move the enemy after getting hit
-        //    enemy.gotLastHit = true;
-
-        //    //play hit sfx
-        //    enemy.playRandomHitSound();
-
-        //    ////change the turn
-        //    //enemy.GetComponent<EnemyController>().changeTurns();
-        //}
+    //    //}
 
 
-        //Collision with player
-        if ((oTag == "playerBody" || oTag == "playerLeg" || oTag == "playerHead") &&
-            (gameObject.tag == "arrow" || gameObject.tag == "axe" || gameObject.tag == "bomb"))
-        {
 
-            if (bypassCode)
-                yield break;
+    //    ////Collision with enemy
+    //    //if ((oTag == "enemyBody" || oTag == "enemyLeg" || oTag == "enemyHead") &&
+    //    //     (gameObject.tag == "arrow" || gameObject.tag == "axe" || gameObject.tag == "bomb"))
+    //    //{
 
-            //disable the arrow
-            stopUpdate = true;
-            //GetComponent<Rigidbody>().useGravity = false;
-            //GetComponent<Rigidbody>().isKinematic = true;
+    //    //    //disable the arrow
+    //    //    stopUpdate = true;
+    //    //    //GetComponent<Rigidbody>().useGravity = false;
+    //    //    //GetComponent<Rigidbody>().isKinematic = true;
 
-            //if (GetComponent<BoxCollider>())
-            //    GetComponent<BoxCollider>().enabled = false;
+    //    //    //if (GetComponent<BoxCollider>())
+    //    //    //    GetComponent<BoxCollider>().enabled = false;
 
-            //if (GetComponent<SphereCollider>())
-            //    GetComponent<SphereCollider>().enabled = false;
+    //    //    //if (GetComponent<SphereCollider>())
+    //    //    //    GetComponent<SphereCollider>().enabled = false;
 
-            arrRigid.gravityScale = 0;
-            arrRigid.isKinematic = true;
+    //    //    arrRigid.gravityScale = 0;
+    //    //    arrRigid.isKinematic = true;
 
-            if (arrCollider)
-                arrCollider.enabled = false;
+    //    //    if (arrCollider)
+    //    //        arrCollider.enabled = false;
 
-            trailFx.SetActive(false);
-            GameController.isArrowInScene = false;
-            transform.parent = other.collider.gameObject.transform;
+    //    //    trailFx.SetActive(false);
+    //    //    GameController.isArrowInScene = false;
+    //    //    transform.parent = other.collider.gameObject.transform;
 
-            //create blood fx
-            GameObject blood = Instantiate(bloodFx, other.contacts[0].point + new Vector3(0, 0, -1.5f), Quaternion.Euler(0, 0, 0)) as GameObject;
-            blood.name = "BloodFX";
-            Destroy(blood, 1.5f);
+    //    //    //create blood fx
+    //    //    if (gameObject.tag == "arrow" || gameObject.tag == "axe")
+    //    //    {
+    //    //        GameObject blood = Instantiate(bloodFx, other.contacts[0].point + new Vector3(0, 0, -1.5f), Quaternion.Euler(0, 0, 0)) as GameObject;
+    //    //        blood.name = "BloodFX";
+    //    //        Destroy(blood, 1.5f);
+    //    //    }
 
-            //manage victim's helath status
-            player.GetComponent<PlayerController>().playerCurrentHealth -= damage;
+    //    //    //if this is a bomb weapon, we need an explosion after collision
+    //    //    if (gameObject.tag == "bomb")
+    //    //    {
+    //    //        GameObject exp = Instantiate(explosionFx, other.contacts[0].point + new Vector3(0, 0, -1.5f), Quaternion.Euler(0, 0, 0)) as GameObject;
+    //    //        exp.name = "Explosion";
+    //    //        Destroy(gameObject, 0.01f);
+    //    //    }
 
-            //play hit sfx
-            player.GetComponent<PlayerController>().playRandomHitSound();
+    //    //    var enemy = other.collider.gameObject.GetComponentInParent<EnemyController>();
 
-            ////change the turn
-            //player.GetComponent<PlayerController>().changeTurns();
-        }
+    //    //    //manage victim's helath status
+    //    //    enemy.enemyCurrentHealth -= damage;
+
+    //    //    //save enemy state for lastHit. will be used if we need to move the enemy after getting hit
+    //    //    enemy.gotLastHit = true;
+
+    //    //    //play hit sfx
+    //    //    enemy.playRandomHitSound();
+
+    //    //    ////change the turn
+    //    //    //enemy.GetComponent<EnemyController>().changeTurns();
+    //    //}
 
 
-        //Special case - collision with birds
-        if (oTag == "bird")
-        {
-            other.collider.gameObject.GetComponent<BirdsController>().die();
-            Destroy(gameObject);
-        }
+    //    //Collision with player
+    //    if ((oTag == "playerBody" || oTag == "playerLeg" || oTag == "playerHead") &&
+    //        (gameObject.tag == "arrow" || gameObject.tag == "axe" || gameObject.tag == "bomb"))
+    //    {
+
+    //        if (bypassCode)
+    //            yield break;
+
+    //        //disable the arrow
+    //        stopUpdate = true;
+    //        //GetComponent<Rigidbody>().useGravity = false;
+    //        //GetComponent<Rigidbody>().isKinematic = true;
+
+    //        //if (GetComponent<BoxCollider>())
+    //        //    GetComponent<BoxCollider>().enabled = false;
+
+    //        //if (GetComponent<SphereCollider>())
+    //        //    GetComponent<SphereCollider>().enabled = false;
+
+    //        arrRigid.gravityScale = 0;
+    //        arrRigid.isKinematic = true;
+
+    //        if (arrCollider)
+    //            arrCollider.enabled = false;
+
+    //        trailFx.SetActive(false);
+    //        GameController.isArrowInScene = false;
+    //        transform.parent = other.collider.gameObject.transform;
+
+    //        //create blood fx
+    //        GameObject blood = Instantiate(bloodFx, other.contacts[0].point + new Vector3(0, 0, -1.5f), Quaternion.Euler(0, 0, 0)) as GameObject;
+    //        blood.name = "BloodFX";
+    //        Destroy(blood, 1.5f);
+
+    //        //manage victim's helath status
+    //        player.GetComponent<PlayerController>().playerCurrentHealth -= damage;
+
+    //        //play hit sfx
+    //        player.GetComponent<PlayerController>().playRandomHitSound();
+
+    //        ////change the turn
+    //        //player.GetComponent<PlayerController>().changeTurns();
+    //    }
 
 
-        //enable collision detection again
-        yield return new WaitForSeconds(0.5f);
-        isChecking = false;
-    }
+    //    //Special case - collision with birds
+    //    if (oTag == "bird")
+    //    {
+    //        other.collider.gameObject.GetComponent<BirdsController>().die();
+    //        Destroy(gameObject);
+    //    }
+
+
+    //    //enable collision detection again
+    //    yield return new WaitForSeconds(0.5f);
+    //    isChecking = false;
+    //}
 
 }
