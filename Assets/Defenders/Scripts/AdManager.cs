@@ -17,9 +17,9 @@ public class AdManager : MonoBehaviour
     //string admobVideoID = "ca-app-pub-5176895987178305/3975747223";
 
     // test
-    string admobBannerID = "ca-app-pub-3940256099942544/6300978111";
-    string admobInterstitialID = "ca-app-pub-3940256099942544/1033173712";
-    string admobVideoID = "ca-app-pub-3940256099942544/5224354917";
+	string admobBannerID = "ca-app-pub-5176895987178305/1396727482";
+	string admobInterstitialID = "ca-app-pub-5176895987178305/1182062923";
+	string admobVideoID = "ca-app-pub-5176895987178305/3975747223";
 
     public delegate void CompleteEvent();
 
@@ -77,7 +77,7 @@ public class AdManager : MonoBehaviour
         {
             ad.showRewardedVideo();
         }
-        rewardCB();
+//        rewardCB();
         ad.loadRewardedVideo(admobVideoID);
     }
 

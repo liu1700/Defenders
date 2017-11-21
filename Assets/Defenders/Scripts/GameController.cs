@@ -59,13 +59,6 @@ public class GameController : MonoBehaviour
     //public GameObject uiGameStateLabel;
     //public GameObject uiYouWon;
 
-    [Header("BirdHunt Game Mode settings")]
-    public GameObject uiBirdhuntStatPanel;
-    public GameObject uiTimeText;
-    public GameObject uiBirdsHitText;
-    public GameObject uiStatBirdHits;
-    public GameObject uiStatBestScore;
-    public static int birdsHit;
     ///Game timer vars
     public int availableTime = 30;                  //total gameplay time
     public static int bonusTime = 3;                        //additional time when we hit a bird
@@ -134,9 +127,6 @@ public class GameController : MonoBehaviour
 
         //gameoverManager.SetActive(false);
 
-        if (uiBirdhuntStatPanel)
-            uiBirdhuntStatPanel.SetActive(false);
-
         isArrowInScene = false;
         //playerHBSC = uiPlayerHealthBar.transform.localScale;
         //enemyHBSC = uiEnemyHealthBar.transform.localScale;
@@ -153,7 +143,6 @@ public class GameController : MonoBehaviour
         gameTimer = availableTime;
         seconds = 0;
         minutes = 0;
-        birdsHit = 0;
 
         AdManagerObject = GameObject.FindGameObjectWithTag("AdManager");
 
@@ -302,7 +291,7 @@ public class GameController : MonoBehaviour
 
     public void OnBackToMain()
     {
-        AddGoldInstant(30);
+		AddGoldInstant(addedPlayerCoins);
         StartCoroutine(waitAnimation());
 
         //show an Interstitial Ad when the game is paused
