@@ -18,7 +18,7 @@ public class EnemyController : MonoBehaviour
     public int enemyId;
 
     //    public BodyController bodyController;
-    public PlateformController plateformController;
+    public DestructableController plateformController;
 
     [Header("Public GamePlay settings")]
     public int enemyHealth = 100;                   //initial (full) health. can be edited.
@@ -148,11 +148,11 @@ public class EnemyController : MonoBehaviour
             var goldCount = 1;
             if (enemySkill == enemySkillLevels.normal)
             {
-                goldCount = 2;
+                goldCount = 3;
             }
             else if (enemySkill == enemySkillLevels.hard || enemySkill == enemySkillLevels.Robinhood)
             {
-                goldCount = 3;
+                goldCount = 6;
             }
 
             gc.GetComponent<GameController>().AddGold(goldCount);

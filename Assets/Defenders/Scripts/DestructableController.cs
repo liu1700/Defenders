@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Destructible2D;
-public class PlateformController : MonoBehaviour
+public class DestructableController : MonoBehaviour
 {
     [Tooltip("The amount of times you want the clicked object to fracture")]
     public int FractureCount = 5;

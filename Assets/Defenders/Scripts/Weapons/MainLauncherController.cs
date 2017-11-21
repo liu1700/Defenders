@@ -143,16 +143,16 @@ public class MainLauncherController : MonoBehaviour
             manageArrowRotation();
         }
 
-        if (arrowType == arrowTypes.Axe)
-        {
-            rotateWeapon(500);
-        }
+        //if (arrowType == arrowTypes.Axe)
+        //{
+        //    rotateWeapon(500);
+        //}
 
-        if (arrowType == arrowTypes.Bomb)
-        {
-            rotateWeapon(150);
-            explodeOnTouch();
-        }
+        //if (arrowType == arrowTypes.Bomb)
+        //{
+        //    rotateWeapon(150);
+        //    explodeOnTouch();
+        //}
 
         ////Only for birdhunt & appleshot game modes.
         ////destroy the arrow after 2 seconds or after exiting the view
@@ -257,33 +257,39 @@ public class MainLauncherController : MonoBehaviour
     /// If the bomb hit the target directly, it deals minor damage. 
     /// But if the explosion hits the taregt, the damage will be major.
     /// </summary>
-    void explodeOnTouch()
+    //void explodeOnTouch()
+    //{
+
+    //    //if (Input.GetKeyDown(KeyCode.Mouse0))
+    //    //{
+
+    //    //    //bombExplosionByPlayer = true;
+    //    //    GameObject exp = Instantiate(explosionFx, transform.position + new Vector3(0, 0, -1.5f), Quaternion.Euler(0, 0, 0)) as GameObject;
+    //    //    exp.name = "Explosion";
+
+    //    //    //check explosion distance with target
+    //    //    float distanceToTarget = Vector3.Distance(transform.position, enemy.transform.position);
+    //    //    print("Bomb - distanceToTarget: " + distanceToTarget);
+    //    //    if (distanceToTarget <= MasterWeaponManager.bombExplosionRadius)
+    //    //    {
+    //    //        //apply explosion damage
+    //    //        enemy.GetComponent<EnemyController>().enemyCurrentHealth -= MasterWeaponManager.bombExplosionDamage;
+    //    //        enemy.GetComponent<EnemyController>().gotLastHit = true;
+    //    //        enemy.GetComponent<EnemyController>().playRandomHitSound();
+    //    //    }
+
+    //    //    Destroy(gameObject, 0.01f);
+
+    //    //    GameController.isArrowInScene = false;
+    //    //    //enemy.GetComponent<EnemyController>().changeTurns();
+
+    //    //}
+    //}
+
+    void explodeOnTouch(Vector2 contactPoint)
     {
-
-        //if (Input.GetKeyDown(KeyCode.Mouse0))
-        //{
-
-        //    //bombExplosionByPlayer = true;
-        //    GameObject exp = Instantiate(explosionFx, transform.position + new Vector3(0, 0, -1.5f), Quaternion.Euler(0, 0, 0)) as GameObject;
-        //    exp.name = "Explosion";
-
-        //    //check explosion distance with target
-        //    float distanceToTarget = Vector3.Distance(transform.position, enemy.transform.position);
-        //    print("Bomb - distanceToTarget: " + distanceToTarget);
-        //    if (distanceToTarget <= MasterWeaponManager.bombExplosionRadius)
-        //    {
-        //        //apply explosion damage
-        //        enemy.GetComponent<EnemyController>().enemyCurrentHealth -= MasterWeaponManager.bombExplosionDamage;
-        //        enemy.GetComponent<EnemyController>().gotLastHit = true;
-        //        enemy.GetComponent<EnemyController>().playRandomHitSound();
-        //    }
-
-        //    Destroy(gameObject, 0.01f);
-
-        //    GameController.isArrowInScene = false;
-        //    //enemy.GetComponent<EnemyController>().changeTurns();
-
-        //}
+        GameObject exp = Instantiate(explosionFx, contactPoint, Quaternion.Euler(0, 0, 0)) as GameObject;
+        exp.name = "Explosion";
     }
 
 
@@ -390,6 +396,12 @@ public class MainLauncherController : MonoBehaviour
             player.GetComponent<PlayerController>().playRandomHitSound();
 
             Destroy(gameObject, 10f);
+        }
+        else if ((collisionLayerMask == playerShootingLayer && gameObject.layer == enemyShootingLayer) ||
+          (collisionLayerMask == enemyShootingLayer && gameObject.layer == playerShootingLayer))
+        {
+            // 敌我的箭相撞
+            explodeOnTouch(collision.contacts[0].point);
         }
         else if (collisionLayerMask == GameController.environmentLayer)
         {

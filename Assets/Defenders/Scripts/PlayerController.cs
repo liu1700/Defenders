@@ -233,12 +233,12 @@ public class PlayerController : MonoBehaviour
             //UiDynamicDegree.GetComponent<TextMesh>().text = ((int)shootDirection).ToString();
             //UiDynamicPower.GetComponent<TextMesh>().text = ((int)shootPower).ToString() + "%";
 
-            if (useHelper)
-            {
-                //create trajectory helper points, while preventing them to show when we start to click/touch
-                if (shootPower > minShootPower && helperDelayIsDone)
-                    StartCoroutine(shootTrajectoryHelper());
-            }
+            //if (useHelper)
+            //{
+            //    //create trajectory helper points, while preventing them to show when we start to click/touch
+            //    if (shootPower > minShootPower && helperDelayIsDone)
+            //        StartCoroutine(shootTrajectoryHelper());
+            //}
         }
     }
 
@@ -300,28 +300,28 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    /// <summary>
-    /// Create helper dots that shows the possible fly path of the actual arrow
-    /// </summary>
-    IEnumerator shootTrajectoryHelper()
-    {
+    ///// <summary>
+    ///// Create helper dots that shows the possible fly path of the actual arrow
+    ///// </summary>
+    //IEnumerator shootTrajectoryHelper()
+    //{
 
-        if (!canCreateHelper)
-            yield break;
+    //    if (!canCreateHelper)
+    //        yield break;
 
-        canCreateHelper = false;
+    //    canCreateHelper = false;
 
-        GameObject t = Instantiate(trajectoryHelper, playerShootPosition.transform.position, Quaternion.Euler(0, 180, shootDirection * -1)) as GameObject;
+    //    GameObject t = Instantiate(trajectoryHelper, playerShootPosition.transform.position, Quaternion.Euler(0, 180, shootDirection * -1)) as GameObject;
 
-        shootDirectionVector = Vector3.Normalize(inputDirection);
-        //shootDirectionVector = new Vector3(Mathf.Clamp(shootDirectionVector.x, 0, 1), Mathf.Clamp(shootDirectionVector.y, 0, 1), shootDirectionVector.z);
-        //print("shootPower: " + shootPower + " --- " + "shootDirectionVector: " + shootDirectionVector);
+    //    shootDirectionVector = Vector3.Normalize(inputDirection);
+    //    //shootDirectionVector = new Vector3(Mathf.Clamp(shootDirectionVector.x, 0, 1), Mathf.Clamp(shootDirectionVector.y, 0, 1), shootDirectionVector.z);
+    //    //print("shootPower: " + shootPower + " --- " + "shootDirectionVector: " + shootDirectionVector);
 
-        t.GetComponent<Rigidbody>().AddForce(shootDirectionVector * ((shootPower + baseShootPower) / 50), ForceMode.Impulse);
+    //    t.GetComponent<Rigidbody>().AddForce(shootDirectionVector * ((shootPower + baseShootPower) / 50), ForceMode.Impulse);
 
-        yield return new WaitForSeconds(helperCreationDelay);
-        canCreateHelper = true;
-    }
+    //    yield return new WaitForSeconds(helperCreationDelay);
+    //    canCreateHelper = true;
+    //}
 
 
     /// <summary>

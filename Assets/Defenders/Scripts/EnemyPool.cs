@@ -29,7 +29,7 @@ public class EnemyPool : MonoBehaviour
         // key: 第几回合, val: 解锁生成难度
         levelUnlock.Add(1, EnemyController.enemySkillLevels.easy);
         levelUnlock.Add(5, EnemyController.enemySkillLevels.normal);
-        levelUnlock.Add(20, EnemyController.enemySkillLevels.hard);
+        levelUnlock.Add(10, EnemyController.enemySkillLevels.hard);
         levelUnlock.Add(25, EnemyController.enemySkillLevels.Robinhood);
 
         // key: 难度, val: 解锁难度对应的gameobject名字

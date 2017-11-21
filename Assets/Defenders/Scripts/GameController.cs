@@ -72,6 +72,8 @@ public class GameController : MonoBehaviour
     private int seconds;
     private int minutes;
 
+    int reviveTime = 20;
+
     //private Vector3 playerHBSC;                     //player health bar starting scale
     //private Vector3 enemyHBSC;                      //enemy health bar starting scale
     private float playerHealthScale;                //player health bar real-time scale
@@ -277,6 +279,7 @@ public class GameController : MonoBehaviour
     public void OnPlayerReviveOver()
     {
         player.GetComponent<PlayerController>().RefillPlayerHealth();
+        reviveFinished();
     }
 
     IEnumerator waitAnimation()
@@ -470,6 +473,14 @@ public class GameController : MonoBehaviour
         round++;
         //levelUI.levelNum.text = round.ToString();
         enemies.ReGenerateEnemies(round);
+    }
+
+    void reviveFinished()
+    {
+        gameIsFinished = false;
+        gameTimer = reviveTime + Time.timeSinceLevelLoad;
+        uiCam.SetActive(true);
+        gameOverManager.gameObject.SetActive(false);
     }
 
     /// <summary>
