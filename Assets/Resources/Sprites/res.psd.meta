@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 71be2262b8d8a504abacafae943f0f92
-timeCreated: 1511191335
+timeCreated: 1511231969
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -144,12 +144,12 @@ TextureImporter:
       name: res_3
       rect:
         serializedVersion: 2
-        x: 443
-        y: 478
-        width: 244
-        height: 157
+        x: 441
+        y: 472.99997
+        width: 246
+        height: 164.00003
       alignment: 9
-      pivot: {x: 0.51024586, y: 0.5}
+      pivot: {x: 0.5142276, y: 0.50914645}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -325,6 +325,6 @@ TextureImporter:
     outline: []
     physicsShape: []
   spritePackingTag: 
-  userData: 99037435068416
+  userData: 99040097694429
   assetBundleName: 
   assetBundleVariant: 

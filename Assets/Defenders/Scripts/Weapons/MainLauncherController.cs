@@ -326,6 +326,7 @@ public class MainLauncherController : MonoBehaviour
             {
                 GameObject blood = Instantiate(bloodFx, collision.contacts[0].point, Quaternion.Euler(0, 0, 0)) as GameObject;
                 blood.name = "BloodFX";
+                blood.transform.localScale = new Vector3(6, 6, 6);
                 blood.transform.parent = collision.gameObject.transform;
                 Destroy(blood, 1.5f);
             }
@@ -360,35 +361,36 @@ public class MainLauncherController : MonoBehaviour
 
             // sleep it
             arrRigid.Sleep();
-		}
-		else if(collisionLayerMask == GameController.playerLayer && gameObject.layer == enemyShootingLayer){
-			stopUpdate = true;
-			arrRigid.gravityScale = 0;
-			arrRigid.bodyType = RigidbodyType2D.Static;
-			arrRigid.Sleep();
+        }
+        else if (collisionLayerMask == GameController.playerLayer && gameObject.layer == enemyShootingLayer)
+        {
+            stopUpdate = true;
+            arrRigid.gravityScale = 0;
+            arrRigid.bodyType = RigidbodyType2D.Static;
+            arrRigid.Sleep();
 
-			if (arrCollider)
-				arrCollider.enabled = false;
+            if (arrCollider)
+                arrCollider.enabled = false;
 
-			trailFx.SetActive(false);
+            trailFx.SetActive(false);
 
-			GameController.isArrowInScene = false;
+            GameController.isArrowInScene = false;
 
-			transform.parent = collision.gameObject.transform;
+            transform.parent = collision.gameObject.transform;
 
-			//create blood fx
-			GameObject blood = Instantiate(bloodFx, collision.contacts[0].point, Quaternion.Euler(0, 0, 0)) as GameObject;
-			blood.name = "BloodFX";
-			Destroy(blood, 1.5f);
+            //create blood fx
+            GameObject blood = Instantiate(bloodFx, collision.contacts[0].point, Quaternion.Euler(0, 0, 0)) as GameObject;
+            blood.name = "BloodFX";
+            Destroy(blood, 1.5f);
 
-			//manage victim's helath status
-			player.GetComponent<PlayerController>().playerCurrentHealth -= damage;
+            //manage victim's helath status
+            player.GetComponent<PlayerController>().playerCurrentHealth -= damage;
 
-			//play hit sfx
-			player.GetComponent<PlayerController>().playRandomHitSound();
+            //play hit sfx
+            player.GetComponent<PlayerController>().playRandomHitSound();
 
-			Destroy(gameObject, 10f);
-		}
+            Destroy(gameObject, 10f);
+        }
         else if (collisionLayerMask == GameController.environmentLayer)
         {
             //disable the arrow

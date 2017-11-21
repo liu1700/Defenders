@@ -17,19 +17,13 @@ public class EnemyPool : MonoBehaviour
     List<EnemyController.enemySkillLevels> skillLevels;
 
     Dictionary<int, EnemyController.enemySkillLevels> levelUnlock;
+    Dictionary<EnemyController.enemySkillLevels, string> gameObjectMap;
     Dictionary<int, int[]> enemyCountUnlock;
 
     void Awake()
     {
-        if (skillLevels == null)
-        {
-            skillLevels = new List<EnemyController.enemySkillLevels>();
-        }
-
-        if (list == null)
-        {
-            list = new List<EnemyController>();
-        }
+        skillLevels = new List<EnemyController.enemySkillLevels>();
+        list = new List<EnemyController>();
 
         levelUnlock = new Dictionary<int, EnemyController.enemySkillLevels>();
         // key: 第几回合, val: 解锁生成难度
@@ -37,6 +31,13 @@ public class EnemyPool : MonoBehaviour
         levelUnlock.Add(5, EnemyController.enemySkillLevels.normal);
         levelUnlock.Add(20, EnemyController.enemySkillLevels.hard);
         levelUnlock.Add(25, EnemyController.enemySkillLevels.Robinhood);
+
+        // key: 难度, val: 解锁难度对应的gameobject名字
+        gameObjectMap = new Dictionary<EnemyController.enemySkillLevels, string>();
+        gameObjectMap.Add(EnemyController.enemySkillLevels.easy, "EnemyBody1");
+        gameObjectMap.Add(EnemyController.enemySkillLevels.normal, "EnemyBody2");
+        gameObjectMap.Add(EnemyController.enemySkillLevels.hard, "EnemyBody3");
+        gameObjectMap.Add(EnemyController.enemySkillLevels.Robinhood, "EnemyBody3");
 
         // key: 第几回合, val: 解锁刷新人数值域
         enemyCountUnlock = new Dictionary<int, int[]>();
@@ -112,8 +113,7 @@ public class EnemyPool : MonoBehaviour
             System.Random random = new System.Random();
 
             EnemyController.enemySkillLevels skillLevel = skillLevels[random.Next(skillLevels.Count)];
-            ctrl.enemySkill = skillLevel;
-            ctrl.enemyId = i;
+            ctrl.InitEnemy(i, skillLevel, gameObjectMap[skillLevel]);
             list.Add(ctrl);
         }
 

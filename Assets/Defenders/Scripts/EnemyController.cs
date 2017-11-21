@@ -17,7 +17,7 @@ public class EnemyController : MonoBehaviour
 
     public int enemyId;
 
-//    public BodyController bodyController;
+    //    public BodyController bodyController;
     public PlateformController plateformController;
 
     [Header("Public GamePlay settings")]
@@ -33,7 +33,7 @@ public class EnemyController : MonoBehaviour
     [Header("Linked GameObjects")]
     //Reference to game objects (childs and prefabs)
     public GameObject arrow;
-//	public GameObject enemyTurnPivot;
+    //	public GameObject enemyTurnPivot;
     public Control enemyTurnPivot;
     public GameObject enemyShootPosition;
     //Hidden gameobjects
@@ -109,12 +109,24 @@ public class EnemyController : MonoBehaviour
         transform.position = pos;
     }
 
+    public void InitEnemy(int id, enemySkillLevels enemySkillLevel, string objName)
+    {
+        enemySkill = enemySkillLevel;
+        enemyId = id;
+
+        var obj = gameObject.transform.Find(objName).gameObject;
+        obj.SetActive(true);
+        var ctrl = obj.GetComponentInChildren<Control>(true);
+        enemyTurnPivot = ctrl;
+        enemyShootPosition = obj.GetComponentInChildren<ShootPos>().gameObject;
+    }
+
 
     public void LetMeFly()
     {
         plateformController.Break();
 
-		GetComponentInChildren<BodyController> ().ActiveRigidBodys ();
+        GetComponentInChildren<BodyController>().ActiveRigidBodys();
     }
 
     /// <summary>
@@ -216,15 +228,15 @@ public class EnemyController : MonoBehaviour
         //wait a little for the camera to correctly get in position
         yield return new WaitForSeconds(0.95f);
 
-                //we need to rotate enemy body to a random/calculated rotation angle
-                float targetAngle = Random.Range(55, 75) * -1;  //important! (originate from 65)
-                float t = 0;
-                while (t < 1)
-                {
-                    t += Time.deltaTime;
-                    enemyTurnPivot.transform.rotation = Quaternion.Euler(0, 0, Mathf.SmoothStep(-90, targetAngle-90, t));
-                    yield return 0;
-                }
+        //we need to rotate enemy body to a random/calculated rotation angle
+        float targetAngle = Random.Range(55, 75) * -1;  //important! (originate from 65)
+        float t = 0;
+        while (t < 1)
+        {
+            t += Time.deltaTime;
+            enemyTurnPivot.transform.rotation = Quaternion.Euler(0, 0, Mathf.SmoothStep(-90, targetAngle - 90, t));
+            yield return 0;
+        }
         //
         print("Enemy Fired!");
 
@@ -257,7 +269,7 @@ public class EnemyController : MonoBehaviour
     IEnumerator resetBodyRotation()
     {
         yield return new WaitForSeconds(1.5f);
-		enemyTurnPivot.transform.rotation = Quaternion.Euler (new Vector3(0,0,-90));
+        enemyTurnPivot.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
 
     }
 
