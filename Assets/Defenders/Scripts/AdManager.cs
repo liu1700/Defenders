@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using admob;
+using UnityEngine.SceneManagement;
 
 public class AdManager : MonoBehaviour
 {
@@ -21,6 +22,8 @@ public class AdManager : MonoBehaviour
     string admobVideoID = "ca-app-pub-3940256099942544/5224354917";
 
     public delegate void CompleteEvent();
+
+    public CompleteEvent rewardCB;
 
     void Awake()
     {
@@ -67,14 +70,14 @@ public class AdManager : MonoBehaviour
         ad.loadInterstitial();
     }
 
-    public void showRewardVideo(CompleteEvent cb)
+    public void showRewardVideo()
     {
         print("Request for Reward AD.");
         if (ad.isRewardedVideoReady())
         {
             ad.showRewardedVideo();
         }
-        cb();
+        rewardCB();
         ad.loadRewardedVideo(admobVideoID);
     }
 
@@ -94,6 +97,14 @@ public class AdManager : MonoBehaviour
     void onRewardedVideoEvent(string eventName, string msg)
     {
         Debug.Log("handler onRewardedVideoEvent---" + eventName + "   " + msg);
+        if (eventName == AdmobEvent.onRewarded)
+        {
+            rewardCB();
+        }
+        else
+        {
+            SceneManager.LoadScene("Menu");
+        }
     }
     void onNativeBannerEvent(string eventName, string msg)
     {

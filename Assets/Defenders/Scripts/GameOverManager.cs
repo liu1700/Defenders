@@ -9,6 +9,7 @@ public class GameOverManager : MonoBehaviour
     public Text killText;
     public Text bestText;
     public Text addGoldText;
+    public Text needGoldNum;
     public GameObject revive;
     public GameObject moreGold;
 
@@ -20,6 +21,11 @@ public class GameOverManager : MonoBehaviour
         moreGold.SetActive(false);
         showRevive = true;
         showAddMoreGold = false;
+    }
+
+    private void Start()
+    {
+        needGoldNum.text = "-" + GameController.reviveUseGold.ToString();
     }
 
     public void ActivatePanel(int playerCoine)

@@ -38,6 +38,8 @@ public class GameController : MonoBehaviour
     public static int playerArrowShot;              //how many arrows player shot in this game
                                                     // Static variables //
 
+    public static int reviveUseGold = 200;
+
     // Private vars //
     private bool canTap;
     private GameObject AdManagerObject;
@@ -242,7 +244,7 @@ public class GameController : MonoBehaviour
         playSfx(tapSfx);                            //play touch sound
         canTap = false;                             //prevent double touch
         StartCoroutine(waitAnimation());
-        AddGold(-10);
+        AddGold(-reviveUseGold);
         OnPlayerReviveOver();
         StartCoroutine(activateTap());
     }
@@ -255,11 +257,17 @@ public class GameController : MonoBehaviour
         playSfx(tapSfx);                            //play touch sound
         canTap = false;                             //prevent double touch
         StartCoroutine(waitAnimation());
+
+        //show an Interstitial Ad when the game is paused
+        if (AdManagerObject)
+            AdManagerObject.GetComponent<AdManager>().showInterstitial();
+
+
         SceneManager.LoadScene("Menu");
         StartCoroutine(activateTap());
     }
 
-    public void TapViewVideo()
+    public void TapViewVideo(int typ)
     {
         if (!canTap)
             return;
@@ -270,7 +278,17 @@ public class GameController : MonoBehaviour
 
         if (AdManagerObject)
         {
-            AdManagerObject.GetComponent<AdManager>().showRewardVideo(OnPlayerReviveOver);
+            var adMgr = AdManagerObject.GetComponent<AdManager>();
+            if (typ == 1)
+            {
+                adMgr.rewardCB = OnPlayerReviveOver;
+                adMgr.showRewardVideo();
+            }
+            else if (typ == 2)
+            {
+                adMgr.rewardCB = OnBackToMain;
+                adMgr.showRewardVideo();
+            }
         }
 
         StartCoroutine(activateTap());
@@ -280,6 +298,18 @@ public class GameController : MonoBehaviour
     {
         player.GetComponent<PlayerController>().RefillPlayerHealth();
         reviveFinished();
+    }
+
+    public void OnBackToMain()
+    {
+        AddGoldInstant(30);
+        StartCoroutine(waitAnimation());
+
+        //show an Interstitial Ad when the game is paused
+        if (AdManagerObject)
+            AdManagerObject.GetComponent<AdManager>().showInterstitial();
+
+        SceneManager.LoadScene("Menu");
     }
 
     IEnumerator waitAnimation()
@@ -292,57 +322,57 @@ public class GameController : MonoBehaviour
     // detects both touch and clicks and can be used with editor, handheld device and 
     // every other platforms at once.
     //*****************************************************************************
-    private RaycastHit hitInfo;
-    private Ray ray;
-    IEnumerator inputManager()
-    {
+    //private RaycastHit hitInfo;
+    //private Ray ray;
+    //IEnumerator inputManager()
+    //{
 
-        //Prevent double click
-        if (!canTap)
-            yield break;
+    //    //Prevent double click
+    //    if (!canTap)
+    //        yield break;
 
-        //Mouse of touch?
-        if (Input.touches.Length > 0 && Input.touches[0].phase == TouchPhase.Ended)
-            ray = Camera.main.ScreenPointToRay(Input.touches[0].position);
-        else if (Input.GetMouseButtonUp(0))
-            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        else
-            yield break;
+    //    //Mouse of touch?
+    //    if (Input.touches.Length > 0 && Input.touches[0].phase == TouchPhase.Ended)
+    //        ray = Camera.main.ScreenPointToRay(Input.touches[0].position);
+    //    else if (Input.GetMouseButtonUp(0))
+    //        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+    //    else
+    //        yield break;
 
-        if (Physics.Raycast(ray, out hitInfo))
-        {
-            GameObject objectHit = hitInfo.transform.gameObject;
-            //print ("objectHit: " + objectHit.name);
-            switch (objectHit.name)
-            {
+    //    if (Physics.Raycast(ray, out hitInfo))
+    //    {
+    //        GameObject objectHit = hitInfo.transform.gameObject;
+    //        //print ("objectHit: " + objectHit.name);
+    //        switch (objectHit.name)
+    //        {
 
-                case "Button-Play":
-                    playSfx(tapSfx);                            //play touch sound
-                    canTap = false;                             //prevent double touch
-                    StartCoroutine(animateButton(objectHit));   //touch animation effect
-                    yield return new WaitForSeconds(0.25f);     //Wait for the animation to end
-                    SceneManager.LoadScene("Menu");
-                    StartCoroutine(activateTap());
-                    break;
-                case "Button-Menu":
-                    //playSfx(tapSfx);                            //play touch sound
-                    //canTap = false;                             //prevent double touch
-                    //StartCoroutine(animateButton(objectHit));   //touch animation effect
-                    //yield return new WaitForSeconds(0.25f);     //Wait for the animation to end
-                    //SceneManager.LoadScene("Menu");
-                    //StartCoroutine(activateTap());
-                    break;
-                case "Button-Retry":
-                    playSfx(tapSfx);                            //play touch sound
-                    canTap = false;                             //prevent double touch
-                    StartCoroutine(animateButton(objectHit));   //touch animation effect
-                    yield return new WaitForSeconds(0.25f);     //Wait for the animation to end
-                    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-                    StartCoroutine(activateTap());
-                    break;
-            }
-        }
-    }
+    //            case "Button-Play":
+    //                playSfx(tapSfx);                            //play touch sound
+    //                canTap = false;                             //prevent double touch
+    //                StartCoroutine(animateButton(objectHit));   //touch animation effect
+    //                yield return new WaitForSeconds(0.25f);     //Wait for the animation to end
+    //                SceneManager.LoadScene("Menu");
+    //                StartCoroutine(activateTap());
+    //                break;
+    //            case "Button-Menu":
+    //                //playSfx(tapSfx);                            //play touch sound
+    //                //canTap = false;                             //prevent double touch
+    //                //StartCoroutine(animateButton(objectHit));   //touch animation effect
+    //                //yield return new WaitForSeconds(0.25f);     //Wait for the animation to end
+    //                //SceneManager.LoadScene("Menu");
+    //                //StartCoroutine(activateTap());
+    //                break;
+    //            case "Button-Retry":
+    //                playSfx(tapSfx);                            //play touch sound
+    //                canTap = false;                             //prevent double touch
+    //                StartCoroutine(animateButton(objectHit));   //touch animation effect
+    //                yield return new WaitForSeconds(0.25f);     //Wait for the animation to end
+    //                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    //                StartCoroutine(activateTap());
+    //                break;
+    //        }
+    //    }
+    //}
 
 
     ///// <summary>
@@ -585,9 +615,9 @@ public class GameController : MonoBehaviour
         //    yield return 0;
         //}
 
-        //show an Interstitial Ad when the game is finished
-        if (AdManagerObject)
-            AdManagerObject.GetComponent<AdManager>().showInterstitial();
+        ////show an Interstitial Ad when the game is finished
+        //if (AdManagerObject)
+        //    AdManagerObject.GetComponent<AdManager>().showInterstitial();
     }
 
 
@@ -705,7 +735,17 @@ public class GameController : MonoBehaviour
             addedPlayerCoins += count;
             levelUI.performAddGoldAnim(count);
         }
+        else if (count < 0)
+        {
+            PlayerPrefs.SetInt("PlayerCoins", playerCoins);
+        }
         levelUI.goldNum.text = playerCoins.ToString();
+    }
+
+    public void AddGoldInstant(int count)
+    {
+        var i = PlayerPrefs.GetInt("PlayerCoins");
+        PlayerPrefs.SetInt("PlayerCoins", i + count);
     }
 
     public void KillEnemies(int count, int bounus)

@@ -25,6 +25,7 @@ public class CameraController : MonoBehaviour
     private GameObject player;
     private GameObject enemy;
 
+    AudioSource bgm;
 
     void Awake()
     {
@@ -44,6 +45,9 @@ public class CameraController : MonoBehaviour
 
         player = GameObject.FindGameObjectWithTag("Player");
         enemy = GameObject.FindGameObjectWithTag("enemy");
+
+        bgm = GetComponent<AudioSource>();
+        bgm.volume = 0;
     }
 
     public void SetCameraProjectionSize(float s)
@@ -62,64 +66,69 @@ public class CameraController : MonoBehaviour
     void Start()
     {
 
-        if (performStartMove)
-        {
-            //start the demo, by moving towards enemy's position and then back to player
-            StartCoroutine(runDemo());
-        }
-        else
-        {
-            //no need to perform the demo. ativate the game immediately.
-            startMoveIsDoneFlag = true;
-            GameController.gameIsStarted = true;
-        }
+        //if (performStartMove)
+        //{
+        //    //start the demo, by moving towards enemy's position and then back to player
+        //    StartCoroutine(runDemo());
+        //}
+        //else
+        //{
+        //    //no need to perform the demo. ativate the game immediately.
+        //    startMoveIsDoneFlag = true;
+        //    GameController.gameIsStarted = true;
+        //}
 
+        //no need to perform the demo. ativate the game immediately.
+        startMoveIsDoneFlag = true;
+        GameController.gameIsStarted = true;
+
+        StartCoroutine(fadeInBgm());
     }
 
 
-    /// <summary>
-    /// Move the camera to enemy location, wait a little and then back to player location.
-    /// </summary>
-    IEnumerator runDemo()
-    {
+    ///// <summary>
+    ///// Move the camera to enemy location, wait a little and then back to player location.
+    ///// </summary>
+    //IEnumerator runDemo()
+    //{
 
-        //wait a little
-        yield return new WaitForSeconds(0.5f);
+    //    //wait a little
+    //    yield return new WaitForSeconds(0.5f);
 
-        float cameraSpeed = 0.30f;
-        float t = 0;
-        while (t < 1)
-        {
-            t += Time.deltaTime * cameraSpeed;
-            transform.position = new Vector3(Mathf.SmoothStep(cameraStartingPos.x, enemy.transform.position.x, t),
-                                                transform.position.y,
-                                                transform.position.z);
-            yield return 0;
-        }
+    //    float cameraSpeed = 0.30f;
+    //    float t = 0;
+    //    while (t < 1)
+    //    {
+    //        t += Time.deltaTime * cameraSpeed;
+    //        transform.position = new Vector3(Mathf.SmoothStep(cameraStartingPos.x, enemy.transform.position.x, t),
+    //                                            transform.position.y,
+    //                                            transform.position.z);
+    //        yield return 0;
+    //    }
 
-        //wait a few while
-        if (t >= 1)
-            yield return new WaitForSeconds(1.0f);
+    //    //wait a few while
+    //    if (t >= 1)
+    //        yield return new WaitForSeconds(1.0f);
 
-        //back to player
-        t = 0;
-        while (t < 1)
-        {
-            t += Time.deltaTime * cameraSpeed;
-            transform.position = new Vector3(Mathf.SmoothStep(enemy.transform.position.x, player.transform.position.x, t),
-                                                transform.position.y,
-                                                transform.position.z);
-            yield return 0;
-        }
+    //    //back to player
+    //    t = 0;
+    //    while (t < 1)
+    //    {
+    //        t += Time.deltaTime * cameraSpeed;
+    //        transform.position = new Vector3(Mathf.SmoothStep(enemy.transform.position.x, player.transform.position.x, t),
+    //                                            transform.position.y,
+    //                                            transform.position.z);
+    //        yield return 0;
+    //    }
 
-        if (t >= 1)
-        {
-            //start the game
-            startMoveIsDoneFlag = true;
-            GameController.gameIsStarted = true;
-        }
+    //    if (t >= 1)
+    //    {
+    //        //start the game
+    //        startMoveIsDoneFlag = true;
+    //        GameController.gameIsStarted = true;
+    //    }
 
-    }
+    //}
 
 
     /// <summary>
@@ -143,22 +152,16 @@ public class CameraController : MonoBehaviour
 
     }
 
-
-    /// <summary>
-    /// set limiters
-    /// </summary>
-    void LateUpdate()
+    IEnumerator fadeInBgm()
     {
-        ////Limit camera's movement
-        //if (transform.position.y < 0)
-        //{
-        //    transform.position = new Vector3(transform.position.x, 0, transform.position.z);
-        //}
-
-        //if (transform.position.y > 25)
-        //{
-        //    transform.position = new Vector3(transform.position.x, 25, transform.position.z);
-        //}
+        var t = 0.0f;
+        while (t < 0.8)
+        {
+            t += Time.deltaTime;
+            bgm.volume = t;
+            yield return new WaitForSeconds(0.3f);
+        }
+        yield return new WaitForSeconds(0);
     }
 
 
