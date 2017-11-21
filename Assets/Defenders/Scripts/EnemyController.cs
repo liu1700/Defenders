@@ -145,8 +145,18 @@ public class EnemyController : MonoBehaviour
             print("Enemy is dead...");
             enemyCurrentHealth = 0;
             isEnemyDead = true;
-            gc.GetComponent<GameController>().AddGold(1);
-            gc.GetComponent<GameController>().KillEnemies(1);
+            var goldCount = 1;
+            if (enemySkill == enemySkillLevels.normal)
+            {
+                goldCount = 2;
+            }
+            else if (enemySkill == enemySkillLevels.hard || enemySkill == enemySkillLevels.Robinhood)
+            {
+                goldCount = 3;
+            }
+
+            gc.GetComponent<GameController>().AddGold(goldCount);
+            gc.GetComponent<GameController>().KillEnemies(1, goldCount);
             if (poolRef != null)
             {
                 poolRef.KillEnemy(enemyId);

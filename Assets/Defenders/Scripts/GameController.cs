@@ -65,7 +65,7 @@ public class GameController : MonoBehaviour
     public GameObject uiStatBestScore;
     public static int birdsHit;
     ///Game timer vars
-    public int availableTime = 60;                  //total gameplay time
+    public int availableTime = 30;                  //total gameplay time
     public static int bonusTime = 3;                        //additional time when we hit a bird
     public static float gameTimer;
     private string remainingTime;
@@ -80,7 +80,7 @@ public class GameController : MonoBehaviour
     // collision layer
     public static int enemyLayer;
     public static int environmentLayer;
-	public static int playerLayer;
+    public static int playerLayer;
 
     int maxKilled;
     /// <summary>
@@ -158,8 +158,8 @@ public class GameController : MonoBehaviour
         ctrl.SetcameraCurrentPos(new Vector3(3, 9, -10));
 
         enemyLayer = LayerMask.NameToLayer("enemy");
-		environmentLayer = LayerMask.NameToLayer("environment");
-		playerLayer = LayerMask.NameToLayer("player");
+        environmentLayer = LayerMask.NameToLayer("environment");
+        playerLayer = LayerMask.NameToLayer("player");
     }
 
 
@@ -187,9 +187,9 @@ public class GameController : MonoBehaviour
         ////manage enemy distance info on the UI
         //updateUiEnemyInfoPanel();
 
-        //Manage game timer only in birdhunt mode
-        if (gameMode == 2)
-            manageGameTimer();
+        ////Manage game timer only in birdhunt mode
+        //if (gameMode == 2)
+        manageGameTimer();
 
         //we no longer need to loop into gameController if the game is already finished.
         if (gameIsFinished)
@@ -659,23 +659,24 @@ public class GameController : MonoBehaviour
 
         if (seconds == 0 && minutes == 0)
         {
-            StartCoroutine(finishTheGame(2));
+            StartCoroutine(finishTheGame(0));
         }
 
         remainingTime = string.Format("{0:00} : {1:00}", minutes, seconds);
-        uiTimeText.GetComponent<TextMesh>().text = remainingTime.ToString();
-
-        //Also show hitted birds counter on UI
-        uiBirdsHitText.GetComponent<TextMesh>().text = birdsHit.ToString();
+        //uiTimeText.GetComponent<TextMesh>().text = remainingTime.ToString();
+        levelUI.levelNum.text = remainingTime;
+        ////Also show hitted birds counter on UI
+        //uiBirdsHitText.GetComponent<TextMesh>().text = birdsHit.ToString();
     }
 
 
     /// <summary>
     /// Adds the bonus time.
     /// </summary>
-    public static void addBonusTime()
+    public void addBonusTime(int bounus)
     {
-        gameTimer += bonusTime;
+        //gameTimer += bonusTime;
+        gameTimer += bounus;
     }
 
     public void AddGold(int count)
@@ -684,15 +685,16 @@ public class GameController : MonoBehaviour
         if (count > 0)
         {
             addedPlayerCoins += count;
-            levelUI.performAddGoldAnim();
+            levelUI.performAddGoldAnim(count);
         }
         levelUI.goldNum.text = playerCoins.ToString();
     }
 
-    public void KillEnemies(int count)
+    public void KillEnemies(int count, int bounus)
     {
         playerKilled += count;
-        levelUI.levelNum.text = playerKilled.ToString();
+        //levelUI.levelNum.text = playerKilled.ToString();
+        addBonusTime(bounus);
     }
 
 }

@@ -15,13 +15,14 @@ public class LevelUI : MonoBehaviour
         goldNum.text = "0";
     }
 
-    public void performAddGoldAnim()
+    public void performAddGoldAnim(int count)
     {
-        StartCoroutine(addGoldAnim());
+        StartCoroutine(addGoldAnim(count));
     }
 
-    IEnumerator addGoldAnim()
+    IEnumerator addGoldAnim(int count)
     {
+        addGoldText.text = "+" + count.ToString();
         addGoldText.CrossFadeAlpha(1f, .25f, false);
         yield return new WaitForSeconds(0.25f);
         addGoldText.CrossFadeAlpha(0f, .25f, false);

@@ -222,7 +222,7 @@ public class PlayerController : MonoBehaviour
             //Debug.Log(a.ToString());
             //calculate shoot power
             distanceFromFirstClick = inputDirection.magnitude / 4;
-            shootPower = Mathf.Clamp(distanceFromFirstClick, 0, 1) * 500;
+            shootPower = Mathf.Clamp(distanceFromFirstClick, 0, 1) * 1000;
             //print ("distanceFromFirstClick: " + distanceFromFirstClick);
             //print("shootPower: " + shootPower);
 
