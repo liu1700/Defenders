@@ -28,6 +28,8 @@ public class MenuController : MonoBehaviour
     public Text coinText;
     private GameObject cam;                         //main camera
 
+    public GameObject featurePanel;
+
     void Awake()
     {
 
@@ -42,6 +44,8 @@ public class MenuController : MonoBehaviour
         coinText.text = PlayerPrefs.GetInt("PlayerCoins", 0).ToString();
 
         cam = GameObject.FindGameObjectWithTag("MainCamera");
+
+        featurePanel.GetComponent<CanvasRenderer>().SetAlpha(0f);
     }
 
 
@@ -63,6 +67,27 @@ public class MenuController : MonoBehaviour
         var ctrl = cam.GetComponent<CameraController>();
         ctrl.SetCameraProjectionSize(6f);
         ctrl.SetcameraCurrentPos(new Vector3(0, 0, -10));
+    }
+
+    public void OnClickFeaturePanel()
+    {
+        if (featurePanel.activeInHierarchy)
+        {
+            featurePanel.GetComponent<Image>().CrossFadeAlpha(0, .25f, false);
+            StartCoroutine(fadePanel());
+        }
+        else
+        {
+            featurePanel.SetActive(true);
+            featurePanel.GetComponent<Image>().CrossFadeAlpha(1f, .25f, false);
+        }
+    }
+
+    IEnumerator fadePanel()
+    {
+        yield return new WaitForSeconds(.25f);      //Wait for the animation to end
+        featurePanel.SetActive(false);
+        featurePanel.GetComponent<CanvasRenderer>().SetAlpha(0f);
     }
 
 
