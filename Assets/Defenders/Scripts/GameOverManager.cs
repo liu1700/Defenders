@@ -40,6 +40,7 @@ public class GameOverManager : MonoBehaviour
         if (showAddMoreGold)
         {
             moreGold.SetActive(true);
+            revive.SetActive(false);
             showAddMoreGold = false;
         }
     }

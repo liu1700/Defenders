@@ -390,7 +390,7 @@ public class MainLauncherController : MonoBehaviour
             Destroy(blood, 1.5f);
 
             //manage victim's helath status
-            player.GetComponent<PlayerController>().playerCurrentHealth -= damage;
+            player.GetComponent<PlayerController>().AddHealth(-damage);
 
             //play hit sfx
             player.GetComponent<PlayerController>().playRandomHitSound();

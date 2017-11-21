@@ -220,7 +220,7 @@ public class GameController : MonoBehaviour
         //Fake damage to player
         if (Input.GetKeyUp(KeyCode.D))
         {
-            player.GetComponent<PlayerController>().playerCurrentHealth -= 10;
+            player.GetComponent<PlayerController>().AddHealth(-10);
         }
         //Fake damage to enemy
         if (Input.GetKeyUp(KeyCode.E))
@@ -675,7 +675,7 @@ public class GameController : MonoBehaviour
 
         remainingTime = string.Format("{0:00} : {1:00}", minutes, seconds);
         //uiTimeText.GetComponent<TextMesh>().text = remainingTime.ToString();
-        levelUI.levelNum.text = remainingTime;
+        levelUI.levelTime.text = remainingTime;
         ////Also show hitted birds counter on UI
         //uiBirdsHitText.GetComponent<TextMesh>().text = birdsHit.ToString();
     }
@@ -688,6 +688,13 @@ public class GameController : MonoBehaviour
     {
         //gameTimer += bonusTime;
         gameTimer += bounus;
+
+        var s = Mathf.CeilToInt(bounus) % 60;
+        var m = Mathf.CeilToInt(bounus) / 60;
+
+        var addTime = string.Format("{0:00} : {1:00}", m, s);
+        levelUI.performAddTimeAnim(addTime);
+
     }
 
     public void AddGold(int count)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Anima2D;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -56,6 +57,8 @@ public class PlayerController : MonoBehaviour
     private float helperShowTimer;
     private bool helperDelayIsDone;
 
+    public Text hpText;
+
 
     /// <summary>
     /// Init
@@ -66,6 +69,8 @@ public class PlayerController : MonoBehaviour
         //infoPanel.SetActive(false);
         shootDirectionVector = new Vector3(0, 0, 0);
         playerCurrentHealth = playerHealth;
+        UpdateHp(playerHealth);
+
         isPlayerDead = false;
 
         gc = GameObject.FindGameObjectWithTag("GameController");
@@ -156,9 +161,24 @@ public class PlayerController : MonoBehaviour
     public void RefillPlayerHealth()
     {
         playerCurrentHealth = playerHealth;
+        UpdateHp(playerCurrentHealth);
         isPlayerDead = false;
     }
 
+    void UpdateHp(int hp)
+    {
+        hpText.text = hp.ToString();
+    }
+
+    public void AddHealth(int hpVal)
+    {
+        playerCurrentHealth += hpVal;
+        if (playerCurrentHealth < 0)
+        {
+            playerCurrentHealth = 0;
+        }
+        UpdateHp(playerCurrentHealth);
+    }
 
     ///// <summary>
     ///// This function will be called when this object is hit by an arrow. It will check if this is still alive after the hit.

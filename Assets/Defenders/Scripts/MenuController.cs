@@ -90,7 +90,6 @@ public class MenuController : MonoBehaviour
         featurePanel.GetComponent<CanvasRenderer>().SetAlpha(0f);
     }
 
-
     //*****************************************************************************
     // This function monitors player touches on menu buttons.
     // detects both touch and clicks and can be used with editor, handheld device and 
