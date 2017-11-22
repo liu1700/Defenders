@@ -225,7 +225,7 @@ public class GameController : MonoBehaviour
         if (!canTap)
             return;
 
-        if (playerCoins < 10)
+        if (playerCoins < reviveUseGold)
         {
             return;
         }
@@ -291,7 +291,7 @@ public class GameController : MonoBehaviour
 
     public void OnBackToMain()
     {
-		AddGoldInstant(addedPlayerCoins);
+        AddGoldInstant(addedPlayerCoins);
         StartCoroutine(waitAnimation());
 
         //show an Interstitial Ad when the game is paused

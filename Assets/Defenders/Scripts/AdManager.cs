@@ -12,14 +12,9 @@ public class AdManager : MonoBehaviour
     /// And you can define new public functions here and call them later inside your game
     /// </summary>
 
-    //string admobBannerID = "ca-app-pub-5176895987178305/1396727482";
-    //string admobInterstitialID = "ca-app-pub-5176895987178305/1182062923";
-    //string admobVideoID = "ca-app-pub-5176895987178305/3975747223";
-
-    // test
-	string admobBannerID = "ca-app-pub-5176895987178305/1396727482";
-	string admobInterstitialID = "ca-app-pub-5176895987178305/1182062923";
-	string admobVideoID = "ca-app-pub-5176895987178305/3975747223";
+    string admobBannerID = "ca-app-pub-5176895987178305/1396727482";
+    string admobInterstitialID = "ca-app-pub-5176895987178305/1182062923";
+    string admobVideoID = "ca-app-pub-5176895987178305/3975747223";
 
     public delegate void CompleteEvent();
 
@@ -40,7 +35,6 @@ public class AdManager : MonoBehaviour
 
     void initAdmob()
     {
-
         //  isAdmobInited = true;
         ad = Admob.Instance();
         ad.bannerEventHandler += onBannerEvent;
@@ -77,8 +71,16 @@ public class AdManager : MonoBehaviour
         {
             ad.showRewardedVideo();
         }
-//        rewardCB();
+        else
+        {
+            SceneManager.LoadScene("Menu");
+        }
         ad.loadRewardedVideo(admobVideoID);
+    }
+
+    public bool isShowRewardVideoReady()
+    {
+        return ad.isRewardedVideoReady();
     }
 
 
@@ -100,10 +102,6 @@ public class AdManager : MonoBehaviour
         if (eventName == AdmobEvent.onRewarded)
         {
             rewardCB();
-        }
-        else
-        {
-            SceneManager.LoadScene("Menu");
         }
     }
     void onNativeBannerEvent(string eventName, string msg)
