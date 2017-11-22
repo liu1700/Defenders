@@ -126,7 +126,7 @@ public class GameController : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         enemy = GameObject.FindGameObjectWithTag("enemy");
         cam = GameObject.FindGameObjectWithTag("MainCamera");
-        uiCam = GameObject.FindGameObjectWithTag("uiCamera");
+        //uiCam = GameObject.FindGameObjectWithTag("uiCamera");
 
         playerController = player.GetComponent<PlayerController>();
         //gameoverManager.SetActive(false);
@@ -507,7 +507,7 @@ public class GameController : MonoBehaviour
     {
         gameIsFinished = false;
         gameTimer = reviveTime + Time.timeSinceLevelLoad;
-        uiCam.SetActive(true);
+        //uiCam.SetActive(true);
         gameOverManager.gameObject.SetActive(false);
     }
 
@@ -528,7 +528,7 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(1.0f);
 
         //disable ui camera
-        uiCam.SetActive(false);
+        //uiCam.SetActive(false);
 
         //activate game finish plane
         //gameoverManager.SetActive(true);
