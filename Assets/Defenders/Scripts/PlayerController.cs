@@ -30,8 +30,8 @@ public class PlayerController : MonoBehaviour
     //public GameObject UiDynamicPower;
     //public GameObject UiDynamicDegree;
     //Hidden gameobjects
-    private GameObject gc;  //game controller object
-    private GameObject cam; //main camera
+    //private GameObject gc;  //game controller object
+    //private GameObject cam; //main camera
 
     [Header("Audio Clips")]
     public AudioClip[] shootSfx;
@@ -73,8 +73,8 @@ public class PlayerController : MonoBehaviour
 
         isPlayerDead = false;
 
-        gc = GameObject.FindGameObjectWithTag("GameController");
-        cam = GameObject.FindGameObjectWithTag("MainCamera");
+        //gc = GameObject.FindGameObjectWithTag("GameController");
+        //cam = GameObject.FindGameObjectWithTag("MainCamera");
 
         //canCreateHelper = true;
         helperShowTimer = 0;

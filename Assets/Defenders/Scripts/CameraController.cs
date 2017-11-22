@@ -15,15 +15,15 @@ public class CameraController : MonoBehaviour
     public bool performStartMove = true;    //should camera moves towards enemy and back to player, when we just start the game?1
     internal bool startMoveIsDoneFlag;      //flag to set when the starting animation has been performed
 
-    internal Vector3 cameraStartingPos;
+    //internal Vector3 cameraStartingPos;
     internal Vector3 cameraCurrentPos;
 
-    internal GameObject targetToLock;       //the target object we need to have a static view on
-    internal GameObject targetToFollow;     //the target we need to follow as it moves
+    //internal GameObject targetToLock;       //the target object we need to have a static view on
+    //internal GameObject targetToFollow;     //the target we need to follow as it moves
 
-    //reference to game objects
-    private GameObject player;
-    private GameObject enemy;
+    ////reference to game objects
+    //private GameObject player;
+    //private GameObject enemy;
 
     AudioSource bgm;
 
@@ -39,12 +39,12 @@ public class CameraController : MonoBehaviour
         //cameraStartingPos = new Vector3(3, 9, -10);
         //cameraCurrentPos = cameraStartingPos;
         //transform.position = cameraStartingPos;
-        targetToLock = null;
-        targetToFollow = null;
+        //targetToLock = null;
+        //targetToFollow = null;
         startMoveIsDoneFlag = false;
 
-        player = GameObject.FindGameObjectWithTag("Player");
-        enemy = GameObject.FindGameObjectWithTag("enemy");
+        //player = GameObject.FindGameObjectWithTag("Player");
+        //enemy = GameObject.FindGameObjectWithTag("enemy");
 
         bgm = GetComponent<AudioSource>();
         bgm.volume = 0;

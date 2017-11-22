@@ -21,6 +21,7 @@ public class GameController : MonoBehaviour
     public EnemyPool enemies;
     public LevelUI levelUI;
     public GameOverManager gameOverManager;
+    public PauseManager pauseManager;
 
     // Static variables //
     public static int gameMode;                     //current game mode
@@ -750,6 +751,22 @@ public class GameController : MonoBehaviour
         playerKilled += count;
         //levelUI.levelNum.text = playerKilled.ToString();
         addBonusTime(bounus);
+    }
+
+    public void OnClickPause()
+    {
+        pauseManager.PauseGame();
+    }
+
+    public void OnClickUnPause()
+    {
+        pauseManager.UnPauseGame();
+    }
+
+    public void OnClickBackToMenu()
+    {
+        pauseManager.UnPauseGame();
+        SceneManager.LoadScene("Menu");
     }
 
 }
