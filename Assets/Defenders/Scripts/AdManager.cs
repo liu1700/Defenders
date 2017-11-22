@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using admob;
 using UnityEngine.SceneManagement;
 
@@ -12,9 +11,16 @@ public class AdManager : MonoBehaviour
     /// And you can define new public functions here and call them later inside your game
     /// </summary>
 
-    string admobBannerID = "ca-app-pub-5176895987178305/1396727482";
-    string admobInterstitialID = "ca-app-pub-5176895987178305/1182062923";
-    string admobVideoID = "ca-app-pub-5176895987178305/3975747223";
+    //// real
+    //string admobBannerID = "ca-app-pub-5176895987178305/1396727482";
+    //string admobInterstitialID = "ca-app-pub-5176895987178305/1182062923";
+    //string admobVideoID = "ca-app-pub-5176895987178305/3975747223";
+
+    // test
+    string admobId = "ca-app-pub-3940256099942544~3347511713";
+    string admobBannerID = "ca-app-pub-3940256099942544/6300978111";
+    string admobInterstitialID = "ca-app-pub-3940256099942544/1033173712";
+    string admobVideoID = "ca-app-pub-3940256099942544/5224354917";
 
     public delegate void CompleteEvent();
 
@@ -42,7 +48,7 @@ public class AdManager : MonoBehaviour
         ad.rewardedVideoEventHandler += onRewardedVideoEvent;
         ad.nativeBannerEventHandler += onNativeBannerEvent;
         ad.initAdmob(admobBannerID, admobInterstitialID);
-        //ad.setTesting(true);
+        ad.setTesting(true);
         Debug.Log("Admob Inited.");
 
         ////showBannerAd (always)

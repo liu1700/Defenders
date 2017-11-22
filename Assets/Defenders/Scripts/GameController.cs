@@ -80,6 +80,7 @@ public class GameController : MonoBehaviour
     public static int playerLayer;
 
     int maxKilled;
+    PlayerController playerController;
     /// <summary>
     /// INIT
     /// </summary>
@@ -125,6 +126,7 @@ public class GameController : MonoBehaviour
         cam = GameObject.FindGameObjectWithTag("MainCamera");
         uiCam = GameObject.FindGameObjectWithTag("uiCamera");
 
+        playerController = player.GetComponent<PlayerController>();
         //gameoverManager.SetActive(false);
 
         isArrowInScene = false;
@@ -211,7 +213,7 @@ public class GameController : MonoBehaviour
         //Fake damage to player
         if (Input.GetKeyUp(KeyCode.D))
         {
-            player.GetComponent<PlayerController>().AddHealth(-10);
+            playerController.AddHealth(-10);
         }
         //Fake damage to enemy
         if (Input.GetKeyUp(KeyCode.E))
@@ -240,12 +242,6 @@ public class GameController : MonoBehaviour
 
     public void OnInterstitialShow()
     {
-        StartCoroutine(WaitInterstitialShow());
-    }
-
-    IEnumerator WaitInterstitialShow()
-    {
-        yield return new WaitForSeconds(1f);
         SceneManager.LoadScene("Menu");
     }
 
@@ -286,6 +282,11 @@ public class GameController : MonoBehaviour
             {
                 adMgr.rewardCB = OnBackToMain;
                 adMgr.showRewardVideo();
+
+                if (addedPlayerCoins > 0 && playerCoins > 0)
+                {
+                    AddGoldInstant(addedPlayerCoins + playerCoins);
+                }
             }
         }
 
@@ -294,20 +295,20 @@ public class GameController : MonoBehaviour
 
     public void OnPlayerReviveOver()
     {
-        player.GetComponent<PlayerController>().RefillPlayerHealth();
+        playerController.RefillPlayerHealth();
         reviveFinished();
     }
 
     public void OnBackToMain()
     {
-        AddGoldInstant(addedPlayerCoins);
-        StartCoroutine(waitAnimation());
-
-        //show an Interstitial Ad when the game is paused
         if (AdManagerObject)
+        {
             AdManagerObject.GetComponent<AdManager>().showInterstitial(OnInterstitialShow);
-
-        //SceneManager.LoadScene("Menu");
+        }
+        else
+        {
+            SceneManager.LoadScene("Menu");
+        }
     }
 
     IEnumerator waitAnimation()
@@ -742,8 +743,8 @@ public class GameController : MonoBehaviour
 
     public void AddGoldInstant(int count)
     {
-        var i = PlayerPrefs.GetInt("PlayerCoins");
-        PlayerPrefs.SetInt("PlayerCoins", i + count);
+        PlayerPrefs.SetInt("PlayerCoins", count);
+        PlayerPrefs.Save();
     }
 
     public void KillEnemies(int count, int bounus)
