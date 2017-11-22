@@ -242,7 +242,7 @@ public class PlayerController : MonoBehaviour
             //Debug.Log(a.ToString());
             //calculate shoot power
             distanceFromFirstClick = inputDirection.magnitude / 4;
-            shootPower = Mathf.Clamp(distanceFromFirstClick, 0, 1) * 1500;
+            shootPower = Mathf.Clamp(distanceFromFirstClick, 0, 1) * 1200;
             //print ("distanceFromFirstClick: " + distanceFromFirstClick);
             //print("shootPower: " + shootPower);
 
@@ -282,16 +282,17 @@ public class PlayerController : MonoBehaviour
 
         GameObject arr = Instantiate(arrow, playerShootPosition.transform.position, Quaternion.Euler(0, 180, shootDirection * -1)) as GameObject;
         arr.name = "PlayerProjectile";
-        arr.GetComponent<MainLauncherController>().ownerID = 0;
+        var launcherCtrl = arr.GetComponent<MainLauncherController>();
+        launcherCtrl.ownerID = 0;
 
         shootDirectionVector = Vector3.Normalize(inputDirection);
         //shootDirectionVector = new Vector3(Mathf.Clamp(shootDirectionVector.x, 0, 1), Mathf.Clamp(shootDirectionVector.y, 0, 1), shootDirectionVector.z);
 
-        arr.GetComponent<MainLauncherController>().playerShootVector = shootDirectionVector * ((shootPower + baseShootPower) / 50);
+        launcherCtrl.playerShootVector = shootDirectionVector * ((shootPower + baseShootPower) / 50);
 
         print("shootPower: " + shootPower + " --- " + "shootDirectionVector: " + shootDirectionVector);
 
-        cam.GetComponent<CameraController>().targetToFollow = arr;
+        //cam.GetComponent<CameraController>().targetToFollow = arr;
 
         //reset body rotation
         StartCoroutine(resetBodyRotation());

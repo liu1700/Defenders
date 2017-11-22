@@ -263,7 +263,7 @@ public class EnemyController : MonoBehaviour
         ea.GetComponent<MainLauncherController>().enemyShootAngle = finalShootAngle;
         print("Final enemy shoot angle: " + finalShootAngle);
 
-        cam.GetComponent<CameraController>().targetToFollow = ea;
+        //cam.GetComponent<CameraController>().targetToFollow = ea;
 
         //at the end
         StartCoroutine(reactiveEnemyShoot());

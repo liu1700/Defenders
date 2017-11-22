@@ -111,7 +111,10 @@ public class AdManager : MonoBehaviour
         Debug.Log("handler onRewardedVideoEvent---" + eventName + "   " + msg);
         if (eventName == AdmobEvent.onRewarded)
         {
-            rewardCB();
+            if (rewardCB != null)
+            {
+                rewardCB();
+            }
         }
     }
     void onNativeBannerEvent(string eventName, string msg)

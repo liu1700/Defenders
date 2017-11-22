@@ -83,6 +83,11 @@ public class MenuController : MonoBehaviour
         }
     }
 
+    public void ClickExit()
+    {
+        Application.Quit();
+    }
+
     IEnumerator fadePanel()
     {
         yield return new WaitForSeconds(.25f);      //Wait for the animation to end
@@ -105,7 +110,7 @@ public class MenuController : MonoBehaviour
 
     IEnumerator pressStart()
     {
-        yield return new WaitForSeconds(1.5f);      //Wait for the animation to end
+        yield return new WaitForSeconds(.5f);      //Wait for the animation to end
         SceneManager.LoadScene("Game");             //Load the next scene
     }
 

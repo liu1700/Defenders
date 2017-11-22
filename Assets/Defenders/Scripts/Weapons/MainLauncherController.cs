@@ -46,7 +46,7 @@ public class MainLauncherController : MonoBehaviour
 
     public static int damage;       //damage this weapon deals to target
     private bool stopUpdate;        //we need to stop this weapon after collision
-    private bool bypassCode;        //we use this for the segments of our class that requires an enemy, but the current gameMode does not need an enemy
+    //private bool bypassCode;        //we use this for the segments of our class that requires an enemy, but the current gameMode does not need an enemy
 
     //special weapon-specific flags
     //private bool bombExplosionByPlayer;		//flag to set if explosion has been done by player input
@@ -61,11 +61,11 @@ public class MainLauncherController : MonoBehaviour
     void Awake()
     {
 
-        //First of all, check if there is an enemy in this game mode.
-        if (!GameModeController.isEnemyRequired())
-        {
-            bypassCode = true;
-        }
+        ////First of all, check if there is an enemy in this game mode.
+        //if (!GameModeController.isEnemyRequired())
+        //{
+        //    bypassCode = true;
+        //}
 
         //init flags
         //bombExplosionByPlayer = false;

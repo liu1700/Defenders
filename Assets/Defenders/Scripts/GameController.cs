@@ -43,6 +43,7 @@ public class GameController : MonoBehaviour
     // Private vars //
     private bool canTap;
     private GameObject AdManagerObject;
+    AdManager admgr;
 
     [Header("AudioClips")]
     public AudioClip tapSfx;
@@ -147,6 +148,10 @@ public class GameController : MonoBehaviour
         minutes = 0;
 
         AdManagerObject = GameObject.FindGameObjectWithTag("AdManager");
+        if (AdManagerObject != null)
+        {
+            admgr = AdManagerObject.GetComponent<AdManager>();
+        }
 
         var ctrl = cam.GetComponent<CameraController>();
         ctrl.SetCameraProjectionSize(15f);
@@ -240,11 +245,6 @@ public class GameController : MonoBehaviour
         StartCoroutine(activateTap());
     }
 
-    public void OnInterstitialShow()
-    {
-        SceneManager.LoadScene("Menu");
-    }
-
     public void TapToMenu()
     {
         if (!canTap)
@@ -255,8 +255,9 @@ public class GameController : MonoBehaviour
         StartCoroutine(waitAnimation());
 
         //show an Interstitial Ad when the game is paused
-        if (AdManagerObject)
-            AdManagerObject.GetComponent<AdManager>().showInterstitial(OnInterstitialShow);
+        if (admgr)
+            admgr.showInterstitial();
+        SceneManager.LoadScene("Menu");
 
         //StartCoroutine(activateTap());
     }
@@ -270,23 +271,24 @@ public class GameController : MonoBehaviour
         canTap = false;                             //prevent double touch
         StartCoroutine(waitAnimation());
 
-        if (AdManagerObject)
+        if (admgr)
         {
-            var adMgr = AdManagerObject.GetComponent<AdManager>();
             if (typ == 1)
             {
-                adMgr.rewardCB = OnPlayerReviveOver;
-                adMgr.showRewardVideo();
+                admgr.rewardCB = OnPlayerReviveOver;
+                admgr.showRewardVideo();
             }
             else if (typ == 2)
             {
-                adMgr.rewardCB = OnBackToMain;
-                adMgr.showRewardVideo();
+                //admgr.rewardCB = OnBackToMain;
+                admgr.showRewardVideo();
 
                 if (addedPlayerCoins > 0 && playerCoins > 0)
                 {
                     AddGoldInstant(addedPlayerCoins + playerCoins);
                 }
+
+                SceneManager.LoadScene("Menu");
             }
         }
 
@@ -301,13 +303,9 @@ public class GameController : MonoBehaviour
 
     public void OnBackToMain()
     {
-        if (AdManagerObject)
+        if (admgr)
         {
-            AdManagerObject.GetComponent<AdManager>().showInterstitial(OnInterstitialShow);
-        }
-        else
-        {
-            SceneManager.LoadScene("Menu");
+            admgr.showInterstitial();
         }
     }
 
