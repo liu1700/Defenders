@@ -238,6 +238,17 @@ public class GameController : MonoBehaviour
         StartCoroutine(activateTap());
     }
 
+    public void OnInterstitialShow()
+    {
+        StartCoroutine(WaitInterstitialShow());
+    }
+
+    IEnumerator WaitInterstitialShow()
+    {
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene("Menu");
+    }
+
     public void TapToMenu()
     {
         if (!canTap)
@@ -249,11 +260,9 @@ public class GameController : MonoBehaviour
 
         //show an Interstitial Ad when the game is paused
         if (AdManagerObject)
-            AdManagerObject.GetComponent<AdManager>().showInterstitial();
+            AdManagerObject.GetComponent<AdManager>().showInterstitial(OnInterstitialShow);
 
-
-        SceneManager.LoadScene("Menu");
-        StartCoroutine(activateTap());
+        //StartCoroutine(activateTap());
     }
 
     public void TapViewVideo(int typ)
@@ -296,9 +305,9 @@ public class GameController : MonoBehaviour
 
         //show an Interstitial Ad when the game is paused
         if (AdManagerObject)
-            AdManagerObject.GetComponent<AdManager>().showInterstitial();
+            AdManagerObject.GetComponent<AdManager>().showInterstitial(OnInterstitialShow);
 
-        SceneManager.LoadScene("Menu");
+        //SceneManager.LoadScene("Menu");
     }
 
     IEnumerator waitAnimation()

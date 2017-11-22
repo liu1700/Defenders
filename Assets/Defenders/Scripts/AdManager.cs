@@ -54,12 +54,16 @@ public class AdManager : MonoBehaviour
     }
 
     //gets called from other classes inside the game
-    public void showInterstitial()
+    public void showInterstitial(CompleteEvent cb = null)
     {
         print("Request for Full AD.");
         if (ad.isInterstitialReady())
         {
             ad.showInterstitial();
+        }
+        if (cb != null)
+        {
+            cb();
         }
         ad.loadInterstitial();
     }
@@ -87,10 +91,10 @@ public class AdManager : MonoBehaviour
     void onInterstitialEvent(string eventName, string msg)
     {
         Debug.Log("handler onAdmobEvent---" + eventName + "   " + msg);
-        if (eventName == AdmobEvent.onAdLoaded)
-        {
-            Admob.Instance().showInterstitial();
-        }
+        //if (eventName == AdmobEvent.onAdLoaded)
+        //{
+        //    Admob.Instance().showInterstitial();
+        //}
     }
     void onBannerEvent(string eventName, string msg)
     {
