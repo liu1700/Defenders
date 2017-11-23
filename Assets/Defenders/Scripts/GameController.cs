@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -157,24 +158,18 @@ public class GameController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //we no longer need to loop into gameController if the game is already finished.
+        if (gameIsFinished)
+            return;
+
+        manageGameTimer();
+
         if (rewardOk)
         {
             gameTimer = reviveTime + Time.timeSinceLevelLoad;
             gameOverManager.gameObject.SetActive(false);
             rewardOk = false;
         }
-    }
-
-    /// <summary>
-    /// FSM
-    /// </summary>
-    void Update()
-    {
-        manageGameTimer();
-
-        //we no longer need to loop into gameController if the game is already finished.
-        if (gameIsFinished)
-            return;
 
         //fast game finish checking...
         if (enemies.AllEnemiesDead())
@@ -187,7 +182,6 @@ public class GameController : MonoBehaviour
             //we have lost
             StartCoroutine(finishTheGame(0));
         }
-
 
         // DEBUG COMMANDS //
         //Force restart
@@ -401,7 +395,6 @@ public class GameController : MonoBehaviour
     /// </summary>
     void manageGameTimer()
     {
-
         if (gameIsFinished)
             return;
 
@@ -465,6 +458,10 @@ public class GameController : MonoBehaviour
 
     public void OnClickPause()
     {
+        if (PauseManager.isGamePaused)
+        {
+            return;
+        }
         pauseManager.PauseGame();
     }
 

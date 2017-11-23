@@ -60,16 +60,12 @@ public class AdManager : MonoBehaviour
     }
 
     //gets called from other classes inside the game
-    public void showInterstitial(CompleteEvent cb = null)
+    public void showInterstitial()
     {
         print("Request for Full AD.");
         if (ad.isInterstitialReady())
         {
             ad.showInterstitial();
-        }
-        if (cb != null)
-        {
-            cb();
         }
         ad.loadInterstitial();
     }

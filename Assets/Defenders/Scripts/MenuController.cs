@@ -31,9 +31,6 @@ public class MenuController : MonoBehaviour
     void Awake()
     {
 
-        Time.timeScale = 1.0f;
-        Time.fixedDeltaTime = 0.002f;
-
         cam = GameObject.FindGameObjectWithTag("MainCamera");
 
         featurePanel.GetComponent<CanvasRenderer>().SetAlpha(0f);

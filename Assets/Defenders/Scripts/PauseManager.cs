@@ -30,9 +30,6 @@ public class PauseManager : MonoBehaviour
         isGamePaused = false;
         enableInput = true;
 
-        Time.timeScale = 1.0f;
-        Time.fixedDeltaTime = 0.002f;
-
         if (pausePlane)
             pausePlane.SetActive(false);
 
