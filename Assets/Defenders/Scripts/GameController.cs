@@ -39,7 +39,6 @@ public class GameController : MonoBehaviour
 
     // Private vars //
     private bool canTap;
-    private GameObject AdManagerObject;
     AdManager admgr;
 
     [Header("AudioClips")]
@@ -133,7 +132,7 @@ public class GameController : MonoBehaviour
         seconds = 0;
         minutes = 0;
 
-        AdManagerObject = GameObject.FindGameObjectWithTag("AdManager");
+        var AdManagerObject = GameObject.FindGameObjectWithTag("AdManager");
         if (AdManagerObject != null)
         {
             admgr = AdManagerObject.GetComponent<AdManager>();
@@ -204,7 +203,7 @@ public class GameController : MonoBehaviour
         if (!canTap)
             return;
 
-        if (playerCoins < reviveUseGold)
+        if (!AddGold(-reviveUseGold))
         {
             return;
         }
@@ -212,7 +211,6 @@ public class GameController : MonoBehaviour
         playSfx(tapSfx);                            //play touch sound
         canTap = false;                             //prevent double touch
         StartCoroutine(waitAnimation());
-        AddGold(-reviveUseGold);
         OnPlayerReviveOver();
         StartCoroutine(activateTap());
     }
@@ -422,24 +420,26 @@ public class GameController : MonoBehaviour
         var s = Mathf.CeilToInt(bounus) % 60;
         var m = Mathf.CeilToInt(bounus) / 60;
 
-        var addTime = string.Format("{0:00} : {1:00}", m, s);
+        var addTime = string.Format("+{0:00} : {1:00}", m, s);
         levelUI.performAddTimeAnim(addTime);
-
     }
 
-    public void AddGold(int count)
+    public bool AddGold(int count)
     {
+        if (playerCoins + count < 0)
+        {
+            return false;
+        }
+
         playerCoins += count;
         if (count > 0)
         {
             addedPlayerCoins += count;
-            levelUI.performAddGoldAnim(count);
         }
-        else if (count < 0)
-        {
-            PlayerPrefs.SetInt("PlayerCoins", playerCoins);
-        }
+        levelUI.performAddGoldAnim(count);
         levelUI.goldNum.text = playerCoins.ToString();
+
+        return true;
     }
 
     public void AddGoldInstant(int count)
@@ -451,7 +451,8 @@ public class GameController : MonoBehaviour
     public void KillEnemies(int count, int bounus)
     {
         playerKilled += count;
-        addBonusTime(bounus);
+        addBonusTime(bounus - 2);
+        AddGold(bounus);
     }
 
     public void OnClickPause()
@@ -467,6 +468,15 @@ public class GameController : MonoBehaviour
     public void OnClickBackToMenu()
     {
         pauseManager.UnPauseGame();
+
+        if (playerCoins < 0)
+        {
+            playerCoins = 0;
+        }
+
+        PlayerPrefs.SetInt("PlayerCoins", playerCoins);
+        PlayerPrefs.Save();
+
         SceneManager.LoadScene("Menu");
     }
 }

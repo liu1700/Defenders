@@ -19,7 +19,12 @@ public class LevelUI : MonoBehaviour
 
     public void performAddGoldAnim(int count)
     {
-        StartCoroutine(addGoldAnim(addGoldText, count.ToString(), .6f));
+        var countStr = count.ToString();
+        if (count > 0)
+        {
+            countStr = "+" + countStr;
+        }
+        StartCoroutine(addGoldAnim(addGoldText, countStr, .6f));
     }
 
     public void performAddTimeAnim(string t)
@@ -29,7 +34,7 @@ public class LevelUI : MonoBehaviour
 
     IEnumerator addGoldAnim(Text addTxt, string content, float dur)
     {
-        addTxt.text = "+" + content;
+        addTxt.text = content;
         addTxt.CrossFadeAlpha(1f, dur, false);
         yield return new WaitForSeconds(dur);
         addTxt.CrossFadeAlpha(0f, dur, false);

@@ -31,15 +31,8 @@ public class MenuController : MonoBehaviour
     void Awake()
     {
 
-        //debug
-        //PlayerPrefs.DeleteAll();
-
         Time.timeScale = 1.0f;
         Time.fixedDeltaTime = 0.002f;
-
-        //show avilable player coins in menu scene
-        //coinLabel.GetComponent<TextMesh>().text = PlayerPrefs.GetInt("PlayerCoins", 0).ToString();
-        coinText.text = PlayerPrefs.GetInt("PlayerCoins", 0).ToString();
 
         cam = GameObject.FindGameObjectWithTag("MainCamera");
 
@@ -51,6 +44,17 @@ public class MenuController : MonoBehaviour
         var ctrl = cam.GetComponent<CameraController>();
         ctrl.SetCameraProjectionSize(6f);
         ctrl.SetcameraCurrentPos(new Vector3(0, 0, -10));
+
+        //show avilable player coins in menu scene
+        // 如果coin為0則默認給100
+        var coin = PlayerPrefs.GetInt("PlayerCoins", 0);
+        if (coin <= 0)
+        {
+            coin = 100;
+            PlayerPrefs.SetInt("PlayerCoins", coin);
+            PlayerPrefs.Save();
+        }
+        coinText.text = coin.ToString();
     }
 
     public void OnClickFeaturePanel()

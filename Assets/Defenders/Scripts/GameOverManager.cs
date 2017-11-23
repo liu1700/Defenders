@@ -15,7 +15,7 @@ public class GameOverManager : MonoBehaviour
 
     bool showRevive, showAddMoreGold;
 
-    private GameObject AdManagerObject;
+    private AdManager admgr;
     private GameObject viewVideoRevive;
     private GameObject viewVideoAddMoreGold;
 
@@ -29,7 +29,11 @@ public class GameOverManager : MonoBehaviour
         showRevive = true;
         showAddMoreGold = false;
 
-        AdManagerObject = GameObject.FindGameObjectWithTag("AdManager");
+        var AdManagerObject = GameObject.FindGameObjectWithTag("AdManager");
+        if (AdManagerObject != null)
+        {
+            admgr = AdManagerObject.GetComponent<AdManager>();
+        }
     }
 
     private void Start()
@@ -49,7 +53,7 @@ public class GameOverManager : MonoBehaviour
                 useGoldObj.gameObject.GetComponent<Image>().raycastTarget = false;
             }
 
-            if (AdManagerObject && AdManagerObject.GetComponent<AdManager>().isShowRewardVideoReady())
+            if (admgr && admgr.isShowRewardVideoReady())
             {
                 viewVideoRevive.SetActive(true);
             }
@@ -68,7 +72,7 @@ public class GameOverManager : MonoBehaviour
             revive.SetActive(false);
             showAddMoreGold = false;
 
-            if (AdManagerObject && AdManagerObject.GetComponent<AdManager>().isShowRewardVideoReady())
+            if (admgr && admgr.isShowRewardVideoReady())
             {
                 viewVideoAddMoreGold.SetActive(true);
             }

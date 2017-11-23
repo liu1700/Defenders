@@ -44,12 +44,9 @@ public class PlayerController : MonoBehaviour
     private float shootDirection;
     private Vector3 shootDirectionVector;
 
-    //helper trajectory variables
-    private float helperShowDelay = 0.2f;
-    private float helperShowTimer;
-
     public Text hpText;
 
+    GameController gc;
 
     /// <summary>
     /// Init
@@ -64,8 +61,8 @@ public class PlayerController : MonoBehaviour
 
         isPlayerDead = false;
 
-        //canCreateHelper = true;
-        helperShowTimer = 0;
+        var g = GameObject.FindGameObjectWithTag("GameController");
+        gc = g.GetComponent<GameController>();
     }
 
 
@@ -110,7 +107,7 @@ public class PlayerController : MonoBehaviour
         {
 
             //only shoot if there is enough power applied to the shoot
-            if (shootPower >= minShootPower)
+            if (shootPower >= minShootPower && gc.AddGold(-1))
             {
                 shootArrow();
             }
@@ -122,7 +119,6 @@ public class PlayerController : MonoBehaviour
 
             //reset variables
             icp = new Vector2(0, 0);
-            helperShowTimer = 0;
         }
     }
 
@@ -191,7 +187,6 @@ public class PlayerController : MonoBehaviour
             shootPower = Mathf.Clamp(distanceFromFirstClick, 0, 1) * 1200;
         }
     }
-
 
     /// <summary>
     /// Shoot sequence.

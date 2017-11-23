@@ -406,7 +406,7 @@ public class MainLauncherController : MonoBehaviour
             Destroy(collision.gameObject, .1f);
 
             var gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
-            gc.AddGold(5);
+            gc.AddGold(8);
             gc.addBonusTime(5);
         }
         else if (collisionLayerMask == GameController.environmentLayer)
