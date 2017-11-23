@@ -116,7 +116,5 @@ public class EnemyPool : MonoBehaviour
             ctrl.InitEnemy(i, skillLevel, gameObjectMap[skillLevel]);
             list.Add(ctrl);
         }
-
-        Debug.Log(turn);
     }
 }

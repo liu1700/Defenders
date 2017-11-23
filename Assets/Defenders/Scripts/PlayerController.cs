@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour
     public Text hpText;
 
     GameController gc;
+    bool needUpdateHealth;
 
     /// <summary>
     /// Init
@@ -57,14 +58,20 @@ public class PlayerController : MonoBehaviour
         //infoPanel.SetActive(false);
         shootDirectionVector = new Vector3(0, 0, 0);
         playerCurrentHealth = playerHealth;
-        UpdateHp(playerHealth);
-
+        needUpdateHealth = true;
         isPlayerDead = false;
 
         var g = GameObject.FindGameObjectWithTag("GameController");
         gc = g.GetComponent<GameController>();
     }
 
+    private void FixedUpdate()
+    {
+        if (needUpdateHealth)
+        {
+            UpdateHp();
+        }
+    }
 
     /// <summary>
     /// FSM
@@ -125,13 +132,14 @@ public class PlayerController : MonoBehaviour
     public void RefillPlayerHealth()
     {
         playerCurrentHealth = playerHealth;
-        UpdateHp(playerCurrentHealth);
         isPlayerDead = false;
+        needUpdateHealth = true;
     }
 
-    void UpdateHp(int hp)
+    public void UpdateHp()
     {
-        hpText.text = hp.ToString();
+        hpText.text = playerCurrentHealth.ToString();
+        needUpdateHealth = false;
     }
 
     public void AddHealth(int hpVal)
@@ -141,7 +149,7 @@ public class PlayerController : MonoBehaviour
         {
             playerCurrentHealth = 0;
         }
-        UpdateHp(playerCurrentHealth);
+        needUpdateHealth = true;
     }
 
     /// <summary>
@@ -184,7 +192,7 @@ public class PlayerController : MonoBehaviour
 
             //calculate shoot power
             distanceFromFirstClick = inputDirection.magnitude / 4;
-            shootPower = Mathf.Clamp(distanceFromFirstClick, 0, 1) * 1200;
+            shootPower = Mathf.Clamp(distanceFromFirstClick, 0, 1) * 900;
         }
     }
 

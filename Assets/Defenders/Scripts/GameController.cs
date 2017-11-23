@@ -73,6 +73,8 @@ public class GameController : MonoBehaviour
 
     int maxKilled;
     PlayerController playerController;
+
+    bool rewardOk;
     /// <summary>
     /// INIT
     /// </summary>
@@ -147,14 +149,21 @@ public class GameController : MonoBehaviour
         playerLayer = LayerMask.NameToLayer("player");
     }
 
-
-
     void Start()
     {
         StartCoroutine(activateTap());
         levelUI.goldNum.text = playerCoins.ToString();
     }
 
+    private void FixedUpdate()
+    {
+        if (rewardOk)
+        {
+            gameTimer = reviveTime + Time.timeSinceLevelLoad;
+            gameOverManager.gameObject.SetActive(false);
+            rewardOk = false;
+        }
+    }
 
     /// <summary>
     /// FSM
@@ -266,6 +275,7 @@ public class GameController : MonoBehaviour
     {
         playerController.RefillPlayerHealth();
         reviveFinished();
+        rewardOk = true;
     }
 
     public void OnBackToMain()
@@ -327,8 +337,6 @@ public class GameController : MonoBehaviour
     void reviveFinished()
     {
         gameIsFinished = false;
-        gameTimer = reviveTime + Time.timeSinceLevelLoad;
-        gameOverManager.gameObject.SetActive(false);
     }
 
     /// <summary>

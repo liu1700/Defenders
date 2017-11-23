@@ -137,17 +137,16 @@ public class EnemyController : MonoBehaviour
         //Check if this object is dead or alive
         if (enemyCurrentHealth <= 0)
         {
-            print("Enemy is dead...");
             enemyCurrentHealth = 0;
             isEnemyDead = true;
             var goldCount = 3;
             if (enemySkill == enemySkillLevels.normal)
             {
-                goldCount = 4;
+                goldCount = 5;
             }
             else if (enemySkill == enemySkillLevels.hard || enemySkill == enemySkillLevels.Robinhood)
             {
-                goldCount = 6;
+                goldCount = 7;
             }
 
             gc.KillEnemies(1, goldCount);
