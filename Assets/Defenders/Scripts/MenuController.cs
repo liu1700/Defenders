@@ -34,6 +34,8 @@ public class MenuController : MonoBehaviour
         cam = GameObject.FindGameObjectWithTag("MainCamera");
 
         featurePanel.GetComponent<CanvasRenderer>().SetAlpha(0f);
+
+		Application.targetFrameRate = 40;
     }
 
     void Start()
