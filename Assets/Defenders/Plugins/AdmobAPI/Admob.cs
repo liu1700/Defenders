@@ -1,9 +1,7 @@
-﻿#pragma warning disable 67
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Runtime.InteropServices;
-namespace admob 
+namespace admob
 {
 	public class Admob {
         public delegate void AdmobEventHandler(string eventName, string msg);
@@ -25,6 +23,9 @@ namespace admob
 	    }
         
 		#if UNITY_EDITOR
+	   	public void removeAllBanner(){
+		Debug.Log("calling removeAllBanner");
+	}
 		private void preInitAdmob()
 		{
 
@@ -90,9 +91,16 @@ namespace admob
 		{
 		Debug.Log("calling setTesting");
 		}
+        public void setGender(int v)
+        {
+            Debug.Log("calling setGender");
+        }
+        public void setKeywords(string[] v)
+        {
+            Debug.Log("calling setKeywords");
+        }
 
-
-		public void setForChildren(bool v)
+        public void setForChildren(bool v)
 		{
 		Debug.Log("calling setForChildren");
 		}
@@ -109,8 +117,11 @@ namespace admob
 		Debug.Log("calling removeNativeBanner");
 		}
 
-        #elif UNITY_IOS
+#elif UNITY_IOS
         internal delegate void AdmobAdCallBack(string adtype, string eventName, string msg);
+	public void removeAllBanner(){
+		Debug.Log("calling removeAllBanner");
+	}
         private void preInitAdmob()
         {
 
@@ -212,6 +223,18 @@ namespace admob
         {
             _kmsetTesting(v);
         }
+         [DllImport("__Internal")]
+        private static extern void _kmsetGender(int v);
+        public void setGender(int v)
+        {
+            _kmsetGender(v);
+        }
+         [DllImport("__Internal")]
+        private static extern void _kmsetKeywords(string[] v,int count);
+        public void setKeywords(string[] v)
+        {
+           _kmsetKeywords(v,v.Length);
+        }
 
         [DllImport("__Internal")]
         private static extern void _kmsetForChildren(bool v);
@@ -261,6 +284,9 @@ namespace admob
                 jadmob.Call("setContext", new object[] { activy, new AdmobListenerProxy(innerlistener) });
 			}
 		}
+	public void removeAllBanner(){
+	jadmob.Call("removeAllBanner");
+	}
 		public void initAdmob(string bannerID,string fullID){
 			jadmob.Call ("initAdmob", new object[]{bannerID,fullID});
 		}
@@ -306,7 +332,14 @@ namespace admob
         {
             jadmob.Call("showRewardedVideo");
         }
-
+        public void setGender(int v)
+        {
+            jadmob.Call("setGender",v);
+        }
+        public void setKeywords(string[] v)
+        {
+            jadmob.Call("setKeywords",new object[] {v});
+        }
         public void setTesting(bool value)
         {
             jadmob.Call("setTesting",value);
@@ -356,6 +389,9 @@ namespace admob
         }
 
 #else
+public void removeAllBanner(){
+		Debug.Log("calling removeAllBanner");
+	}
         private void preInitAdmob()
         {
            
@@ -438,6 +474,14 @@ namespace admob
         public void removeNativeBanner(string instanceName = "defaultNativeBanner")
         {
            Debug.Log("calling removeNativeBanner");
+        }
+                public void setGender(int v)
+        {
+            Debug.Log("calling setGender");
+        }
+        public void setKeywords(string[] v)
+        {
+            Debug.Log("calling setKeywords");
         }
 #endif
 
