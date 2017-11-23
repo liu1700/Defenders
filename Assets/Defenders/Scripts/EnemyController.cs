@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Anima2D;
 
@@ -17,7 +16,6 @@ public class EnemyController : MonoBehaviour
 
     public int enemyId;
 
-    //    public BodyController bodyController;
     public DestructableController plateformController;
 
     [Header("Public GamePlay settings")]
@@ -33,12 +31,10 @@ public class EnemyController : MonoBehaviour
     [Header("Linked GameObjects")]
     //Reference to game objects (childs and prefabs)
     public GameObject arrow;
-    //	public GameObject enemyTurnPivot;
     public Control enemyTurnPivot;
     public GameObject enemyShootPosition;
     //Hidden gameobjects
-    private GameObject gc;                          //game controller object
-    //private GameObject cam;                         //main camera
+    private GameController gc;                          //game controller object
 
     [Header("Audio Clips")]
     public AudioClip[] shootSfx;
@@ -63,9 +59,8 @@ public class EnemyController : MonoBehaviour
         canShoot = false;
         isEnemyDead = false;
         gotLastHit = false;
-        gc = GameObject.FindGameObjectWithTag("GameController");
-        //cam = GameObject.FindGameObjectWithTag("MainCamera");
-
+        var g = GameObject.FindGameObjectWithTag("GameController");
+        gc = g.GetComponent<GameController>();
 
         //Increase difficulty by decreasing the enemy error when shooting
         //Please note that "shootAngleError" is not editable. If you want to change the precision, you need to edit "fakeWindPower"
@@ -155,22 +150,14 @@ public class EnemyController : MonoBehaviour
                 goldCount = 6;
             }
 
-            gc.GetComponent<GameController>().AddGold(goldCount);
-            gc.GetComponent<GameController>().KillEnemies(1, goldCount);
+            gc.AddGold(goldCount);
+            gc.KillEnemies(1, goldCount);
             if (poolRef != null)
             {
                 poolRef.KillEnemy(enemyId);
             }
             return;
         }
-
-        ////if this is not our turn, just return
-        //if (!GameController.enemysTurn)
-        //	return;
-
-        ////if we already have an arrow in scene, we can not shoot another one!
-        //if (GameController.isArrowInScene)
-        //    return;
 
         //if we have killed the player, but the controller has not finished the game yet
         if (GameController.noMoreShooting)
@@ -179,23 +166,6 @@ public class EnemyController : MonoBehaviour
         if (canShoot)
             StartCoroutine(shootArrow());
     }
-
-
-    ///// <summary>
-    ///// This function will be called when this object is hit by an arrow. It will check if this is still alive after the hit.
-    ///// if ture, changes the turn. if not, this is dead and game should finish.
-    ///// </summary>
-    //public void changeTurns()
-    //{
-
-    //    print("enemyCurrentHealth: " + enemyCurrentHealth);
-
-    //    if (enemyCurrentHealth > 0)
-    //        StartCoroutine(gc.GetComponent<GameController>().roundTurnManager());
-    //    else
-    //        GameController.noMoreShooting = true;
-    //}
-
 
     /// <summary>
     /// Enemy shoot AI.
@@ -247,8 +217,6 @@ public class EnemyController : MonoBehaviour
             enemyTurnPivot.transform.rotation = Quaternion.Euler(0, 0, Mathf.SmoothStep(-90, targetAngle - 90, t));
             yield return 0;
         }
-        //
-        print("Enemy Fired!");
 
         //play shoot sound
         playSfx(shootSfx[Random.Range(0, shootSfx.Length)]);
@@ -261,9 +229,6 @@ public class EnemyController : MonoBehaviour
 
         float finalShootAngle = baseShootAngle + Random.Range(-shootAngleError, shootAngleError);
         ea.GetComponent<MainLauncherController>().enemyShootAngle = finalShootAngle;
-        print("Final enemy shoot angle: " + finalShootAngle);
-
-        //cam.GetComponent<CameraController>().targetToFollow = ea;
 
         //at the end
         StartCoroutine(reactiveEnemyShoot());
@@ -280,9 +245,7 @@ public class EnemyController : MonoBehaviour
     {
         yield return new WaitForSeconds(1.5f);
         enemyTurnPivot.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
-
     }
-
 
     /// <summary>
     /// Enable enemy to shoot again

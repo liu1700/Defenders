@@ -14,10 +14,5 @@ public class BodyController : MonoBehaviour
         {
             bodyParts[i].bodyType = RigidbodyType2D.Dynamic;
         }
-
-        //for (int i = 0; i < bodyParts.Count; i++)
-        //{
-        //    bodyParts[i].velocity = Vector2.right * 2;
-        //}
     }
 }

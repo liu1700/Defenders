@@ -15,15 +15,7 @@ public class CameraController : MonoBehaviour
     public bool performStartMove = true;    //should camera moves towards enemy and back to player, when we just start the game?1
     internal bool startMoveIsDoneFlag;      //flag to set when the starting animation has been performed
 
-    //internal Vector3 cameraStartingPos;
     internal Vector3 cameraCurrentPos;
-
-    //internal GameObject targetToLock;       //the target object we need to have a static view on
-    //internal GameObject targetToFollow;     //the target we need to follow as it moves
-
-    ////reference to game objects
-    //private GameObject player;
-    //private GameObject enemy;
 
     AudioSource bgm;
 
@@ -36,15 +28,7 @@ public class CameraController : MonoBehaviour
             performStartMove = false;
         }
 
-        //cameraStartingPos = new Vector3(3, 9, -10);
-        //cameraCurrentPos = cameraStartingPos;
-        //transform.position = cameraStartingPos;
-        //targetToLock = null;
-        //targetToFollow = null;
         startMoveIsDoneFlag = false;
-
-        //player = GameObject.FindGameObjectWithTag("Player");
-        //enemy = GameObject.FindGameObjectWithTag("enemy");
 
         bgm = GetComponent<AudioSource>();
         bgm.volume = 0;
@@ -65,91 +49,11 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
-
-        //if (performStartMove)
-        //{
-        //    //start the demo, by moving towards enemy's position and then back to player
-        //    StartCoroutine(runDemo());
-        //}
-        //else
-        //{
-        //    //no need to perform the demo. ativate the game immediately.
-        //    startMoveIsDoneFlag = true;
-        //    GameController.gameIsStarted = true;
-        //}
-
         //no need to perform the demo. ativate the game immediately.
         startMoveIsDoneFlag = true;
         GameController.gameIsStarted = true;
 
         StartCoroutine(fadeInBgm());
-    }
-
-
-    ///// <summary>
-    ///// Move the camera to enemy location, wait a little and then back to player location.
-    ///// </summary>
-    //IEnumerator runDemo()
-    //{
-
-    //    //wait a little
-    //    yield return new WaitForSeconds(0.5f);
-
-    //    float cameraSpeed = 0.30f;
-    //    float t = 0;
-    //    while (t < 1)
-    //    {
-    //        t += Time.deltaTime * cameraSpeed;
-    //        transform.position = new Vector3(Mathf.SmoothStep(cameraStartingPos.x, enemy.transform.position.x, t),
-    //                                            transform.position.y,
-    //                                            transform.position.z);
-    //        yield return 0;
-    //    }
-
-    //    //wait a few while
-    //    if (t >= 1)
-    //        yield return new WaitForSeconds(1.0f);
-
-    //    //back to player
-    //    t = 0;
-    //    while (t < 1)
-    //    {
-    //        t += Time.deltaTime * cameraSpeed;
-    //        transform.position = new Vector3(Mathf.SmoothStep(enemy.transform.position.x, player.transform.position.x, t),
-    //                                            transform.position.y,
-    //                                            transform.position.z);
-    //        yield return 0;
-    //    }
-
-    //    if (t >= 1)
-    //    {
-    //        //start the game
-    //        startMoveIsDoneFlag = true;
-    //        GameController.gameIsStarted = true;
-    //    }
-
-    //}
-
-
-    /// <summary>
-    /// FSM
-    /// </summary>
-    void Update()
-    {
-
-        //if the game has not started yet, or the game is finished, just return
-        if (!GameController.gameIsStarted || GameController.gameIsFinished)
-            return;
-
-        //Not implemented
-        handleCps();
-
-        ////follow the target (if any)
-        //if (targetToFollow)
-        //{
-        //    StartCoroutine(smoothFollow(targetToFollow.transform.position));
-        //}
-
     }
 
     IEnumerator fadeInBgm()
@@ -190,25 +94,6 @@ public class CameraController : MonoBehaviour
 
         yield return 0;
     }
-
-
-    /// <summary>
-    /// Not implemented yet !
-    /// </summary>
-    void handleCps()
-    {
-
-        ////limiters
-        //if (cps < 5) cps = 5;
-        //if (cps > 6) cps = 6;
-
-        //if (cps != prevCps)
-        //{
-        //    GetComponent<Camera>().orthographicSize = cps;
-        //    prevCps = cps;
-        //}
-    }
-
 
     /// <summary>
     /// move the camera to a given position

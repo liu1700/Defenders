@@ -26,12 +26,6 @@ public class PlayerController : MonoBehaviour
     public GameObject trajectoryHelper;
     public Control playerTurnPivot;
     public GameObject playerShootPosition;
-    //public GameObject infoPanel;
-    //public GameObject UiDynamicPower;
-    //public GameObject UiDynamicDegree;
-    //Hidden gameobjects
-    //private GameObject gc;  //game controller object
-    //private GameObject cam; //main camera
 
     [Header("Audio Clips")]
     public AudioClip[] shootSfx;
@@ -51,11 +45,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 shootDirectionVector;
 
     //helper trajectory variables
-    //private float helperCreationDelay = 0.12f;
-    //private bool canCreateHelper;
     private float helperShowDelay = 0.2f;
     private float helperShowTimer;
-    private bool helperDelayIsDone;
 
     public Text hpText;
 
@@ -73,12 +64,8 @@ public class PlayerController : MonoBehaviour
 
         isPlayerDead = false;
 
-        //gc = GameObject.FindGameObjectWithTag("GameController");
-        //cam = GameObject.FindGameObjectWithTag("MainCamera");
-
         //canCreateHelper = true;
         helperShowTimer = 0;
-        helperDelayIsDone = false;
     }
 
 
@@ -101,14 +88,6 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        ////if this is not our turn, just return
-        //if (!GameController.playersTurn)
-        //	return;
-
-        ////if we already have an arrow in scene, we can not shoot another one!
-        //if (GameController.isArrowInScene)
-        //    return;
-
         if (!PauseManager.enableInput)
             return;
 
@@ -118,21 +97,12 @@ public class PlayerController : MonoBehaviour
 
             turnPlayerBody();
 
-            ////only show shot info when we are fighting with an enemy
-            //if (GameModeController.isEnemyRequired())
-            //    infoPanel.SetActive(true);
-
-            helperShowTimer += Time.deltaTime;
-            if (helperShowTimer >= helperShowDelay)
-                helperDelayIsDone = true;
         }
 
         //register the initial Click Position
         if (Input.GetMouseButtonDown(0))
         {
             icp = new Vector2(inputPosX, inputPosY);
-            print("icp: " + icp);
-            print("icp magnitude: " + icp.magnitude);
         }
 
         //clear the initial Click Position
@@ -152,9 +122,7 @@ public class PlayerController : MonoBehaviour
 
             //reset variables
             icp = new Vector2(0, 0);
-            //infoPanel.SetActive(false);
             helperShowTimer = 0;
-            helperDelayIsDone = false;
         }
     }
 
@@ -180,23 +148,6 @@ public class PlayerController : MonoBehaviour
         UpdateHp(playerCurrentHealth);
     }
 
-    ///// <summary>
-    ///// This function will be called when this object is hit by an arrow. It will check if this is still alive after the hit.
-    ///// if ture, changes the turn. if not, this is dead and game should finish.
-    ///// </summary>
-    //public void changeTurns()
-    //{
-
-    //    //print("playerCurrentHealth: " + playerCurrentHealth);
-
-    //    //if (playerCurrentHealth > 0)
-    //    //    StartCoroutine(gc.GetComponent<GameController>().roundTurnManager());
-    //    //else
-    //    //    GameController.noMoreShooting = true;
-
-    //}
-
-
     /// <summary>
     /// When player is aiming, we need to turn the body of the player based on the angle of icp and current input position
     /// </summary>
@@ -209,11 +160,9 @@ public class PlayerController : MonoBehaviour
             // determine the position on the screen
             inputPosX = this.hitInfo.point.x;
             inputPosY = this.hitInfo.point.y;
-            //print("Pos X-Y: " + inputPosX + " / " + inputPosY);
 
             // set the bow's angle to the arrow
             inputDirection = new Vector2(icp.x - inputPosX, icp.y - inputPosY);
-            //print("Dir X-Y: " + inputDirection.x + " / " + inputDirection.y);
 
             shootDirection = (Mathf.Atan2(inputDirection.y, inputDirection.x) * Mathf.Rad2Deg) + 90;
             if (shootDirection > 180)
@@ -235,30 +184,11 @@ public class PlayerController : MonoBehaviour
             }
 
             //apply the rotation
-            //playerTurnPivot.transform.eulerAngles = new Vector3(0, 0, shootDirection);
             playerTurnPivot.bone.transform.rotation = Quaternion.Euler(0, 0, shootDirection);
-            //var a = new Quaternion();
-            //a.eulerAngles = new Vector3(0, 0, shootDirection);
-            //Debug.Log(a.ToString());
+
             //calculate shoot power
             distanceFromFirstClick = inputDirection.magnitude / 4;
             shootPower = Mathf.Clamp(distanceFromFirstClick, 0, 1) * 1200;
-            //print ("distanceFromFirstClick: " + distanceFromFirstClick);
-            //print("shootPower: " + shootPower);
-
-            //modify camera cps - next update
-            //CameraController.cps = 5 + (shootPower / 100);
-
-            ////show informations on the UI text elements
-            //UiDynamicDegree.GetComponent<TextMesh>().text = ((int)shootDirection).ToString();
-            //UiDynamicPower.GetComponent<TextMesh>().text = ((int)shootPower).ToString() + "%";
-
-            //if (useHelper)
-            //{
-            //    //create trajectory helper points, while preventing them to show when we start to click/touch
-            //    if (shootPower > minShootPower && helperDelayIsDone)
-            //        StartCoroutine(shootTrajectoryHelper());
-            //}
         }
     }
 
@@ -286,13 +216,7 @@ public class PlayerController : MonoBehaviour
         launcherCtrl.ownerID = 0;
 
         shootDirectionVector = Vector3.Normalize(inputDirection);
-        //shootDirectionVector = new Vector3(Mathf.Clamp(shootDirectionVector.x, 0, 1), Mathf.Clamp(shootDirectionVector.y, 0, 1), shootDirectionVector.z);
-
         launcherCtrl.playerShootVector = shootDirectionVector * ((shootPower + baseShootPower) / 50);
-
-        print("shootPower: " + shootPower + " --- " + "shootDirectionVector: " + shootDirectionVector);
-
-        //cam.GetComponent<CameraController>().targetToFollow = arr;
 
         //reset body rotation
         StartCoroutine(resetBodyRotation());
@@ -305,12 +229,8 @@ public class PlayerController : MonoBehaviour
     IEnumerator resetBodyRotation()
     {
 
-        //yield return new WaitForSeconds(1.5f);
-        //playerTurnPivot.transform.eulerAngles = new Vector3(0, 0, 0);
-
         yield return new WaitForSeconds(0.25f);
         float currentRotationAngle = playerTurnPivot.transform.eulerAngles.z;
-        //playerTurnPivot.transform.rotation = Quaternion.Euler(0, 0, Mathf.SmoothStep(currentRotationAngle, 0, 1));
         float t = 0;
         while (t < 1)
         {
@@ -319,30 +239,6 @@ public class PlayerController : MonoBehaviour
             yield return 0;
         }
     }
-
-
-    ///// <summary>
-    ///// Create helper dots that shows the possible fly path of the actual arrow
-    ///// </summary>
-    //IEnumerator shootTrajectoryHelper()
-    //{
-
-    //    if (!canCreateHelper)
-    //        yield break;
-
-    //    canCreateHelper = false;
-
-    //    GameObject t = Instantiate(trajectoryHelper, playerShootPosition.transform.position, Quaternion.Euler(0, 180, shootDirection * -1)) as GameObject;
-
-    //    shootDirectionVector = Vector3.Normalize(inputDirection);
-    //    //shootDirectionVector = new Vector3(Mathf.Clamp(shootDirectionVector.x, 0, 1), Mathf.Clamp(shootDirectionVector.y, 0, 1), shootDirectionVector.z);
-    //    //print("shootPower: " + shootPower + " --- " + "shootDirectionVector: " + shootDirectionVector);
-
-    //    t.GetComponent<Rigidbody>().AddForce(shootDirectionVector * ((shootPower + baseShootPower) / 50), ForceMode.Impulse);
-
-    //    yield return new WaitForSeconds(helperCreationDelay);
-    //    canCreateHelper = true;
-    //}
 
 
     /// <summary>
@@ -363,7 +259,6 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void playRandomHitSound()
     {
-
         int rndIndex = Random.Range(0, hitSfx.Length);
         playSfx(hitSfx[rndIndex]);
     }

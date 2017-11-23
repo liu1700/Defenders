@@ -17,7 +17,6 @@ public class GameController : MonoBehaviour
     public enum groundTypes { flat, curved }
     public groundTypes groundType = groundTypes.flat;   //we have two options here. default is flat ground.
     public GameObject flatBg;                           //reference to flag ground object.
-    //public GameObject curvedBg;                         //reference to curved ground holder object.
     public EnemyPool enemies;
     public LevelUI levelUI;
     public GameOverManager gameOverManager;
@@ -30,9 +29,6 @@ public class GameController : MonoBehaviour
     public static bool gameIsFinished;              //global flag for game finish state
     public static bool noMoreShooting;              //We use this to stop the shoots when someone has been killed but the game is yet to finish
     public static int round;                        //internal counter to assign turn to player and AI
-    //public static bool playersTurn;                 //flag to check if this is player's turn
-    //public static bool enemysTurn;                  //flag to check if this is opponent's turn
-    //public static string whosTurn;                  //current turn holder in string. useful if you want to extend the game.
     int playerCoins;                  //available player coins
     int addedPlayerCoins;                  //available player coins
     int playerKilled;                  //available player coins
@@ -57,9 +53,6 @@ public class GameController : MonoBehaviour
     private GameObject enemy;
     private GameObject cam;
     private GameObject uiCam;
-    //public GameObject gameoverManager;
-    //public GameObject uiGameStateLabel;
-    //public GameObject uiYouWon;
 
     ///Game timer vars
     public int availableTime = 30;                  //total gameplay time
@@ -71,8 +64,6 @@ public class GameController : MonoBehaviour
 
     int reviveTime = 20;
 
-    //private Vector3 playerHBSC;                     //player health bar starting scale
-    //private Vector3 enemyHBSC;                      //enemy health bar starting scale
     private float playerHealthScale;                //player health bar real-time scale
     private float enemyHealthScale;                 //enemy health bar real-time scale
 
@@ -114,11 +105,9 @@ public class GameController : MonoBehaviour
         {
             case groundTypes.flat:
                 flatBg.SetActive(true);
-                //curvedBg.SetActive(false);
                 break;
             case groundTypes.curved:
                 flatBg.SetActive(false);
-                //curvedBg.SetActive(true);
                 break;
         }
 
@@ -126,14 +115,10 @@ public class GameController : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         enemy = GameObject.FindGameObjectWithTag("enemy");
         cam = GameObject.FindGameObjectWithTag("MainCamera");
-        //uiCam = GameObject.FindGameObjectWithTag("uiCamera");
 
         playerController = player.GetComponent<PlayerController>();
-        //gameoverManager.SetActive(false);
 
         isArrowInScene = false;
-        //playerHBSC = uiPlayerHealthBar.transform.localScale;
-        //enemyHBSC = uiEnemyHealthBar.transform.localScale;
 
         canTap = true;
         gameIsStarted = false;
@@ -168,7 +153,6 @@ public class GameController : MonoBehaviour
     void Start()
     {
         StartCoroutine(activateTap());
-        //StartCoroutine(roundTurnManager());
         levelUI.goldNum.text = playerCoins.ToString();
     }
 
@@ -178,18 +162,6 @@ public class GameController : MonoBehaviour
     /// </summary>
     void Update()
     {
-
-        ////receive inputs at all times
-        //StartCoroutine(inputManager());
-
-        ////manage health bar status
-        //updateUiHealthBars ();
-
-        ////manage enemy distance info on the UI
-        //updateUiEnemyInfoPanel();
-
-        ////Manage game timer only in birdhunt mode
-        //if (gameMode == 2)
         manageGameTimer();
 
         //we no longer need to loop into gameController if the game is already finished.
@@ -197,7 +169,6 @@ public class GameController : MonoBehaviour
             return;
 
         //fast game finish checking...
-        //if (EnemyController.isEnemyDead)
         if (enemies.AllEnemiesDead())
         {
             //next turn
@@ -259,8 +230,6 @@ public class GameController : MonoBehaviour
         if (admgr)
             admgr.showInterstitial();
         SceneManager.LoadScene("Menu");
-
-        //StartCoroutine(activateTap());
     }
 
     public void TapViewVideo(int typ)
@@ -281,7 +250,6 @@ public class GameController : MonoBehaviour
             }
             else if (typ == 2)
             {
-                //admgr.rewardCB = OnBackToMain;
                 admgr.showRewardVideo();
 
                 if (addedPlayerCoins > 0 && playerCoins > 0)
@@ -315,104 +283,6 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(1.2f);      //Wait for the animation to end
     }
 
-    //*****************************************************************************
-    // This function monitors player touches on menu buttons.
-    // detects both touch and clicks and can be used with editor, handheld device and 
-    // every other platforms at once.
-    //*****************************************************************************
-    //private RaycastHit hitInfo;
-    //private Ray ray;
-    //IEnumerator inputManager()
-    //{
-
-    //    //Prevent double click
-    //    if (!canTap)
-    //        yield break;
-
-    //    //Mouse of touch?
-    //    if (Input.touches.Length > 0 && Input.touches[0].phase == TouchPhase.Ended)
-    //        ray = Camera.main.ScreenPointToRay(Input.touches[0].position);
-    //    else if (Input.GetMouseButtonUp(0))
-    //        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-    //    else
-    //        yield break;
-
-    //    if (Physics.Raycast(ray, out hitInfo))
-    //    {
-    //        GameObject objectHit = hitInfo.transform.gameObject;
-    //        //print ("objectHit: " + objectHit.name);
-    //        switch (objectHit.name)
-    //        {
-
-    //            case "Button-Play":
-    //                playSfx(tapSfx);                            //play touch sound
-    //                canTap = false;                             //prevent double touch
-    //                StartCoroutine(animateButton(objectHit));   //touch animation effect
-    //                yield return new WaitForSeconds(0.25f);     //Wait for the animation to end
-    //                SceneManager.LoadScene("Menu");
-    //                StartCoroutine(activateTap());
-    //                break;
-    //            case "Button-Menu":
-    //                //playSfx(tapSfx);                            //play touch sound
-    //                //canTap = false;                             //prevent double touch
-    //                //StartCoroutine(animateButton(objectHit));   //touch animation effect
-    //                //yield return new WaitForSeconds(0.25f);     //Wait for the animation to end
-    //                //SceneManager.LoadScene("Menu");
-    //                //StartCoroutine(activateTap());
-    //                break;
-    //            case "Button-Retry":
-    //                playSfx(tapSfx);                            //play touch sound
-    //                canTap = false;                             //prevent double touch
-    //                StartCoroutine(animateButton(objectHit));   //touch animation effect
-    //                yield return new WaitForSeconds(0.25f);     //Wait for the animation to end
-    //                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    //                StartCoroutine(activateTap());
-    //                break;
-    //        }
-    //    }
-    //}
-
-
-    ///// <summary>
-    ///// shows the distance of player and enemy on the UI
-    ///// </summary>
-    //void updateUiEnemyInfoPanel()
-    //{
-
-    //    //only update UI if this game mode requires an enemy
-    //    if (!GameModeController.isEnemyRequired())
-    //    {
-    //        return;
-    //    }
-
-    //    if (playersTurn)
-    //    {
-
-    //        float enemyDistance = Vector3.Distance(player.transform.position, enemy.transform.position);
-    //        uiEnemyDistance.GetComponent<TextMesh>().text = ((int)enemyDistance).ToString() + "m";
-    //    }
-    //}
-
-
-    ///// <summary>
-    ///// Updates the user interface health bars based on available health for each side.
-    ///// </summary>
-    //void updateUiHealthBars() {
-
-    //	//only update UI if this game mode requires an enemy
-    //	if (!GameModeController.isEnemyRequired ()) {
-    //		return;
-    //	}
-
-    //	playerHealthScale = (player.GetComponent<PlayerController> ().playerCurrentHealth * playerHBSC.x) / player.GetComponent<PlayerController> ().playerHealth;
-    //	enemyHealthScale = (enemy.GetComponent<EnemyController> ().enemyCurrentHealth * enemyHBSC.x) / enemy.GetComponent<EnemyController> ().enemyHealth;
-
-    //	uiPlayerHealthBar.transform.localScale = new Vector3(playerHealthScale, playerHBSC.y, playerHBSC.z);
-    //	uiEnemyHealthBar.transform.localScale = new Vector3(enemyHealthScale, enemyHBSC.y, enemyHBSC.z);
-
-    //}
-
-
     /// <summary>
     /// Assign turns to player and AI.
     /// </summary>
@@ -427,7 +297,6 @@ public class GameController : MonoBehaviour
 
         //2. then check if the situation meets a game over
         //check for game finish state
-        //if (EnemyController.isEnemyDead)
         if (enemies.AllEnemiesDead())
         {
 
@@ -445,51 +314,6 @@ public class GameController : MonoBehaviour
 
         }
 
-        ////3. if none of the above is true, continue with the turn-change...
-
-        //round++;    //game starts with round 1
-        //print("Round: " + round);
-
-        ////if round carry is odd, its players turn, otherwise its opponent's turn
-        //int carry;
-        //carry = round % 2;
-
-        //if (carry == 1)
-        //{
-
-        //    playersTurn = true;
-        //    enemysTurn = false;
-        //    whosTurn = "Player";
-
-        //    yield return new WaitForSeconds(0.9f);
-
-        //    //just incase we need to show the camera's starting animation, we do not need to switch to player, so we just leave the function
-        //    if (!cam.GetComponent<CameraController>().startMoveIsDoneFlag)
-        //        yield break;
-
-        //    //reset camera's old target
-        //    cam.GetComponent<CameraController>().targetToFollow = null;
-        //    //tell the camera to go to player position
-        //    //StartCoroutine(cam.GetComponent<CameraController>().goToPosition(cam.GetComponent<CameraController>().cameraCurrentPos, player.transform.position, 1));
-
-        //}
-        //else
-        //{
-
-        //    playersTurn = false;
-        //    enemysTurn = true;
-        //    whosTurn = "Enemy";
-
-        //    yield return new WaitForSeconds(0.9f);
-
-        //    //reset camera's old target
-        //    cam.GetComponent<CameraController>().targetToFollow = null;
-        //    //tell the camera to go to enemy position
-        //    //StartCoroutine(cam.GetComponent<CameraController>().goToPosition(cam.GetComponent<CameraController>().cameraCurrentPos, enemy.transform.position, 1));
-
-        //}
-
-        //print("whosTurn: " + whosTurn);
     }
 
 
@@ -499,7 +323,6 @@ public class GameController : MonoBehaviour
     void nextTurn()
     {
         round++;
-        //levelUI.levelNum.text = round.ToString();
         enemies.ReGenerateEnemies(round);
     }
 
@@ -507,7 +330,6 @@ public class GameController : MonoBehaviour
     {
         gameIsFinished = false;
         gameTimer = reviveTime + Time.timeSinceLevelLoad;
-        //uiCam.SetActive(true);
         gameOverManager.gameObject.SetActive(false);
     }
 
@@ -527,66 +349,7 @@ public class GameController : MonoBehaviour
         //wait a little
         yield return new WaitForSeconds(1.0f);
 
-        //disable ui camera
-        //uiCam.SetActive(false);
-
-        //activate game finish plane
-        //gameoverManager.SetActive(true);
         gameOverManager.gameObject.SetActive(true);
-
-        ////set the label
-        //if (res == 0)
-        //{
-        //    uiGameStateLabel.GetComponent<TextMesh>().text = "You have Lost :(";
-        //}
-        //else if (res == 1)
-        //{
-        //    uiGameStateLabel.GetComponent<TextMesh>().text = "You have Won !";
-        //}
-        //else if (res == 2)
-        //{
-        //    uiGameStateLabel.GetComponent<TextMesh>().text = "Did you have a good hunt?";
-        //    //set stat info
-        //    uiBirdhuntStatPanel.SetActive(true);
-        //    uiStatBirdHits.GetComponent<TextMesh>().text = birdsHit.ToString();
-        //    int BirdHuntBestScore = PlayerPrefs.GetInt("BirdHuntBestScore");
-        //    uiStatBestScore.GetComponent<TextMesh>().text = BirdHuntBestScore.ToString();
-        //    //save new best score
-        //    if (birdsHit > BirdHuntBestScore)
-        //    {
-        //        PlayerPrefs.SetInt("BirdHuntBestScore", birdsHit);
-        //        uiStatBestScore.GetComponent<TextMesh>().text = birdsHit.ToString();
-        //    }
-
-        //}
-
-        ////calculate score and grants player some coins
-        //int shotBonus = 0;
-        //int timeBonus = 0;
-
-        //if (playerArrowShot <= 3)
-        //    shotBonus = 150;
-        //else if (playerArrowShot > 3 && playerArrowShot <= 6)
-        //    shotBonus = 75;
-        //else if (playerArrowShot > 6 && playerArrowShot <= 10)
-        //    shotBonus = 25;
-
-        //if (Time.timeSinceLevelLoad <= 30)
-        //    timeBonus = 250;
-        //else if (Time.timeSinceLevelLoad > 30 && Time.timeSinceLevelLoad < 60)
-        //    timeBonus = 100;
-        //else if (Time.timeSinceLevelLoad > 60 && Time.timeSinceLevelLoad < 90)
-        //    timeBonus = 50;
-
-        ////Final coin formula (normal game)
-        //playerCoins = shotBonus + timeBonus + (res * 200);
-
-        ////Override - Final coin formula (Birdhunt game mode)
-        //if (res == 2)
-        //    playerCoins = birdsHit * 100;
-
-        ////set the score/coins on UI
-        //uiYouWon.GetComponent<TextMesh>().text = playerCoins.ToString();
 
         //Save new coin amount
         PlayerPrefs.SetInt("PlayerCoins", playerCoins);
@@ -602,64 +365,7 @@ public class GameController : MonoBehaviour
         gameOverManager.bestText.text = maxKilled.ToString();
         gameOverManager.addGoldText.text = "+" + addedPlayerCoins.ToString();
         gameOverManager.ActivatePanel(playerCoins);
-        //bring the panel inside game view
-        //float t = 0;
-        //while (t < 1)
-        //{
-        //    t += Time.deltaTime;
-        //    gameoverManager.transform.position = new Vector3(cam.transform.position.x,
-        //                                                        Mathf.SmoothStep(-15, 0, t),
-        //                                                        gameoverManager.transform.position.z);
-        //    yield return 0;
-        //}
-
-        ////show an Interstitial Ad when the game is finished
-        //if (AdManagerObject)
-        //    AdManagerObject.GetComponent<AdManager>().showInterstitial();
     }
-
-
-    //*****************************************************************************
-    // This function animates a button by modifying it's scales on x-y plane.
-    // can be used on any element to simulate the tap effect.
-    //*****************************************************************************
-    IEnumerator animateButton(GameObject _btn)
-    {
-
-        float buttonAnimationSpeed = 9.0f;
-        canTap = false;
-        Vector3 startingScale = _btn.transform.localScale;  //initial scale	
-        Vector3 destinationScale = startingScale * 1.1f;    //target scale
-
-        //Scale up
-        float t = 0.0f;
-        while (t <= 1.0f)
-        {
-            t += Time.deltaTime * buttonAnimationSpeed;
-            _btn.transform.localScale = new Vector3(Mathf.SmoothStep(startingScale.x, destinationScale.x, t),
-                Mathf.SmoothStep(startingScale.y, destinationScale.y, t),
-                _btn.transform.localScale.z);
-            yield return 0;
-        }
-
-        //Scale down
-        float r = 0.0f;
-        if (_btn.transform.localScale.x >= destinationScale.x)
-        {
-            while (r <= 1.0f)
-            {
-                r += Time.deltaTime * buttonAnimationSpeed;
-                _btn.transform.localScale = new Vector3(Mathf.SmoothStep(destinationScale.x, startingScale.x, r),
-                    Mathf.SmoothStep(destinationScale.y, startingScale.y, r),
-                    _btn.transform.localScale.z);
-                yield return 0;
-            }
-        }
-
-        if (r >= 1)
-            canTap = true;
-    }
-
 
     /// <summary>
     /// enable touch commands again
@@ -702,10 +408,7 @@ public class GameController : MonoBehaviour
         }
 
         remainingTime = string.Format("{0:00} : {1:00}", minutes, seconds);
-        //uiTimeText.GetComponent<TextMesh>().text = remainingTime.ToString();
         levelUI.levelTime.text = remainingTime;
-        ////Also show hitted birds counter on UI
-        //uiBirdsHitText.GetComponent<TextMesh>().text = birdsHit.ToString();
     }
 
 
@@ -714,7 +417,6 @@ public class GameController : MonoBehaviour
     /// </summary>
     public void addBonusTime(int bounus)
     {
-        //gameTimer += bonusTime;
         gameTimer += bounus;
 
         var s = Mathf.CeilToInt(bounus) % 60;
@@ -749,7 +451,6 @@ public class GameController : MonoBehaviour
     public void KillEnemies(int count, int bounus)
     {
         playerKilled += count;
-        //levelUI.levelNum.text = playerKilled.ToString();
         addBonusTime(bounus);
     }
 
@@ -768,5 +469,4 @@ public class GameController : MonoBehaviour
         pauseManager.UnPauseGame();
         SceneManager.LoadScene("Menu");
     }
-
 }
