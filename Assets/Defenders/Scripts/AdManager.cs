@@ -56,17 +56,17 @@ public class AdManager : MonoBehaviour
         ad.bannerEventHandler += onBannerEvent;
         ad.interstitialEventHandler += onInterstitialEvent;
         ad.rewardedVideoEventHandler += onRewardedVideoEvent;
-        ad.nativeBannerEventHandler += onNativeBannerEvent;
+        //ad.nativeBannerEventHandler += onNativeBannerEvent;
         ad.initAdmob(admobBannerID, admobInterstitialID);
-        //ad.setTesting(true);
+        ad.setTesting(true);
         Debug.Log("Admob Inited.");
 
         ////showBannerAd (always)
         //Admob.Instance().showBannerRelative(AdSize.Banner, AdPosition.BOTTOM_CENTER, 0);
 
         //cache an Interstitial ad for later use
-        ad.loadInterstitial();
-        ad.loadRewardedVideo(admobVideoID);
+        loadInterstitial();
+        loadReward();
     }
 
     public void loadInterstitial()
@@ -89,7 +89,7 @@ public class AdManager : MonoBehaviour
         {
             ad.showInterstitial();
         }
-        ad.loadInterstitial();
+        //ad.loadInterstitial();
     }
 
     public void showRewardVideo()
@@ -103,7 +103,7 @@ public class AdManager : MonoBehaviour
         {
             SceneManager.LoadScene("Menu");
         }
-        ad.loadRewardedVideo(admobVideoID);
+        //ad.loadRewardedVideo(admobVideoID);
     }
 
     public bool isShowRewardVideoReady()
@@ -115,10 +115,10 @@ public class AdManager : MonoBehaviour
     void onInterstitialEvent(string eventName, string msg)
     {
         Debug.Log("handler onAdmobEvent---" + eventName + "   " + msg);
-        //if (eventName == AdmobEvent.onAdLoaded)
-        //{
-        //    Admob.Instance().showInterstitial();
-        //}
+        if (eventName == AdmobEvent.onAdFailedToLoad || eventName == AdmobEvent.onAdClosed)
+        {
+            loadInterstitial();
+        }
     }
 
     [Skip]
@@ -137,12 +137,11 @@ public class AdManager : MonoBehaviour
             {
                 rewardCB();
             }
+            loadReward();
         }
-    }
-
-    [Skip]
-    void onNativeBannerEvent(string eventName, string msg)
-    {
-        Debug.Log("handler onAdmobNativeBannerEvent---" + eventName + "   " + msg);
+        else if (eventName == AdmobEvent.onAdFailedToLoad || eventName == AdmobEvent.onAdClosed)
+        {
+            loadReward();
+        }
     }
 }

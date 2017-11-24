@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This Google Mobile Ads plugin library manifest will get merged with your
+application's manifest, adding the necessary activity and permissions
+required for displaying ads.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="so.phonegame.demo"
+    android:versionName="1.0"
+    android:versionCode="1">
+ 
+  <!-- Google Mobile Ads Permissions -->
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+  <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_COARSE_UPDATES" />
+  
+   <permission android:name="so.phonegame.demo.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="so.phonegame.demo.permission.C2D_MESSAGE" />
+
+  <!-- Uncomment to add billing for in-app purchase ads -->
+  <!--<uses-permission android:name="com.android.vending.BILLING"/> -->
+  <application  android:theme="@style/UnityThemeSelector" 
+           android:icon="@drawable/app_icon" 
+           android:label="@string/app_name" >
+   <activity
+            android:name="com.unity3d.player.UnityPlayerActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+    
+ <receiver
+            android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                <category android:name="so.phonegame.demo" />
+            </intent-filter>
+        </receiver>
+        
+        <provider
+            android:authorities="so.phonegame.demo.firebaseinitprovider"
+            android:name="com.google.firebase.provider.FirebaseInitProvider"
+            android:exported="false"
+            android:initOrder="100" />
+    
+        
+    <!-- Denote the referenced Google Play services version -->
+    <meta-data android:name="com.google.android.gms.games.APP_ID"
+            android:value="@string/app_id" />
+     <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+    <!-- Google Mobile Ads Activity -->
+    <activity android:name="com.google.android.gms.common.api.GoogleApiActivity"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar"
+                  android:exported="false"/>
+    <activity android:name="com.google.service.game.UnityProxyActivity"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+                  android:exported="false"/>
+    <activity
+             android:name="com.google.android.gms.ads.AdActivity"
+             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+             android:theme="@android:style/Theme.Translucent" />
+  </application>
+  
+</manifest>

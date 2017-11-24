@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "263495946164",
+    "firebase_url": "https://api-project-91845046.firebaseio.com",
+    "project_id": "api-project-91845046",
+    "storage_bucket": "api-project-91845046.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:263495946164:android:ab988918fd3cee93",
+        "android_client_info": {
+          "package_name": "so.phonegame.demo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "263495946164-jm7s88e0h86t09juo6rjf0og2siqus40.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "so.phonegame.demo",
+            "certificate_hash": "69678991498AF3B3527DEF4D72A6D33785235AFA"
+          }
+        },
+        {
+          "client_id": "263495946164-keq73nrrcqrop2n7eoq7l5m98efmnril.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_nozCkr35O26SiiqNbkf93y7tCipw25Q"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "263495946164-keq73nrrcqrop2n7eoq7l5m98efmnril.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
