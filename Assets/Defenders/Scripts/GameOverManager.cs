@@ -14,6 +14,7 @@ public class GameOverManager : MonoBehaviour
     public GameObject moreGold;
 
     bool showRevive, showAddMoreGold;
+    public bool isDisplayingAd;
 
     private AdManager admgr;
     private GameObject viewVideoRevive;
@@ -39,10 +40,12 @@ public class GameOverManager : MonoBehaviour
     private void Start()
     {
         needGoldNum.text = "-" + GameController.reviveUseGold.ToString();
+        isDisplayingAd = false;
     }
 
     public void ActivatePanel(int playerCoine)
     {
+        isDisplayingAd = false;
         if (showRevive)
         {
             revive.SetActive(true);
@@ -56,6 +59,8 @@ public class GameOverManager : MonoBehaviour
             if (admgr && admgr.isShowRewardVideoReady())
             {
                 viewVideoRevive.SetActive(true);
+                admgr.UploadUserViewingVideoScene();
+                isDisplayingAd = true;
             }
             else
             {
@@ -75,6 +80,8 @@ public class GameOverManager : MonoBehaviour
             if (admgr && admgr.isShowRewardVideoReady())
             {
                 viewVideoAddMoreGold.SetActive(true);
+                admgr.UploadUserViewingVideoScene();
+                isDisplayingAd = false;
             }
             else
             {

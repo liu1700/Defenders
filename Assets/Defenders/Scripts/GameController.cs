@@ -229,7 +229,13 @@ public class GameController : MonoBehaviour
 
         //show an Interstitial Ad when the game is paused
         if (admgr)
+        {
+            if (gameOverManager.isDisplayingAd)
+            {
+                admgr.UploadUserRejectViewingVideoScene();
+            }
             admgr.showInterstitial();
+        }
         SceneManager.LoadScene("Menu");
     }
 
@@ -242,9 +248,15 @@ public class GameController : MonoBehaviour
         canTap = false;                             //prevent double touch
         StartCoroutine(waitAnimation());
 
-        //show an Interstitial Ad when the game is paused
         if (admgr)
+        {
+            if (gameOverManager.isDisplayingAd)
+            {
+                admgr.UploadUserRejectViewingVideoScene();
+            }
             admgr.showInterstitial();
+        }
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 

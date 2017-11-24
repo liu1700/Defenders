@@ -112,4 +112,16 @@ public class AdManager : MonoBehaviour
             rewardCB();
         }
     }
+
+
+    // 上报
+    public void UploadUserViewingVideoScene()
+    {
+        TGSDK.ShowAdScene(videoID);
+    }
+
+    public void UploadUserRejectViewingVideoScene()
+    {
+        TGSDK.ReportAdRejected(videoID);
+    }
 }
