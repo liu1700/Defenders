@@ -13,8 +13,9 @@ public class GooglePlayManager : MonoBehaviour
     void Start()
     {
         gg = GoogleGame.Instance();
-        gg.login(true, false);
 
+        gg.login(true, false);
+        gg.gameEventHandler += onGameEvent;
         DontDestroyOnLoad(gameObject);
     }
 
@@ -25,6 +26,14 @@ public class GooglePlayManager : MonoBehaviour
         if (result_code == -1 && eventName == GameEvent.onConnectSuccess)
         {
             loginOk = true;
+        }
+    }
+
+    public void ViewHighScore()
+    {
+        if (loginOk)
+        {
+            gg.showLeaderboard("CgkImdG3uvMOEAIQAQ");
         }
     }
 }
