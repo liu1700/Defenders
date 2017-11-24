@@ -64,9 +64,9 @@ public class AdManager : MonoBehaviour
         ////showBannerAd (always)
         //Admob.Instance().showBannerRelative(AdSize.Banner, AdPosition.BOTTOM_CENTER, 0);
 
-        ////cache an Interstitial ad for later use
-        //ad.loadInterstitial();
-        //ad.loadRewardedVideo(admobVideoID);
+        //cache an Interstitial ad for later use
+        ad.loadInterstitial();
+        ad.loadRewardedVideo(admobVideoID);
     }
 
     public void loadInterstitial()
