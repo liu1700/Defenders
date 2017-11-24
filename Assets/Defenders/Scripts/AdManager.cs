@@ -55,7 +55,7 @@ public class AdManager : MonoBehaviour
         //ad.initAdmob(admobBannerID, admobInterstitialID);
         //ad.setTesting(true);
 
-        TGSDK.SetDebugModel(true);
+        //TGSDK.SetDebugModel(true);
         TGSDK.Initialize(appid, "10053"); // taptap
 
         TGSDK.PreloadAd();
@@ -78,8 +78,8 @@ public class AdManager : MonoBehaviour
         print("Request for Full AD.");
         if (TGSDK.CouldShowAd(interstitialID))
         {
-            TGSDK.ShowTestView(interstitialID);
-            //TGSDK.ShowAd(interstitialID);
+            //TGSDK.ShowTestView(interstitialID);
+            TGSDK.ShowAd(interstitialID);
         }
     }
 
@@ -89,8 +89,8 @@ public class AdManager : MonoBehaviour
 
         if (TGSDK.CouldShowAd(videoID))
         {
-            TGSDK.ShowTestView(videoID);
-            //TGSDK.ShowAd(videoID);
+            //TGSDK.ShowTestView(videoID);
+            TGSDK.ShowAd(videoID);
         }
         else
         {
