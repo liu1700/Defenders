@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using admob;
 using UnityEngine.SceneManagement;
 using Beebyte.Obfuscator;
+using Together;
 
 public class AdManager : MonoBehaviour
 {
@@ -13,12 +13,10 @@ public class AdManager : MonoBehaviour
     /// </summary>
 
     // real
-    [Skip]
-    string admobBannerID = "ca-app-pub-5176895987178305/1396727482";
-    [Skip]
-    string admobInterstitialID = "ca-app-pub-5176895987178305/1182062923";
-    [Skip]
-    string admobVideoID = "ca-app-pub-5176895987178305/3975747223";
+    string appid = "8iiI93K213E6W5w5J4rH";
+    string interstitialID = "k2zjcFEGwF53BJQ9RIW";
+    string interstitialOpt = "p969ZaRL37AukvlQT7F";
+    string videoID = "Dx37r6o8NSfrMQBbM3t";
 
     //// test
     //[Skip]
@@ -41,108 +39,77 @@ public class AdManager : MonoBehaviour
 
     void Start()
     {
-        initAdmob();
+        initAdMgr();
     }
 
-    [Skip]
-    Admob ad;
-    //bool isAdmobInited = false;
 
     [Skip]
-    void initAdmob()
+    void initAdMgr()
     {
-        //  isAdmobInited = true;
-        ad = Admob.Instance();
-        ad.bannerEventHandler += onBannerEvent;
-        ad.interstitialEventHandler += onInterstitialEvent;
-        ad.rewardedVideoEventHandler += onRewardedVideoEvent;
-        ad.nativeBannerEventHandler += onNativeBannerEvent;
-        ad.initAdmob(admobBannerID, admobInterstitialID);
+        ////  isAdmobInited = true;
+        //ad = Admob.Instance();
+        //ad.bannerEventHandler += onBannerEvent;
+        //ad.interstitialEventHandler += onInterstitialEvent;
+        //ad.rewardedVideoEventHandler += onRewardedVideoEvent;
+        //ad.nativeBannerEventHandler += onNativeBannerEvent;
+        //ad.initAdmob(admobBannerID, admobInterstitialID);
         //ad.setTesting(true);
-        Debug.Log("Admob Inited.");
 
-        ////showBannerAd (always)
-        //Admob.Instance().showBannerRelative(AdSize.Banner, AdPosition.BOTTOM_CENTER, 0);
+        TGSDK.SetDebugModel(true);
+        TGSDK.Initialize(appid, "10053"); // taptap
 
-        //cache an Interstitial ad for later use
-        ad.loadInterstitial();
-        ad.loadRewardedVideo(admobVideoID);
-    }
+        TGSDK.PreloadAd();
 
-    public void loadInterstitial()
-    {
-        print("Request load for Full AD.");
-        ad.loadInterstitial();
-    }
+        Debug.Log("AdManger Inited.");
 
-    public void loadReward()
-    {
-        print("Request load for Reward AD.");
-        ad.loadRewardedVideo(admobVideoID);
+        TGSDK.AdRewardSuccessCallback = OnAdRewardSuccess;
+
+        //////showBannerAd (always)
+        ////Admob.Instance().showBannerRelative(AdSize.Banner, AdPosition.BOTTOM_CENTER, 0);
+
+        ////cache an Interstitial ad for later use
+        //ad.loadInterstitial();
+        //ad.loadRewardedVideo(admobVideoID);
     }
 
     //gets called from other classes inside the game
     public void showInterstitial()
     {
         print("Request for Full AD.");
-        if (ad.isInterstitialReady())
+        if (TGSDK.CouldShowAd(interstitialID))
         {
-            ad.showInterstitial();
+            TGSDK.ShowTestView(interstitialID);
+            //TGSDK.ShowAd(interstitialID);
         }
-        ad.loadInterstitial();
     }
 
     public void showRewardVideo()
     {
         print("Request for Reward AD.");
-        if (ad.isRewardedVideoReady())
+
+        if (TGSDK.CouldShowAd(videoID))
         {
-            ad.showRewardedVideo();
+            TGSDK.ShowTestView(videoID);
+            //TGSDK.ShowAd(videoID);
         }
         else
         {
             SceneManager.LoadScene("Menu");
         }
-        ad.loadRewardedVideo(admobVideoID);
     }
 
     public bool isShowRewardVideoReady()
     {
-        return ad.isRewardedVideoReady();
+        return TGSDK.CouldShowAd(videoID);
     }
 
     [Skip]
-    void onInterstitialEvent(string eventName, string msg)
+    public void OnAdRewardSuccess(string ret)
     {
-        Debug.Log("handler onAdmobEvent---" + eventName + "   " + msg);
-        //if (eventName == AdmobEvent.onAdLoaded)
-        //{
-        //    Admob.Instance().showInterstitial();
-        //}
-    }
-
-    [Skip]
-    void onBannerEvent(string eventName, string msg)
-    {
-        Debug.Log("handler onAdmobBannerEvent---" + eventName + "   " + msg);
-    }
-
-    [Skip]
-    void onRewardedVideoEvent(string eventName, string msg)
-    {
-        Debug.Log("handler onRewardedVideoEvent---" + eventName + "   " + msg);
-        if (eventName == AdmobEvent.onRewarded)
+        Debug.Log("handler onRewardedVideoEvent---" + ret);
+        if (rewardCB != null)
         {
-            if (rewardCB != null)
-            {
-                rewardCB();
-            }
+            rewardCB();
         }
-    }
-
-    [Skip]
-    void onNativeBannerEvent(string eventName, string msg)
-    {
-        Debug.Log("handler onAdmobNativeBannerEvent---" + eventName + "   " + msg);
     }
 }
