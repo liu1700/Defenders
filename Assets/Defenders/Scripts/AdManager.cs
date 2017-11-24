@@ -58,7 +58,7 @@ public class AdManager : MonoBehaviour
         ad.rewardedVideoEventHandler += onRewardedVideoEvent;
         //ad.nativeBannerEventHandler += onNativeBannerEvent;
         ad.initAdmob(admobBannerID, admobInterstitialID);
-        ad.setTesting(true);
+        //ad.setTesting(true);
         Debug.Log("Admob Inited.");
 
         ////showBannerAd (always)

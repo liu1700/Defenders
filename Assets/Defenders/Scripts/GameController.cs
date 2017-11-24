@@ -76,6 +76,9 @@ public class GameController : MonoBehaviour
     PlayerController playerController;
 
     bool rewardOk;
+
+    GooglePlayManager googlePlayManager;
+
     /// <summary>
     /// INIT
     /// </summary>
@@ -148,6 +151,12 @@ public class GameController : MonoBehaviour
         enemyLayer = LayerMask.NameToLayer("enemy");
         environmentLayer = LayerMask.NameToLayer("environment");
         playerLayer = LayerMask.NameToLayer("player");
+
+        var gsmgr = GameObject.Find("GooglePlayServiceMgr");
+        if (gsmgr != null)
+        {
+            googlePlayManager = gsmgr.GetComponent<GooglePlayManager>();
+        }
     }
 
     void Start()
@@ -380,6 +389,11 @@ public class GameController : MonoBehaviour
         gameOverManager.bestText.text = maxKilled.ToString();
         gameOverManager.addGoldText.text = "+" + addedPlayerCoins.ToString();
         gameOverManager.ActivatePanel(playerCoins);
+
+        if (googlePlayManager)
+        {
+            googlePlayManager.UpdateScore(maxKilled);
+        }
     }
 
     /// <summary>

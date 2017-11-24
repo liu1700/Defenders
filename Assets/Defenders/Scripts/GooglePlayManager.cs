@@ -9,7 +9,7 @@ public class GooglePlayManager : MonoBehaviour
 
     GoogleGame gg;
     public static bool loginOk;
-
+    string leaderBoardId = "CgkImdG3uvMOEAIQAQ";
     void Start()
     {
         gg = GoogleGame.Instance();
@@ -33,7 +33,15 @@ public class GooglePlayManager : MonoBehaviour
     {
         if (loginOk)
         {
-            gg.showLeaderboard("CgkImdG3uvMOEAIQAQ");
+            gg.showLeaderboard(leaderBoardId);
+        }
+    }
+
+    public void UpdateScore(int maxKill)
+    {
+        if (loginOk)
+        {
+            gg.submitLeaderboardScore(leaderBoardId, maxKill);
         }
     }
 }
