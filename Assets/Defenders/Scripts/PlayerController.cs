@@ -65,14 +65,6 @@ public class PlayerController : MonoBehaviour
         gc = g.GetComponent<GameController>();
     }
 
-    private void FixedUpdate()
-    {
-        if (needUpdateHealth)
-        {
-            UpdateHp();
-        }
-    }
-
     /// <summary>
     /// FSM
     /// </summary>
@@ -82,6 +74,11 @@ public class PlayerController : MonoBehaviour
         //if the game has not started yet, or the game is finished, just return
         if (!GameController.gameIsStarted || GameController.gameIsFinished)
             return;
+
+        if (needUpdateHealth)
+        {
+            UpdateHp();
+        }
 
         //Check if this object is dead or alive
         if (playerCurrentHealth <= 0)

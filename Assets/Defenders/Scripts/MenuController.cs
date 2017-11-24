@@ -27,15 +27,20 @@ public class MenuController : MonoBehaviour
     private GameObject cam;                         //main camera
 
     public GameObject featurePanel;
+    AdManager adManager;
 
     void Awake()
     {
 
         cam = GameObject.FindGameObjectWithTag("MainCamera");
-
         featurePanel.GetComponent<CanvasRenderer>().SetAlpha(0f);
+        Application.targetFrameRate = 30;
 
-		Application.targetFrameRate = 40;
+        var AdManagerObject = GameObject.FindGameObjectWithTag("AdManager");
+        if (AdManagerObject != null)
+        {
+            adManager = AdManagerObject.GetComponent<AdManager>();
+        }
     }
 
     void Start()
@@ -54,6 +59,13 @@ public class MenuController : MonoBehaviour
             PlayerPrefs.Save();
         }
         coinText.text = coin.ToString();
+
+        // preload ads
+        if (adManager)
+        {
+            adManager.loadInterstitial();
+            adManager.loadReward();
+        }
     }
 
     public void OnClickFeaturePanel()

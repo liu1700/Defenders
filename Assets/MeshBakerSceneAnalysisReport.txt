@@ -1,0 +1,14 @@
+(Click me, if I am too big copy and paste me into a spreadsheet or text editor)
+		OBJECT NAME	LIGHTMAP INDEX	STATIC	OVERLAPPING SUBMESHES	OUT-OF-BOUNDS UVs	NUM MATS	MATERIAL	WARNINGS
+	Sprites/Default (30 verts): 
+		Weapon (30 verts)	-1	True	False	True	1	[Sprites-Default (UnityEngine.Material)] 	 [WARNING: has uvs outside the range (0,1) tex is tiled 0x0 times]
+	Sprites/Default (49 verts): 
+		Body (31 verts)	-1	True	False	False	1	[Sprites-Default (UnityEngine.Material)] 	
+		Hand (8 verts)	-1	True	False	False	1	[Sprites-Default (UnityEngine.Material)] 	
+		Hat (10 verts)	-1	True	False	False	1	[Sprites-Default (UnityEngine.Material)] 	
+	Sprites/Default (35 verts): 
+		Tower Combined [SSC] (35 verts)	-1	True	False	False	1	[Sprites/Default (UnityEngine.Material)] 	
+	Unlit/Transparent (72 verts): 
+		Background-04 (24 verts)	-1	True	False	False	1	[Background-04 (UnityEngine.Material)] 	
+		Background-01 (24 verts)	-1	True	False	False	1	[Background-01 (UnityEngine.Material)] 	
+		FlatGround (24 verts)	-1	True	False	False	1	[Ground (UnityEngine.Material)] 	

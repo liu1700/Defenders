@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using admob;
 using UnityEngine.SceneManagement;
+using Beebyte.Obfuscator;
 
 public class AdManager : MonoBehaviour
 {
@@ -11,16 +12,23 @@ public class AdManager : MonoBehaviour
     /// And you can define new public functions here and call them later inside your game
     /// </summary>
 
-    // real
-    string admobBannerID = "ca-app-pub-5176895987178305/1396727482";
-    string admobInterstitialID = "ca-app-pub-5176895987178305/1182062923";
-    string admobVideoID = "ca-app-pub-5176895987178305/3975747223";
+    //// real
+    //[Skip]
+    //string admobBannerID = "ca-app-pub-5176895987178305/1396727482";
+    //[Skip]
+    //string admobInterstitialID = "ca-app-pub-5176895987178305/1182062923";
+    //[Skip]
+    //string admobVideoID = "ca-app-pub-5176895987178305/3975747223";
 
-    //// test
-    //string admobId = "ca-app-pub-3940256099942544~3347511713";
-    //string admobBannerID = "ca-app-pub-3940256099942544/6300978111";
-    //string admobInterstitialID = "ca-app-pub-3940256099942544/1033173712";
-    //string admobVideoID = "ca-app-pub-3940256099942544/5224354917";
+    // test
+    [Skip]
+    string admobId = "ca-app-pub-3940256099942544~3347511713";
+    [Skip]
+    string admobBannerID = "ca-app-pub-3940256099942544/6300978111";
+    [Skip]
+    string admobInterstitialID = "ca-app-pub-3940256099942544/1033173712";
+    [Skip]
+    string admobVideoID = "ca-app-pub-3940256099942544/5224354917";
 
     public delegate void CompleteEvent();
 
@@ -36,9 +44,11 @@ public class AdManager : MonoBehaviour
         initAdmob();
     }
 
+    [Skip]
     Admob ad;
     //bool isAdmobInited = false;
 
+    [Skip]
     void initAdmob()
     {
         //  isAdmobInited = true;
@@ -48,14 +58,26 @@ public class AdManager : MonoBehaviour
         ad.rewardedVideoEventHandler += onRewardedVideoEvent;
         ad.nativeBannerEventHandler += onNativeBannerEvent;
         ad.initAdmob(admobBannerID, admobInterstitialID);
-        //ad.setTesting(true);
+        ad.setTesting(true);
         Debug.Log("Admob Inited.");
 
         ////showBannerAd (always)
         //Admob.Instance().showBannerRelative(AdSize.Banner, AdPosition.BOTTOM_CENTER, 0);
 
-        //cache an Interstitial ad for later use
+        ////cache an Interstitial ad for later use
+        //ad.loadInterstitial();
+        //ad.loadRewardedVideo(admobVideoID);
+    }
+
+    public void loadInterstitial()
+    {
+        print("Request load for Full AD.");
         ad.loadInterstitial();
+    }
+
+    public void loadReward()
+    {
+        print("Request load for Reward AD.");
         ad.loadRewardedVideo(admobVideoID);
     }
 
@@ -89,7 +111,7 @@ public class AdManager : MonoBehaviour
         return ad.isRewardedVideoReady();
     }
 
-
+    [Skip]
     void onInterstitialEvent(string eventName, string msg)
     {
         Debug.Log("handler onAdmobEvent---" + eventName + "   " + msg);
@@ -98,10 +120,14 @@ public class AdManager : MonoBehaviour
         //    Admob.Instance().showInterstitial();
         //}
     }
+
+    [Skip]
     void onBannerEvent(string eventName, string msg)
     {
         Debug.Log("handler onAdmobBannerEvent---" + eventName + "   " + msg);
     }
+
+    [Skip]
     void onRewardedVideoEvent(string eventName, string msg)
     {
         Debug.Log("handler onRewardedVideoEvent---" + eventName + "   " + msg);
@@ -113,6 +139,8 @@ public class AdManager : MonoBehaviour
             }
         }
     }
+
+    [Skip]
     void onNativeBannerEvent(string eventName, string msg)
     {
         Debug.Log("handler onAdmobNativeBannerEvent---" + eventName + "   " + msg);

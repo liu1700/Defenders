@@ -143,26 +143,6 @@ public class MainLauncherController : MonoBehaviour
             manageArrowRotation();
         }
 
-        //if (arrowType == arrowTypes.Axe)
-        //{
-        //    rotateWeapon(500);
-        //}
-
-        //if (arrowType == arrowTypes.Bomb)
-        //{
-        //    rotateWeapon(150);
-        //    explodeOnTouch();
-        //}
-
-        ////Only for birdhunt & appleshot game modes.
-        ////destroy the arrow after 2 seconds or after exiting the view
-        //if (bypassCode) {
-        //	if (Time.time > timeOfShot + 2 || transform.position.x > 12.5f || transform.position.y > 8.5f) {
-        //		GameController.isArrowInScene = false;
-        //		Destroy (gameObject);
-        //	}
-        //}
-
         //bug prevention
         if (transform.position.y < -8)
             Destroy(gameObject);
@@ -251,41 +231,6 @@ public class MainLauncherController : MonoBehaviour
         }
     }
 
-
-    /// <summary>
-    /// Some weapons like bomb can still be controlled after shot. 
-    /// If the bomb hit the target directly, it deals minor damage. 
-    /// But if the explosion hits the taregt, the damage will be major.
-    /// </summary>
-    //void explodeOnTouch()
-    //{
-
-    //    //if (Input.GetKeyDown(KeyCode.Mouse0))
-    //    //{
-
-    //    //    //bombExplosionByPlayer = true;
-    //    //    GameObject exp = Instantiate(explosionFx, transform.position + new Vector3(0, 0, -1.5f), Quaternion.Euler(0, 0, 0)) as GameObject;
-    //    //    exp.name = "Explosion";
-
-    //    //    //check explosion distance with target
-    //    //    float distanceToTarget = Vector3.Distance(transform.position, enemy.transform.position);
-    //    //    print("Bomb - distanceToTarget: " + distanceToTarget);
-    //    //    if (distanceToTarget <= MasterWeaponManager.bombExplosionRadius)
-    //    //    {
-    //    //        //apply explosion damage
-    //    //        enemy.GetComponent<EnemyController>().enemyCurrentHealth -= MasterWeaponManager.bombExplosionDamage;
-    //    //        enemy.GetComponent<EnemyController>().gotLastHit = true;
-    //    //        enemy.GetComponent<EnemyController>().playRandomHitSound();
-    //    //    }
-
-    //    //    Destroy(gameObject, 0.01f);
-
-    //    //    GameController.isArrowInScene = false;
-    //    //    //enemy.GetComponent<EnemyController>().changeTurns();
-
-    //    //}
-    //}
-
     void explodeOnTouch(Vector2 contactPoint)
     {
         GameObject exp = Instantiate(explosionFx, contactPoint, Quaternion.Euler(0, 0, 0)) as GameObject;
@@ -336,14 +281,6 @@ public class MainLauncherController : MonoBehaviour
                 blood.transform.parent = collision.gameObject.transform;
                 Destroy(blood, 1.5f);
             }
-
-            ////if this is a bomb weapon, we need an explosion after collision
-            //if (gameObject.tag == "bomb")
-            //{
-            //    GameObject exp = Instantiate(explosionFx, collision.contacts[0].point + new Vector3(0, 0, -1.5f), Quaternion.Euler(0, 0, 0)) as GameObject;
-            //    exp.name = "Explosion";
-            //    Destroy(gameObject, 0.01f);
-            //}
 
             var enemy = collision.collider.gameObject.GetComponentInParent<EnemyController>();
 
@@ -421,197 +358,11 @@ public class MainLauncherController : MonoBehaviour
             if (arrCollider)
                 arrCollider.enabled = false;
 
-            //if (GetComponent<SphereCollider>())
-            //    GetComponent<SphereCollider>().enabled = false;
-
             trailFx.SetActive(false);
-
-            ////if this is a bomb weapon, we need an explosion after collision
-            //if (gameObject.tag == "bomb")
-            //{
-            //    GameObject exp = Instantiate(explosionFx, other.contacts[0].point + new Vector3(0, 0, -1.5f), Quaternion.Euler(0, 0, 0)) as GameObject;
-            //    exp.name = "Explosion";
-            //    Destroy(gameObject, 0.01f);
-            //}
 
             GameController.isArrowInScene = false;
 
             Destroy(gameObject, 2f);
         }
     }
-
-    //IEnumerator OnCollisionEnter(Collision other)
-    //{
-
-    //    if (Time.time < timeOfShot + collisionCheckDelay)
-    //    {
-    //        print("Can't check for collision at this moment!");
-    //        yield break;
-    //    }
-
-    //    //check for collision just once
-    //    if (isChecking)
-    //        yield break;
-
-    //    isChecking = true;
-    //    string oTag = other.collider.gameObject.tag;    //tag of the object we had collision with
-
-    //    ////Collision with all non-player & non-enemy objects
-    //    //if ((oTag == "ground" || oTag == "rock" || oTag == "bird") && (gameObject.tag == "arrow" || gameObject.tag == "axe" || gameObject.tag == "bomb"))
-    //    //{
-
-    //    //    //disable the arrow
-    //    //    stopUpdate = true;
-    //    //    //arrRigid.useGravity = false;
-    //    //    arrRigid.gravityScale = 0;
-    //    //    arrRigid.isKinematic = true;
-
-    //    //    if (arrCollider)
-    //    //        arrCollider.enabled = false;
-
-    //    //    //if (GetComponent<SphereCollider>())
-    //    //    //    GetComponent<SphereCollider>().enabled = false;
-
-    //    //    trailFx.SetActive(false);
-
-    //    //    //if this is a bomb weapon, we need an explosion after collision
-    //    //    if (gameObject.tag == "bomb")
-    //    //    {
-    //    //        GameObject exp = Instantiate(explosionFx, other.contacts[0].point + new Vector3(0, 0, -1.5f), Quaternion.Euler(0, 0, 0)) as GameObject;
-    //    //        exp.name = "Explosion";
-    //    //        Destroy(gameObject, 0.01f);
-    //    //    }
-
-    //    //    GameController.isArrowInScene = false;
-
-    //    //    ////We only change turns if this game more requires an enemy
-    //    //    //if (!bypassCode)
-    //    //    //{
-
-    //    //    //    if (ownerID == 0)
-    //    //    //        enemy.GetComponent<EnemyController>().changeTurns();
-    //    //    //    else if (ownerID == 1)
-    //    //    //        player.GetComponent<PlayerController>().changeTurns();
-    //    //    //}
-
-    //    //}
-
-
-
-    //    ////Collision with enemy
-    //    //if ((oTag == "enemyBody" || oTag == "enemyLeg" || oTag == "enemyHead") &&
-    //    //     (gameObject.tag == "arrow" || gameObject.tag == "axe" || gameObject.tag == "bomb"))
-    //    //{
-
-    //    //    //disable the arrow
-    //    //    stopUpdate = true;
-    //    //    //GetComponent<Rigidbody>().useGravity = false;
-    //    //    //GetComponent<Rigidbody>().isKinematic = true;
-
-    //    //    //if (GetComponent<BoxCollider>())
-    //    //    //    GetComponent<BoxCollider>().enabled = false;
-
-    //    //    //if (GetComponent<SphereCollider>())
-    //    //    //    GetComponent<SphereCollider>().enabled = false;
-
-    //    //    arrRigid.gravityScale = 0;
-    //    //    arrRigid.isKinematic = true;
-
-    //    //    if (arrCollider)
-    //    //        arrCollider.enabled = false;
-
-    //    //    trailFx.SetActive(false);
-    //    //    GameController.isArrowInScene = false;
-    //    //    transform.parent = other.collider.gameObject.transform;
-
-    //    //    //create blood fx
-    //    //    if (gameObject.tag == "arrow" || gameObject.tag == "axe")
-    //    //    {
-    //    //        GameObject blood = Instantiate(bloodFx, other.contacts[0].point + new Vector3(0, 0, -1.5f), Quaternion.Euler(0, 0, 0)) as GameObject;
-    //    //        blood.name = "BloodFX";
-    //    //        Destroy(blood, 1.5f);
-    //    //    }
-
-    //    //    //if this is a bomb weapon, we need an explosion after collision
-    //    //    if (gameObject.tag == "bomb")
-    //    //    {
-    //    //        GameObject exp = Instantiate(explosionFx, other.contacts[0].point + new Vector3(0, 0, -1.5f), Quaternion.Euler(0, 0, 0)) as GameObject;
-    //    //        exp.name = "Explosion";
-    //    //        Destroy(gameObject, 0.01f);
-    //    //    }
-
-    //    //    var enemy = other.collider.gameObject.GetComponentInParent<EnemyController>();
-
-    //    //    //manage victim's helath status
-    //    //    enemy.enemyCurrentHealth -= damage;
-
-    //    //    //save enemy state for lastHit. will be used if we need to move the enemy after getting hit
-    //    //    enemy.gotLastHit = true;
-
-    //    //    //play hit sfx
-    //    //    enemy.playRandomHitSound();
-
-    //    //    ////change the turn
-    //    //    //enemy.GetComponent<EnemyController>().changeTurns();
-    //    //}
-
-
-    //    //Collision with player
-    //    if ((oTag == "playerBody" || oTag == "playerLeg" || oTag == "playerHead") &&
-    //        (gameObject.tag == "arrow" || gameObject.tag == "axe" || gameObject.tag == "bomb"))
-    //    {
-
-    //        if (bypassCode)
-    //            yield break;
-
-    //        //disable the arrow
-    //        stopUpdate = true;
-    //        //GetComponent<Rigidbody>().useGravity = false;
-    //        //GetComponent<Rigidbody>().isKinematic = true;
-
-    //        //if (GetComponent<BoxCollider>())
-    //        //    GetComponent<BoxCollider>().enabled = false;
-
-    //        //if (GetComponent<SphereCollider>())
-    //        //    GetComponent<SphereCollider>().enabled = false;
-
-    //        arrRigid.gravityScale = 0;
-    //        arrRigid.isKinematic = true;
-
-    //        if (arrCollider)
-    //            arrCollider.enabled = false;
-
-    //        trailFx.SetActive(false);
-    //        GameController.isArrowInScene = false;
-    //        transform.parent = other.collider.gameObject.transform;
-
-    //        //create blood fx
-    //        GameObject blood = Instantiate(bloodFx, other.contacts[0].point + new Vector3(0, 0, -1.5f), Quaternion.Euler(0, 0, 0)) as GameObject;
-    //        blood.name = "BloodFX";
-    //        Destroy(blood, 1.5f);
-
-    //        //manage victim's helath status
-    //        player.GetComponent<PlayerController>().playerCurrentHealth -= damage;
-
-    //        //play hit sfx
-    //        player.GetComponent<PlayerController>().playRandomHitSound();
-
-    //        ////change the turn
-    //        //player.GetComponent<PlayerController>().changeTurns();
-    //    }
-
-
-    //    //Special case - collision with birds
-    //    if (oTag == "bird")
-    //    {
-    //        other.collider.gameObject.GetComponent<BirdsController>().die();
-    //        Destroy(gameObject);
-    //    }
-
-
-    //    //enable collision detection again
-    //    yield return new WaitForSeconds(0.5f);
-    //    isChecking = false;
-    //}
-
 }

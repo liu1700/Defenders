@@ -156,7 +156,7 @@ public class GameController : MonoBehaviour
         levelUI.goldNum.text = playerCoins.ToString();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         //we no longer need to loop into gameController if the game is already finished.
         if (gameIsFinished)
