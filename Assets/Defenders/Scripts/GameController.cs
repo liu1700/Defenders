@@ -233,6 +233,21 @@ public class GameController : MonoBehaviour
         SceneManager.LoadScene("Menu");
     }
 
+    public void TapToRetry()
+    {
+        if (!canTap)
+            return;
+
+        playSfx(tapSfx);                            //play touch sound
+        canTap = false;                             //prevent double touch
+        StartCoroutine(waitAnimation());
+
+        //show an Interstitial Ad when the game is paused
+        if (admgr)
+            admgr.showInterstitial();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
     public void TapViewVideo(int typ)
     {
         if (!canTap)
