@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
+using CnControls;
 using Anima2D;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     [Header("Public GamePlay settings")]
     public int baseShootPower;                 //base power. edit with care.
     public int playerHealth = 100;                  //starting (full) health. can be edited.
-    private int minShootPower = 900;                 //powers lesser than this amount are ignored. (used to cancel shoots)
+    private float minShootDistance = 0.3f;                 //powers lesser than this amount are ignored. (used to cancel shoots)
     internal int playerCurrentHealth;               //real-time health. not editable.
     public static bool isPlayerDead;                //flag for gameover event
 
@@ -53,6 +53,11 @@ public class PlayerController : MonoBehaviour
     float helperCreationDelay = 0.2f, helperShowDelay = 0.2f;
     float helperShowTimer;
 
+    float inputH, inputV;
+
+    string tapKey = "Fire1";
+    string hKey = "Horizontal", vKey = "Vertical";
+
     /// <summary>
     /// Init
     /// </summary>
@@ -66,7 +71,7 @@ public class PlayerController : MonoBehaviour
         isPlayerDead = false;
         helperDelayIsDone = false;
         canCreateHelper = true;
-
+        inputDirection = new Vector2();
         var g = GameObject.FindGameObjectWithTag("GameController");
         gc = g.GetComponent<GameController>();
     }
@@ -99,7 +104,7 @@ public class PlayerController : MonoBehaviour
             return;
 
         //Player pivot turn manager
-        if (Input.GetMouseButton(0))
+        if (CnInputManager.GetButton(tapKey))
         {
 
             turnPlayerBody();
@@ -112,17 +117,17 @@ public class PlayerController : MonoBehaviour
         }
 
         //register the initial Click Position
-        if (Input.GetMouseButtonDown(0))
+        if (CnInputManager.GetButtonDown(tapKey))
         {
             icp = new Vector2(inputPosX, inputPosY);
         }
 
         //clear the initial Click Position
-        if (Input.GetMouseButtonUp(0))
+        if (CnInputManager.GetButtonUp(tapKey))
         {
 
             //only shoot if there is enough power applied to the shoot
-            if (shootPower >= minShootPower && gc.AddGold(-1))
+            if (distanceFromFirstClick >= minShootDistance && gc.AddGold(-1))
             {
                 shootArrow();
             }
@@ -162,53 +167,99 @@ public class PlayerController : MonoBehaviour
         needUpdateHealth = true;
     }
 
+    public float Angle(Vector2 p_vector2)
+    {
+        if (p_vector2.x < 0)
+        {
+            return 360 - (Mathf.Atan2(p_vector2.x, p_vector2.y) * Mathf.Rad2Deg * -1);
+        }
+        else
+        {
+            return Mathf.Atan2(p_vector2.x, p_vector2.y) * Mathf.Rad2Deg;
+        }
+    }
+
     /// <summary>
     /// When player is aiming, we need to turn the body of the player based on the angle of icp and current input position
     /// </summary>
     void turnPlayerBody()
     {
+        inputH = CnInputManager.GetAxisRaw(hKey);
+        inputV = CnInputManager.GetAxisRaw(vKey);
+        inputDirection.Set(inputH, inputV);
+        shootDirection = 360 - Angle(inputDirection);
 
-        inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(inputRay, out hitInfo, 50))
+        if (shootDirection > 180)
         {
-            // determine the position on the screen
-            inputPosX = this.hitInfo.point.x;
-            inputPosY = this.hitInfo.point.y;
-            // set the bow's angle to the arrow
-            inputDirection = new Vector2(icp.x - inputPosX, icp.y - inputPosY);
-            shootDirection = (Mathf.Atan2(inputDirection.y, inputDirection.x) * Mathf.Rad2Deg) + 90;
-            Debug.Log("input " + this.hitInfo.point.ToString() + " src " + icp.ToString() + " inputDirection " + inputDirection.ToString() + " shootDirection " + shootDirection.ToString());
-
-            if (shootDirection > 180)
+            shootDirection -= 180;
+            if (shootDirection <= 90)
             {
-                shootDirection -= 180;
-                if (shootDirection <= 90)
-                {
-                    shootDirection = 180;
-                }
-                else
-                {
-                    shootDirection = 0;
-                }
+                shootDirection = 180;
             }
-
-            if (shootDirection < 0)
+            else
             {
                 shootDirection = 0;
             }
-
-            //apply the rotation
-            playerTurnPivot.bone.transform.rotation = Quaternion.Euler(0, 0, shootDirection);
-
-            //calculate shoot power
-            distanceFromFirstClick = inputDirection.magnitude / 4;
-            shootPower = Mathf.Clamp(distanceFromFirstClick, 0, 1) * 900;
-
-            if (shootPower >= minShootPower && helperDelayIsDone)
-            {
-                StartCoroutine(shootTrajectoryHelper());
-            }
         }
+
+        if (shootDirection < 0)
+        {
+            shootDirection = 0;
+        }
+
+        //apply the rotation
+        playerTurnPivot.bone.transform.rotation = Quaternion.Euler(0, 0, shootDirection);
+
+        //calculate shoot power
+        distanceFromFirstClick = Vector2.Distance(Vector2.zero, inputDirection);
+        shootPower = Mathf.Clamp(distanceFromFirstClick, 0, 1) * 900;
+
+        if (distanceFromFirstClick >= minShootDistance && helperDelayIsDone)
+        {
+            StartCoroutine(shootTrajectoryHelper());
+        }
+
+        //inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //if (Physics.Raycast(inputRay, out hitInfo, 50))
+        //{
+        //    // determine the position on the screen
+        //    inputPosX = this.hitInfo.point.x;
+        //    inputPosY = this.hitInfo.point.y;
+        //    // set the bow's angle to the arrow
+        //    inputDirection = new Vector2(icp.x - inputPosX, icp.y - inputPosY);
+        //    shootDirection = (Mathf.Atan2(inputDirection.y, inputDirection.x) * Mathf.Rad2Deg) + 90;
+        //    Debug.Log("input " + this.hitInfo.point.ToString() + " src " + icp.ToString() + " inputDirection " + inputDirection.ToString() + " shootDirection " + shootDirection.ToString() + " test dir " + dir.ToString());
+
+        //    if (shootDirection > 180)
+        //    {
+        //        shootDirection -= 180;
+        //        if (shootDirection <= 90)
+        //        {
+        //            shootDirection = 180;
+        //        }
+        //        else
+        //        {
+        //            shootDirection = 0;
+        //        }
+        //    }
+
+        //    if (shootDirection < 0)
+        //    {
+        //        shootDirection = 0;
+        //    }
+
+        //    //apply the rotation
+        //    playerTurnPivot.bone.transform.rotation = Quaternion.Euler(0, 0, shootDirection);
+
+        //    //calculate shoot power
+        //    distanceFromFirstClick = inputDirection.magnitude / 4;
+        //    shootPower = Mathf.Clamp(distanceFromFirstClick, 0, 1) * 900;
+
+        //    if (shootPower >= minShootPower && helperDelayIsDone)
+        //    {
+        //        StartCoroutine(shootTrajectoryHelper());
+        //    }
+        //}
     }
 
     /// <summary>
@@ -234,7 +285,7 @@ public class PlayerController : MonoBehaviour
         launcherCtrl.ownerID = 0;
 
         shootDirectionVector = Vector3.Normalize(inputDirection);
-        launcherCtrl.playerShootVector = shootDirectionVector * ((shootPower + baseShootPower) / 50);
+        launcherCtrl.playerShootVector = (shootDirectionVector * -1) * ((shootPower + baseShootPower) / 50);
 
         //reset body rotation
         StartCoroutine(resetBodyRotation());
@@ -252,7 +303,7 @@ public class PlayerController : MonoBehaviour
         GameObject t = Instantiate(trajectoryHelper, playerShootPosition.transform.position, Quaternion.Euler(0, 180, shootDirection * -1)) as GameObject;
         shootDirectionVector = Vector3.Normalize(inputDirection);
         //shootDirectionVector = new Vector3(Mathf.Clamp(shootDirectionVector.x, 0, 1), Mathf.Clamp(shootDirectionVector.y, 0, 1), shootDirectionVector.z);
-        t.GetComponent<Rigidbody2D>().AddForce(shootDirectionVector * ((shootPower + baseShootPower) / 50), ForceMode2D.Impulse);
+        t.GetComponent<Rigidbody2D>().AddForce((shootDirectionVector * -1) * ((shootPower + baseShootPower) / 50), ForceMode2D.Impulse);
 
         yield return new WaitForSeconds(helperCreationDelay);
         canCreateHelper = true;
