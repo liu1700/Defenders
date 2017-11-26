@@ -1,0 +1,331 @@
+fileFormatVersion: 2
+guid: f3855cbac687de64eb820901cc9580c4
+timeCreated: 1511704128
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: "res_0000_\u56FE\u5C42-13"
+    21300002: "res_0001_\u56FE\u5C42-10"
+    21300004: "res_0002_\u56FE\u5C42-8"
+    21300006: "res_0003_\u56FE\u5C42-12"
+    21300008: "res_0004_\u56FE\u5C42-17"
+    21300010: "res_0005_\u56FE\u5C42-23-\u62F7\u8D1D"
+    21300012: "res_0006_\u56FE\u5C42-23"
+    21300014: "res_0007_\u56FE\u5C42-22"
+    21300016: "res_0008_\u56FE\u5C42-21"
+    21300018: "res_0009_\u56FE\u5C42-24"
+    21300020: "res_0010_\u56FE\u5C42-19"
+    21300022: "res_0011_\u56FE\u5C42-18"
+    21300024: "res_0012_\u56FE\u5C42-8-\u62F7\u8D1D"
+    21300026: "res_0013_\u56FE\u5C42-15"
+    21300028: "res_0014_\u56FE\u5C42-14"
+    21300030: "res_0015_\u56FE\u5C42-1"
+    21300032: res
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapU: -1
+    wrapV: -1
+    wrapW: -1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 1024
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 1024
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Android
+    maxTextureSize: 1024
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: "res_0000_\u56FE\u5C42-13"
+      rect:
+        serializedVersion: 2
+        x: 361
+        y: 334
+        width: 41
+        height: 38
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: "res_0001_\u56FE\u5C42-10"
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 451
+        width: 112
+        height: 120
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: "res_0002_\u56FE\u5C42-8"
+      rect:
+        serializedVersion: 2
+        x: 361
+        y: 374
+        width: 130
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: "res_0003_\u56FE\u5C42-12"
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 678
+        width: 221
+        height: 196
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: "res_0004_\u56FE\u5C42-17"
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 470
+        width: 184
+        height: 91
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: "res_0005_\u56FE\u5C42-23-\u62F7\u8D1D"
+      rect:
+        serializedVersion: 2
+        x: 187
+        y: 278
+        width: 172
+        height: 197
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: "res_0006_\u56FE\u5C42-23"
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 436
+        width: 172
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: "res_0007_\u56FE\u5C42-22"
+      rect:
+        serializedVersion: 2
+        x: 433
+        y: 573
+        width: 74
+        height: 197
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: "res_0008_\u56FE\u5C42-21"
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 626
+        width: 207
+        height: 144
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: "res_0009_\u56FE\u5C42-24"
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 876
+        width: 239
+        height: 147
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: "res_0010_\u56FE\u5C42-19"
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 563
+        width: 201
+        height: 113
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: "res_0011_\u56FE\u5C42-18"
+      rect:
+        serializedVersion: 2
+        x: 204
+        y: 477
+        width: 187
+        height: 147
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: "res_0012_\u56FE\u5C42-8-\u62F7\u8D1D"
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 807
+        width: 15
+        height: 67
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: "res_0013_\u56FE\u5C42-15"
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 807
+        width: 15
+        height: 67
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: "res_0014_\u56FE\u5C42-14"
+      rect:
+        serializedVersion: 2
+        x: 242
+        y: 772
+        width: 231
+        height: 251
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: "res_0015_\u56FE\u5C42-1"
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 184
+        width: 166
+        height: 250
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    outline: []
+    physicsShape: []
+  spritePackingTag: 
+  userData: 99071038155654
+  assetBundleName: 
+  assetBundleVariant: 

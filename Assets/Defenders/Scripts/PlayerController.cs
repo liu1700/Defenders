@@ -23,8 +23,9 @@ public class PlayerController : MonoBehaviour
     //Reference to game objects (childs and prefabs)
     public GameObject arrow;
     public GameObject trajectoryHelper;
-    public Control playerTurnPivot;
+    public Control playerTurnPivot, hand;
     public GameObject playerShootPosition;
+    public LineRenderer topAnchor, lowerAnchor;
 
     [Header("Audio Clips")]
     public AudioClip[] shootSfx;
@@ -74,6 +75,15 @@ public class PlayerController : MonoBehaviour
         inputDirection = new Vector2();
         var g = GameObject.FindGameObjectWithTag("GameController");
         gc = g.GetComponent<GameController>();
+    }
+
+    private void Start()
+    {
+        //topAnchor.
+        topAnchor.SetPosition(0, topAnchor.transform.position);
+        topAnchor.SetPosition(1, hand.transform.position);
+        lowerAnchor.SetPosition(0, hand.transform.position);
+        lowerAnchor.SetPosition(1, lowerAnchor.transform.position);
     }
 
     /// <summary>
