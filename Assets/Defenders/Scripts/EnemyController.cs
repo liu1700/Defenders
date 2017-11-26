@@ -206,6 +206,11 @@ public class EnemyController : MonoBehaviour
         //wait a little for the camera to correctly get in position
         yield return new WaitForSeconds(0.95f);
 
+        if (isEnemyDead)
+        {
+            yield break;
+        }
+
         //we need to rotate enemy body to a random/calculated rotation angle
         float targetAngle = Random.Range(55, 75) * -1;  //important! (originate from 65)
         float t = 0;
@@ -216,6 +221,10 @@ public class EnemyController : MonoBehaviour
             yield return 0;
         }
 
+        if (isEnemyDead)
+        {
+            yield break;
+        }
         //play shoot sound
         playSfx(shootSfx[Random.Range(0, shootSfx.Length)]);
 
