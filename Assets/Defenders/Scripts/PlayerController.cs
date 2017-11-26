@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     [Header("Public GamePlay settings")]
     public int baseShootPower;                 //base power. edit with care.
     public int playerHealth = 100;                  //starting (full) health. can be edited.
-    private int minShootPower = 15;                 //powers lesser than this amount are ignored. (used to cancel shoots)
+    private int minShootPower = 900;                 //powers lesser than this amount are ignored. (used to cancel shoots)
     internal int playerCurrentHealth;               //real-time health. not editable.
     public static bool isPlayerDead;                //flag for gameover event
 
@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
     private Ray inputRay;
     private RaycastHit hitInfo;
     private float inputPosX;
+    private float preInputPosX;
     private float inputPosY;
     private Vector2 inputDirection;
     private float distanceFromFirstClick;
@@ -173,11 +174,11 @@ public class PlayerController : MonoBehaviour
             // determine the position on the screen
             inputPosX = this.hitInfo.point.x;
             inputPosY = this.hitInfo.point.y;
-
             // set the bow's angle to the arrow
             inputDirection = new Vector2(icp.x - inputPosX, icp.y - inputPosY);
-
             shootDirection = (Mathf.Atan2(inputDirection.y, inputDirection.x) * Mathf.Rad2Deg) + 90;
+            Debug.Log("input " + this.hitInfo.point.ToString() + " src " + icp.ToString() + " inputDirection " + inputDirection.ToString() + " shootDirection " + shootDirection.ToString());
+
             if (shootDirection > 180)
             {
                 shootDirection -= 180;
@@ -203,7 +204,7 @@ public class PlayerController : MonoBehaviour
             distanceFromFirstClick = inputDirection.magnitude / 4;
             shootPower = Mathf.Clamp(distanceFromFirstClick, 0, 1) * 900;
 
-            if (shootPower > minShootPower && helperDelayIsDone)
+            if (shootPower >= minShootPower && helperDelayIsDone)
             {
                 StartCoroutine(shootTrajectoryHelper());
             }
