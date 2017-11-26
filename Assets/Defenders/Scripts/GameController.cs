@@ -234,7 +234,7 @@ public class GameController : MonoBehaviour
             {
                 admgr.UploadUserRejectViewingVideoScene();
             }
-            admgr.showInterstitial();
+            //admgr.showInterstitial();
         }
         SceneManager.LoadScene("Menu");
     }

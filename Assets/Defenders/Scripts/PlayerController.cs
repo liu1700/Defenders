@@ -13,7 +13,6 @@ public class PlayerController : MonoBehaviour
     /// </summary>
 
     [Header("Public GamePlay settings")]
-    public bool useHelper = true;                   //use helper dots when player is aiming to shoot
     public int baseShootPower;                 //base power. edit with care.
     public int playerHealth = 100;                  //starting (full) health. can be edited.
     private int minShootPower = 15;                 //powers lesser than this amount are ignored. (used to cancel shoots)
@@ -48,6 +47,10 @@ public class PlayerController : MonoBehaviour
 
     GameController gc;
     bool needUpdateHealth;
+    bool helperDelayIsDone, canCreateHelper;
+
+    float helperCreationDelay = 0.2f, helperShowDelay = 0.2f;
+    float helperShowTimer;
 
     /// <summary>
     /// Init
@@ -60,6 +63,8 @@ public class PlayerController : MonoBehaviour
         playerCurrentHealth = playerHealth;
         needUpdateHealth = true;
         isPlayerDead = false;
+        helperDelayIsDone = false;
+        canCreateHelper = true;
 
         var g = GameObject.FindGameObjectWithTag("GameController");
         gc = g.GetComponent<GameController>();
@@ -98,6 +103,11 @@ public class PlayerController : MonoBehaviour
 
             turnPlayerBody();
 
+            helperShowTimer += Time.deltaTime;
+            if (helperShowTimer >= helperShowDelay)
+            {
+                helperDelayIsDone = true;
+            }
         }
 
         //register the initial Click Position
@@ -123,6 +133,8 @@ public class PlayerController : MonoBehaviour
 
             //reset variables
             icp = new Vector2(0, 0);
+            helperDelayIsDone = false;
+            helperShowTimer = 0;
         }
     }
 
@@ -190,6 +202,11 @@ public class PlayerController : MonoBehaviour
             //calculate shoot power
             distanceFromFirstClick = inputDirection.magnitude / 4;
             shootPower = Mathf.Clamp(distanceFromFirstClick, 0, 1) * 900;
+
+            if (shootPower > minShootPower && helperDelayIsDone)
+            {
+                StartCoroutine(shootTrajectoryHelper());
+            }
         }
     }
 
@@ -220,6 +237,24 @@ public class PlayerController : MonoBehaviour
 
         //reset body rotation
         StartCoroutine(resetBodyRotation());
+    }
+
+    IEnumerator shootTrajectoryHelper()
+    {
+        if (!canCreateHelper)
+        {
+            yield break;
+        }
+
+        canCreateHelper = false;
+
+        GameObject t = Instantiate(trajectoryHelper, playerShootPosition.transform.position, Quaternion.Euler(0, 180, shootDirection * -1)) as GameObject;
+        shootDirectionVector = Vector3.Normalize(inputDirection);
+        //shootDirectionVector = new Vector3(Mathf.Clamp(shootDirectionVector.x, 0, 1), Mathf.Clamp(shootDirectionVector.y, 0, 1), shootDirectionVector.z);
+        t.GetComponent<Rigidbody2D>().AddForce(shootDirectionVector * ((shootPower + baseShootPower) / 50), ForceMode2D.Impulse);
+
+        yield return new WaitForSeconds(helperCreationDelay);
+        canCreateHelper = true;
     }
 
 
