@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
     public GameObject playerShootPosition;
     public GameObject topAnchor, lowerAnchor, handAnchor;
     public GameObject minPos, maxPos;
+    public SimpleJoystick simpleJoystick;
 
     [Header("Audio Clips")]
     public AudioClip[] shootSfx;
@@ -239,7 +240,7 @@ public class PlayerController : MonoBehaviour
 
         //apply the rotation
         playerTurnPivot.bone.transform.rotation = Quaternion.Euler(0, 0, shootDirection);
-
+        simpleJoystick.RotateFakeBtn(Quaternion.Euler(0, 0, shootDirection - 90));
         //calculate shoot power
         distanceFromFirstClick = Vector2.Distance(Vector2.zero, inputDirection);
         powerPercent = Mathf.Clamp(distanceFromFirstClick, 0, 1);

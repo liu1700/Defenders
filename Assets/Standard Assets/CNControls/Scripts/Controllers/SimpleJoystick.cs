@@ -75,6 +75,12 @@ namespace CnControls
         public Image JoystickBase;
 
         /// <summary>
+        /// Image of the joystick base
+        /// </summary>
+        [Tooltip("Image of the fake joystick base")]
+        public Image FakeJoystickBase;
+
+        /// <summary>
         /// Image of the stick itself
         /// </summary>
         [Tooltip("Image of the stick itself")]
@@ -91,7 +97,10 @@ namespace CnControls
         private Vector2 _initialStickPosition;
         private Vector2 _intermediateStickPosition;
         private Vector2 _initialBasePosition;
+        private Vector2 _initialFakeBasePosition;
+
         private RectTransform _baseTransform;
+        private RectTransform _fakeBaseTransform;
         private RectTransform _stickTransform;
 
         private float _oneOverMovementRange;
@@ -103,13 +112,16 @@ namespace CnControls
         {
             _stickTransform = Stick.GetComponent<RectTransform>();
             _baseTransform = JoystickBase.GetComponent<RectTransform>();
+            _fakeBaseTransform = FakeJoystickBase.GetComponent<RectTransform>();
 
             _initialStickPosition = _stickTransform.anchoredPosition;
             _intermediateStickPosition = _initialStickPosition;
             _initialBasePosition = _baseTransform.anchoredPosition;
+            _initialFakeBasePosition = _fakeBaseTransform.anchoredPosition;
 
             _stickTransform.anchoredPosition = _initialStickPosition;
             _baseTransform.anchoredPosition = _initialBasePosition;
+            _fakeBaseTransform.anchoredPosition = _initialFakeBasePosition;
 
             _oneOverMovementRange = 1f / MovementRange;
 
@@ -186,6 +198,7 @@ namespace CnControls
                     var baseMovementDifference = difference.magnitude - MovementRange;
                     var addition = normalizedDifference * baseMovementDifference;
                     _baseTransform.anchoredPosition += addition;
+                    _fakeBaseTransform.anchoredPosition += addition;
                     _intermediateStickPosition += addition;
                 }
                 else
@@ -210,6 +223,7 @@ namespace CnControls
         public void OnPointerUp(PointerEventData eventData)
         {
             // When we lift our finger, we reset everything to the initial state
+            _fakeBaseTransform.anchoredPosition = _initialFakeBasePosition;
             _baseTransform.anchoredPosition = _initialBasePosition;
             _stickTransform.anchoredPosition = _initialStickPosition;
             _intermediateStickPosition = _initialStickPosition;
@@ -225,13 +239,13 @@ namespace CnControls
 
         public void OnPointerDown(PointerEventData eventData)
         {
-			// We also want to show it if we specified that behaviour
-			if (HideOnRelease)
-			{
-				Hide(false);
-			}
-			// When we press, we first want to snap the joystick to the user's finger
-			if (SnapsToFinger)
+            // We also want to show it if we specified that behaviour
+            if (HideOnRelease)
+            {
+                Hide(false);
+            }
+            // When we press, we first want to snap the joystick to the user's finger
+            if (SnapsToFinger)
             {
                 CurrentEventCamera = eventData.pressEventCamera ?? CurrentEventCamera;
 
@@ -243,6 +257,7 @@ namespace CnControls
                     CurrentEventCamera, out localBasePosition);
 
                 _baseTransform.position = localBasePosition;
+                _fakeBaseTransform.position = localBasePosition;
                 _stickTransform.position = localStickPosition;
                 _intermediateStickPosition = _stickTransform.anchoredPosition;
             }
@@ -259,7 +274,13 @@ namespace CnControls
         private void Hide(bool isHidden)
         {
             JoystickBase.gameObject.SetActive(!isHidden);
+            FakeJoystickBase.gameObject.SetActive(!isHidden);
             Stick.gameObject.SetActive(!isHidden);
+        }
+
+        public void RotateFakeBtn(Quaternion q)
+        {
+            FakeJoystickBase.transform.rotation = q;
         }
     }
 }
