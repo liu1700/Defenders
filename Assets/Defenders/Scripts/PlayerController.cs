@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
     [Header("Audio Clips")]
     public AudioClip[] shootSfx;
     public AudioClip[] hitSfx;
+    public AudioClip aimSfx;
 
 
     //private settings
@@ -169,6 +170,8 @@ public class PlayerController : MonoBehaviour
             icp = new Vector2(0, 0);
             helperDelayIsDone = false;
             helperShowTimer = 0;
+
+            hand.transform.position = minPos.transform.position;
         }
     }
 
@@ -238,16 +241,12 @@ public class PlayerController : MonoBehaviour
         //apply the rotation
         playerTurnPivot.bone.transform.rotation = Quaternion.Euler(0, 0, shootDirection);
 
-        //hand.transform.localPosition = new Vector3(hand.transform.localPosition.x, inputV);
-        //hand.
-
         //calculate shoot power
         distanceFromFirstClick = Vector2.Distance(Vector2.zero, inputDirection);
         powerPercent = Mathf.Clamp(distanceFromFirstClick, 0, 1);
         shootPower = powerPercent * 900;
 
         hand.transform.position = minPos.transform.TransformPoint(minPos.transform.localPosition.x - (distance * powerPercent), minPos.transform.localPosition.y, 0);
-        Debug.Log("hand pos " + hand.transform.position.ToString());
         if (distanceFromFirstClick >= minShootDistance && helperDelayIsDone)
         {
             StartCoroutine(shootTrajectoryHelper());
