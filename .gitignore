@@ -34,3 +34,4 @@ sysinfo.txt
 *.unitypackage
 Assets/.DS_Store
 Assets/Resources/.DS_Store
+Assets/Resources/Sprites/.DS_Store
