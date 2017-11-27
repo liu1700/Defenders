@@ -229,7 +229,7 @@ public class EnemyController : MonoBehaviour
         playSfx(shootSfx[Random.Range(0, shootSfx.Length)]);
 
         //shoot calculations
-        GameObject ea = Instantiate(arrow, enemyShootPosition.transform.position, Quaternion.Euler(0, 0, -45)) as GameObject;
+        GameObject ea = Instantiate(arrow, enemyShootPosition.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
         //ea.layer = GameController.enemyLayer;
         ea.name = "EnemyProjectile";
         ea.GetComponent<MainLauncherController>().ownerID = 1;

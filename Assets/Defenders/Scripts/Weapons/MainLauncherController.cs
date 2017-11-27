@@ -277,7 +277,7 @@ public class MainLauncherController : MonoBehaviour
             {
                 GameObject blood = Instantiate(bloodFx, collision.contacts[0].point, Quaternion.Euler(0, 0, 0)) as GameObject;
                 blood.name = "BloodFX";
-                blood.transform.localScale = new Vector3(6, 6, 6);
+                //blood.transform.localScale = new Vector3(6, 6, 6);
                 blood.transform.parent = collision.gameObject.transform;
                 Destroy(blood, 1.5f);
             }
