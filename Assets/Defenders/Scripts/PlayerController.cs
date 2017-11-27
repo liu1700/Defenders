@@ -25,7 +25,8 @@ public class PlayerController : MonoBehaviour
     public GameObject trajectoryHelper;
     public Control playerTurnPivot, hand;
     public GameObject playerShootPosition;
-    public LineRenderer topAnchor, lowerAnchor;
+    public GameObject topAnchor, lowerAnchor, handAnchor;
+    public GameObject minPos, maxPos;
 
     [Header("Audio Clips")]
     public AudioClip[] shootSfx;
@@ -59,6 +60,10 @@ public class PlayerController : MonoBehaviour
     string tapKey = "Fire1";
     string hKey = "Horizontal", vKey = "Vertical";
 
+    LineRenderer bowString;
+    Vector3 handSourceAnchor, topSourceAnchor, downSourceAnchor;
+    float distance, powerPercent;
+
     /// <summary>
     /// Init
     /// </summary>
@@ -75,15 +80,28 @@ public class PlayerController : MonoBehaviour
         inputDirection = new Vector2();
         var g = GameObject.FindGameObjectWithTag("GameController");
         gc = g.GetComponent<GameController>();
+        bowString = hand.gameObject.GetComponent<LineRenderer>();
+
+        distance = Vector2.Distance(minPos.transform.position, maxPos.transform.position);
     }
 
     private void Start()
     {
-        //topAnchor.
-        topAnchor.SetPosition(0, topAnchor.transform.position);
-        topAnchor.SetPosition(1, hand.transform.position);
-        lowerAnchor.SetPosition(0, hand.transform.position);
-        lowerAnchor.SetPosition(1, lowerAnchor.transform.position);
+        UpdateBowString();
+    }
+
+    //void ResetBowString()
+    //{
+    //    bowString.SetPosition(0, topAnchor.transform.position);
+    //    bowString.SetPosition(1, minPos.transform.position);
+    //    bowString.SetPosition(2, lowerAnchor.transform.position);
+    //}
+
+    void UpdateBowString()
+    {
+        bowString.SetPosition(0, topAnchor.transform.position);
+        bowString.SetPosition(1, handAnchor.transform.position);
+        bowString.SetPosition(2, lowerAnchor.transform.position);
     }
 
     /// <summary>
@@ -91,6 +109,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Update()
     {
+        UpdateBowString();
 
         //if the game has not started yet, or the game is finished, just return
         if (!GameController.gameIsStarted || GameController.gameIsFinished)
@@ -118,7 +137,6 @@ public class PlayerController : MonoBehaviour
         {
 
             turnPlayerBody();
-
             helperShowTimer += Time.deltaTime;
             if (helperShowTimer >= helperShowDelay)
             {
@@ -220,56 +238,20 @@ public class PlayerController : MonoBehaviour
         //apply the rotation
         playerTurnPivot.bone.transform.rotation = Quaternion.Euler(0, 0, shootDirection);
 
+        //hand.transform.localPosition = new Vector3(hand.transform.localPosition.x, inputV);
+        //hand.
+
         //calculate shoot power
         distanceFromFirstClick = Vector2.Distance(Vector2.zero, inputDirection);
-        shootPower = Mathf.Clamp(distanceFromFirstClick, 0, 1) * 900;
+        powerPercent = Mathf.Clamp(distanceFromFirstClick, 0, 1);
+        shootPower = powerPercent * 900;
 
+        hand.transform.position = minPos.transform.TransformPoint(minPos.transform.localPosition.x - (distance * powerPercent), minPos.transform.localPosition.y, 0);
+        Debug.Log("hand pos " + hand.transform.position.ToString());
         if (distanceFromFirstClick >= minShootDistance && helperDelayIsDone)
         {
             StartCoroutine(shootTrajectoryHelper());
         }
-
-        //inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //if (Physics.Raycast(inputRay, out hitInfo, 50))
-        //{
-        //    // determine the position on the screen
-        //    inputPosX = this.hitInfo.point.x;
-        //    inputPosY = this.hitInfo.point.y;
-        //    // set the bow's angle to the arrow
-        //    inputDirection = new Vector2(icp.x - inputPosX, icp.y - inputPosY);
-        //    shootDirection = (Mathf.Atan2(inputDirection.y, inputDirection.x) * Mathf.Rad2Deg) + 90;
-        //    Debug.Log("input " + this.hitInfo.point.ToString() + " src " + icp.ToString() + " inputDirection " + inputDirection.ToString() + " shootDirection " + shootDirection.ToString() + " test dir " + dir.ToString());
-
-        //    if (shootDirection > 180)
-        //    {
-        //        shootDirection -= 180;
-        //        if (shootDirection <= 90)
-        //        {
-        //            shootDirection = 180;
-        //        }
-        //        else
-        //        {
-        //            shootDirection = 0;
-        //        }
-        //    }
-
-        //    if (shootDirection < 0)
-        //    {
-        //        shootDirection = 0;
-        //    }
-
-        //    //apply the rotation
-        //    playerTurnPivot.bone.transform.rotation = Quaternion.Euler(0, 0, shootDirection);
-
-        //    //calculate shoot power
-        //    distanceFromFirstClick = inputDirection.magnitude / 4;
-        //    shootPower = Mathf.Clamp(distanceFromFirstClick, 0, 1) * 900;
-
-        //    if (shootPower >= minShootPower && helperDelayIsDone)
-        //    {
-        //        StartCoroutine(shootTrajectoryHelper());
-        //    }
-        //}
     }
 
     /// <summary>
