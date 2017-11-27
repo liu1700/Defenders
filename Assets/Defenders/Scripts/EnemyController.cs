@@ -20,7 +20,7 @@ public class EnemyController : MonoBehaviour
 
     [Header("Public GamePlay settings")]
     public int enemyHealth = 100;                   //initial (full) health. can be edited.
-    private float baseShootAngle = 61.5f;           //Very important! - avoid editing this value! (it has been calculated based on the size/shape/weight of the arrow)
+    public float baseShootAngle = 23f;           //Very important! - avoid editing this value! (it has been calculated based on the size/shape/weight of the arrow) preVal 61.5
     private float shootAngleError = 0;              //We use this to give some erros to enemy shoots. Setting this to 0 will results in accurate shoots
     public static float fakeWindPower = 0;              //We use this if we need to add more randomness to enemy shots.
     internal int enemyCurrentHealth;                //not editable.
@@ -67,19 +67,19 @@ public class EnemyController : MonoBehaviour
         switch (enemySkill)
         {
             case enemySkillLevels.easy:
-                shootAngleError = 2.0f;
+                shootAngleError = 15f;
                 fakeWindPower = Random.Range(0, 30);
                 break;
             case enemySkillLevels.normal:
-                shootAngleError = 1.0f;
+                shootAngleError = 10f;
                 fakeWindPower = Random.Range(0, 20);
                 break;
             case enemySkillLevels.hard:
-                shootAngleError = 0.3f;
+                shootAngleError = 8f;
                 fakeWindPower = Random.Range(0, 10);
                 break;
             case enemySkillLevels.Robinhood:
-                shootAngleError = 0;
+                shootAngleError = 2;
                 fakeWindPower = 0;
                 break;
         }
@@ -177,28 +177,28 @@ public class EnemyController : MonoBehaviour
 
         canShoot = false;
 
-        //if enemy needs to move a little after getting hit in the last round...
-        //we can do this to prevent player from using the same setting (power + angle) to hit the enemy again...
-        if (moveAfterEachHit && gotLastHit)
-        {
-            yield return new WaitForSeconds(2);
-            float curPosX = transform.position.x;
-            float newPosX = transform.position.x + Random.Range(4, 9);
+        ////if enemy needs to move a little after getting hit in the last round...
+        ////we can do this to prevent player from using the same setting (power + angle) to hit the enemy again...
+        //if (moveAfterEachHit && gotLastHit)
+        //{
+        //    yield return new WaitForSeconds(2);
+        //    float curPosX = transform.position.x;
+        //    float newPosX = transform.position.x + Random.Range(4, 9);
 
-            float a = 0;
-            while (a < 1)
-            {
-                a += Time.deltaTime;
-                transform.position = new Vector3(Mathf.Lerp(curPosX, newPosX, a), transform.position.y, transform.position.z);
-                yield return 0;
-            }
+        //    float a = 0;
+        //    while (a < 1)
+        //    {
+        //        a += Time.deltaTime;
+        //        transform.position = new Vector3(Mathf.Lerp(curPosX, newPosX, a), transform.position.y, transform.position.z);
+        //        yield return 0;
+        //    }
 
-            if (a >= 1)
-            {
-                //reset lasthit state
-                gotLastHit = false;
-            }
-        }
+        //    if (a >= 1)
+        //    {
+        //        //reset lasthit state
+        //        gotLastHit = false;
+        //    }
+        //}
 
         //set the unique flag
         GameController.isArrowInScene = true;
@@ -212,7 +212,7 @@ public class EnemyController : MonoBehaviour
         }
 
         //we need to rotate enemy body to a random/calculated rotation angle
-        float targetAngle = Random.Range(55, 75) * -1;  //important! (originate from 65)
+        float targetAngle = Random.Range(25, 40) * -1;  //important! (originate from 55)
         float t = 0;
         while (t < 1)
         {
@@ -229,12 +229,13 @@ public class EnemyController : MonoBehaviour
         playSfx(shootSfx[Random.Range(0, shootSfx.Length)]);
 
         //shoot calculations
-        GameObject ea = Instantiate(arrow, enemyShootPosition.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+        GameObject ea = Instantiate(arrow, enemyShootPosition.transform.position, Quaternion.Euler(0, 0, 10)) as GameObject;
         //ea.layer = GameController.enemyLayer;
         ea.name = "EnemyProjectile";
         ea.GetComponent<MainLauncherController>().ownerID = 1;
 
         float finalShootAngle = baseShootAngle + Random.Range(-shootAngleError, shootAngleError);
+        //float finalShootAngle = baseShootAngle;
         ea.GetComponent<MainLauncherController>().enemyShootAngle = finalShootAngle;
 
         //at the end
@@ -259,7 +260,7 @@ public class EnemyController : MonoBehaviour
     /// </summary>
     IEnumerator reactiveEnemyShoot()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1.5f);
         canShoot = true;
     }
 

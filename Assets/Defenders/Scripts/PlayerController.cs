@@ -223,8 +223,6 @@ public class PlayerController : MonoBehaviour
             inputH = 0;
         }
 
-        Debug.Log("inputh " + inputH.ToString() + "v" + inputV.ToString());
-
         inputDirection.Set(inputH, inputV);
         shootDirection = 360 - Angle(inputDirection);
 

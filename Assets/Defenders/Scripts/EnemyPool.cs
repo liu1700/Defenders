@@ -42,12 +42,12 @@ public class EnemyPool : MonoBehaviour
         // key: 第几回合, val: 解锁刷新人数值域
         enemyCountUnlock = new Dictionary<int, int[]>();
         enemyCountUnlock.Add(1, new int[] { 1, 2 });
-        enemyCountUnlock.Add(5, new int[] { 1, 3 });
-        enemyCountUnlock.Add(8, new int[] { 2, 4 });
+        enemyCountUnlock.Add(5, new int[] { 2, 3 });
+        enemyCountUnlock.Add(8, new int[] { 3, 4 });
         enemyCountUnlock.Add(12, new int[] { 3, 5 });
         enemyCountUnlock.Add(16, new int[] { 3, 6 });
-        enemyCountUnlock.Add(21, new int[] { 4, 6 });
-        enemyCountUnlock.Add(25, new int[] { 4, 7 });
+        enemyCountUnlock.Add(21, new int[] { 5, 7 });
+        enemyCountUnlock.Add(25, new int[] { 5, 8 });
 
         minEnemyCount = 1;
         maxEnemyCount = 1;
