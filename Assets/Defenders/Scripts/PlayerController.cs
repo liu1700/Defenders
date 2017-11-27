@@ -31,7 +31,6 @@ public class PlayerController : MonoBehaviour
     [Header("Audio Clips")]
     public AudioClip[] shootSfx;
     public AudioClip[] hitSfx;
-    public AudioClip aimSfx;
 
 
     //private settings
