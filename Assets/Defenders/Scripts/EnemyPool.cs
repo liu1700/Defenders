@@ -7,9 +7,24 @@ public class EnemyPool : MonoBehaviour
 {
 
     private List<EnemyController> list;
+
+    [Header("Level props")]
+    // 期待的玩家完成一局游戏的总时长
+    public int ExpectGamingTimePerLvInSec;
+    public int ExpectTakingDamagePerLvInPercent;
+    public int LvParam;
+    public int DamageParam;
+
+    [Header("Enemy Object")]
     public GameObject enemyArcherObject;
-    public float minX, maxX;
-    public float minY, maxY;
+
+    [Header("Archer respawn area")]
+    public float minX;
+    public float maxX;
+    public float minY;
+    public float maxY;
+
+
     private List<Vector3> positions;
 
     float minEnemyCount, maxEnemyCount;
@@ -18,6 +33,33 @@ public class EnemyPool : MonoBehaviour
     Dictionary<int, EnemyController.enemySkillLevels> levelUnlock;
     Dictionary<EnemyController.enemySkillLevels, string> gameObjectMap;
     Dictionary<int, int[]> enemyCountUnlock;
+
+    public void GenerateEnemyInfoPerLv()
+    {
+        if (ExpectTakingDamagePerLvInPercent > 0)
+        {
+            var lvCount = 100 / ExpectTakingDamagePerLvInPercent;
+            if (lvCount < 1)
+            {
+                Debug.Log("ExpectTakingDamagePerLvInPercent must < 100");
+                return;
+            }
+            for (int i = 1; i <= lvCount; i++)
+            {
+                GenerateEnemyInfoForLv(i);
+            }
+        }
+        else
+        {
+            Debug.Log("must greater than 0");
+        }
+    }
+
+    void GenerateEnemyInfoForLv(int lv)
+    {
+        var needEnemiesCount = ((lv * LvParam) / ExpectGamingTimePerLvInSec) - (DamageParam * ExpectTakingDamagePerLvInPercent);
+        Debug.Log("in lv " + lv.ToString() + " need enemies " + needEnemiesCount.ToString());
+    }
 
     void Awake()
     {
