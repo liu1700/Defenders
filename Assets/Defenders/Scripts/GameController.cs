@@ -71,6 +71,7 @@ public class GameController : MonoBehaviour
     public static int enemyLayer;
     public static int environmentLayer;
     public static int playerLayer;
+    public static int towerLayer;
 
     int maxKilled;
     PlayerController playerController;
@@ -148,6 +149,7 @@ public class GameController : MonoBehaviour
         enemyLayer = LayerMask.NameToLayer("enemy");
         environmentLayer = LayerMask.NameToLayer("environment");
         playerLayer = LayerMask.NameToLayer("player");
+        towerLayer = LayerMask.NameToLayer("tower");
     }
 
     void Start()
@@ -184,20 +186,10 @@ public class GameController : MonoBehaviour
         }
 
         // DEBUG COMMANDS //
-        //Force restart
-        if (Input.GetKey(KeyCode.R))
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
         //Fake damage to player
         if (Input.GetKeyUp(KeyCode.D))
         {
-            playerController.AddHealth(-10);
-        }
-        //Fake damage to enemy
-        if (Input.GetKeyUp(KeyCode.E))
-        {
-            enemy.GetComponent<EnemyController>().enemyCurrentHealth -= 10;
+            playerController.AddHealth(-100);
         }
     }
 

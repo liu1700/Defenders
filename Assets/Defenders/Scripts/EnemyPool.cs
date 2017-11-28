@@ -7,8 +7,7 @@ public class EnemyPool : MonoBehaviour
 {
 
     private List<EnemyController> list;
-    public GameObject enemyObject;
-    public Vector3 center;
+    public GameObject enemyArcherObject;
     public float minX, maxX;
     public float minY, maxY;
     private List<Vector3> positions;
@@ -51,6 +50,22 @@ public class EnemyPool : MonoBehaviour
 
         minEnemyCount = 1;
         maxEnemyCount = 1;
+    }
+
+    //  选中时绘制一个方块
+    void OnDrawGizmosSelected()
+    {
+        var centerX = minX + ((maxX - minX) / 2);
+        var centerY = minY + ((maxY - minY) / 2);
+
+        Gizmos.DrawCube(new Vector3(centerX, centerY), new Vector3(maxX - minX, maxY - minY));
+
+    }
+    //  绘制一个球
+    void OnDrawGizmos()
+    {
+        //Gizmos.color = Color.red;
+        //Gizmos.DrawWireSphere(transform.position, 0.4f);
     }
 
     void refreshLevelInfo(int turn)
@@ -103,12 +118,12 @@ public class EnemyPool : MonoBehaviour
     {
         refreshLevelInfo(turn);
 
+        // for archers
         generatePos();
-
         for (int i = 0; i < positions.Count; i++)
         {
             var pos = positions[i];
-            GameObject ea = Instantiate(enemyObject, pos, Quaternion.Euler(0, 0, 0), gameObject.transform) as GameObject;
+            GameObject ea = Instantiate(enemyArcherObject, pos, Quaternion.Euler(0, 0, 0), gameObject.transform) as GameObject;
             var ctrl = ea.GetComponent<EnemyController>();
             System.Random random = new System.Random();
 

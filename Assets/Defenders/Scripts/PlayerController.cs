@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Public GamePlay settings")]
     public int baseShootPower;                 //base power. edit with care.
-    public int playerHealth = 100;                  //starting (full) health. can be edited.
+    public int playerHealth = 1000;                  //starting (full) health. can be edited.
     private float minShootDistance = 0.3f;                 //powers lesser than this amount are ignored. (used to cancel shoots)
     internal int playerCurrentHealth;               //real-time health. not editable.
     public static bool isPlayerDead;                //flag for gameover event
@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
     [Header("Audio Clips")]
     public AudioClip[] shootSfx;
     public AudioClip[] hitSfx;
-
+    public AudioClip[] hitTowerSfx;
 
     //private settings
     private Vector2 icp;                            //initial Click Position
@@ -65,6 +65,8 @@ public class PlayerController : MonoBehaviour
     Vector3 handSourceAnchor, topSourceAnchor, downSourceAnchor;
     float distance, powerPercent;
 
+    AudioSource audioSource;
+
     /// <summary>
     /// Init
     /// </summary>
@@ -82,7 +84,7 @@ public class PlayerController : MonoBehaviour
         var g = GameObject.FindGameObjectWithTag("GameController");
         gc = g.GetComponent<GameController>();
         bowString = hand.gameObject.GetComponent<LineRenderer>();
-
+        audioSource = GetComponent<AudioSource>();
         distance = Vector2.Distance(minPos.transform.position, maxPos.transform.position);
     }
 
@@ -330,10 +332,10 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void playSfx(AudioClip _clip)
     {
-        GetComponent<AudioSource>().clip = _clip;
-        if (!GetComponent<AudioSource>().isPlaying)
+        audioSource.clip = _clip;
+        if (!audioSource.isPlaying)
         {
-            GetComponent<AudioSource>().Play();
+            audioSource.Play();
         }
     }
 
@@ -343,8 +345,15 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void playRandomHitSound()
     {
-        int rndIndex = Random.Range(0, hitSfx.Length);
-        playSfx(hitSfx[rndIndex]);
+        playSfx(hitSfx[Random.Range(0, hitSfx.Length)]);
+    }
+
+    public void playRandomHitTowerSound()
+    {
+        if (hitTowerSfx.Length > 0)
+        {
+            playSfx(hitTowerSfx[Random.Range(0, hitTowerSfx.Length)]);
+        }
     }
 
 }

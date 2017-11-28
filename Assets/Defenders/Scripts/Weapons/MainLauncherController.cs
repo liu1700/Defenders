@@ -305,6 +305,30 @@ public class MainLauncherController : MonoBehaviour
             // sleep it
             arrRigid.Sleep();
         }
+        else if (collisionLayerMask == GameController.towerLayer && gameObject.layer == enemyShootingLayer)
+        {
+            stopUpdate = true;
+            arrRigid.gravityScale = 0;
+            arrRigid.bodyType = RigidbodyType2D.Static;
+            arrRigid.Sleep();
+
+            if (arrCollider)
+                arrCollider.enabled = false;
+
+            trailFx.SetActive(false);
+
+            GameController.isArrowInScene = false;
+
+            transform.parent = collision.gameObject.transform;
+
+            //manage victim's helath status
+            player.GetComponent<PlayerController>().AddHealth(-damage);
+
+            //play hit tower sfx
+            player.GetComponent<PlayerController>().playRandomHitTowerSound();
+
+            Destroy(gameObject, 10f);
+        }
         else if (collisionLayerMask == GameController.playerLayer && gameObject.layer == enemyShootingLayer)
         {
             stopUpdate = true;

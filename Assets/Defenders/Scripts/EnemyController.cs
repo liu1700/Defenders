@@ -177,29 +177,6 @@ public class EnemyController : MonoBehaviour
 
         canShoot = false;
 
-        ////if enemy needs to move a little after getting hit in the last round...
-        ////we can do this to prevent player from using the same setting (power + angle) to hit the enemy again...
-        //if (moveAfterEachHit && gotLastHit)
-        //{
-        //    yield return new WaitForSeconds(2);
-        //    float curPosX = transform.position.x;
-        //    float newPosX = transform.position.x + Random.Range(4, 9);
-
-        //    float a = 0;
-        //    while (a < 1)
-        //    {
-        //        a += Time.deltaTime;
-        //        transform.position = new Vector3(Mathf.Lerp(curPosX, newPosX, a), transform.position.y, transform.position.z);
-        //        yield return 0;
-        //    }
-
-        //    if (a >= 1)
-        //    {
-        //        //reset lasthit state
-        //        gotLastHit = false;
-        //    }
-        //}
-
         //set the unique flag
         GameController.isArrowInScene = true;
 
@@ -211,13 +188,16 @@ public class EnemyController : MonoBehaviour
             yield break;
         }
 
+        float finalShootAngle = baseShootAngle + Random.Range(-shootAngleError, shootAngleError);
+
         //we need to rotate enemy body to a random/calculated rotation angle
-        float targetAngle = Random.Range(25, 40) * -1;  //important! (originate from 55)
+        //float targetAngle = Random.Range(25, 40) * -1;  //important! (originate from 55)
         float t = 0;
         while (t < 1)
         {
             t += Time.deltaTime;
-            enemyTurnPivot.transform.rotation = Quaternion.Euler(0, 0, Mathf.SmoothStep(-90, targetAngle - 90, t));
+            //enemyTurnPivot.transform.rotation = Quaternion.Euler(0, 0, Mathf.SmoothStep(-90, targetAngle - 90, t));
+            enemyTurnPivot.transform.rotation = Quaternion.Euler(0, 0, Mathf.SmoothStep(-90, -finalShootAngle - 90, t));
             yield return 0;
         }
 
@@ -234,7 +214,7 @@ public class EnemyController : MonoBehaviour
         ea.name = "EnemyProjectile";
         ea.GetComponent<MainLauncherController>().ownerID = 1;
 
-        float finalShootAngle = baseShootAngle + Random.Range(-shootAngleError, shootAngleError);
+        //float finalShootAngle = baseShootAngle + Random.Range(-shootAngleError, shootAngleError);
         //float finalShootAngle = baseShootAngle;
         ea.GetComponent<MainLauncherController>().enemyShootAngle = finalShootAngle;
 
