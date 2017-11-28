@@ -93,13 +93,6 @@ public class PlayerController : MonoBehaviour
         UpdateBowString();
     }
 
-    //void ResetBowString()
-    //{
-    //    bowString.SetPosition(0, topAnchor.transform.position);
-    //    bowString.SetPosition(1, minPos.transform.position);
-    //    bowString.SetPosition(2, lowerAnchor.transform.position);
-    //}
-
     void UpdateBowString()
     {
         bowString.SetPosition(0, topAnchor.transform.position);

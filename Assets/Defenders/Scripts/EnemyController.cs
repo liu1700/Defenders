@@ -25,8 +25,6 @@ public class EnemyController : MonoBehaviour
     public static float fakeWindPower = 0;              //We use this if we need to add more randomness to enemy shots.
     internal int enemyCurrentHealth;                //not editable.
     public bool isEnemyDead;                 //flag for gameover event
-    public bool moveAfterEachHit = true;            //if set to true, enemy will move a little after getting hit by player
-    internal bool gotLastHit = false;               //will set to ture if enemy got hit in the previous round (by player)
 
     [Header("Linked GameObjects")]
     //Reference to game objects (childs and prefabs)
@@ -45,6 +43,8 @@ public class EnemyController : MonoBehaviour
 
     EnemyPool poolRef;
 
+	AudioSource audioSource;
+
     //Init
     void Awake()
     {
@@ -58,9 +58,10 @@ public class EnemyController : MonoBehaviour
         enemyCurrentHealth = enemyHealth;
         canShoot = false;
         isEnemyDead = false;
-        gotLastHit = false;
         var g = GameObject.FindGameObjectWithTag("GameController");
         gc = g.GetComponent<GameController>();
+
+		audioSource = GetComponent<AudioSource> ();
 
         //Increase difficulty by decreasing the enemy error when shooting
         //Please note that "shootAngleError" is not editable. If you want to change the precision, you need to edit "fakeWindPower"
@@ -180,9 +181,6 @@ public class EnemyController : MonoBehaviour
         //set the unique flag
         GameController.isArrowInScene = true;
 
-        //wait a little for the camera to correctly get in position
-        yield return new WaitForSeconds(0.95f);
-
         if (isEnemyDead)
         {
             yield break;
@@ -250,10 +248,10 @@ public class EnemyController : MonoBehaviour
     /// </summary>
     void playSfx(AudioClip _clip)
     {
-        GetComponent<AudioSource>().clip = _clip;
-        if (!GetComponent<AudioSource>().isPlaying)
+		audioSource.clip = _clip;
+		if (!audioSource.isPlaying)
         {
-            GetComponent<AudioSource>().Play();
+			audioSource.Play();
         }
     }
 

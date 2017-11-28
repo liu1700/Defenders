@@ -296,9 +296,6 @@ public class MainLauncherController : MonoBehaviour
                 bodyPart.gravityScale = 3f;
             }
 
-            //save enemy state for lastHit. will be used if we need to move the enemy after getting hit
-            enemy.gotLastHit = true;
-
             //play hit sfx
             enemy.playRandomHitSound();
 
