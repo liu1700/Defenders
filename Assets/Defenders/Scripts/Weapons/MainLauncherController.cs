@@ -46,11 +46,6 @@ public class MainLauncherController : MonoBehaviour
 
     public static int damage;       //damage this weapon deals to target
     private bool stopUpdate;        //we need to stop this weapon after collision
-    //private bool bypassCode;        //we use this for the segments of our class that requires an enemy, but the current gameMode does not need an enemy
-
-    //special weapon-specific flags
-    //private bool bombExplosionByPlayer;		//flag to set if explosion has been done by player input
-    //private bool bombExplosionByEnemy;		//flag to set if explosion has been done by enemy AI
 
     Rigidbody2D arrRigid;
     BoxCollider2D arrCollider;
@@ -291,7 +286,7 @@ public class MainLauncherController : MonoBehaviour
             //play hit tower sfx
             GameController.playerController.playRandomHitTowerSound();
 
-            Destroy(gameObject, 10f);
+            Destroy(gameObject, 3f);
         }
         else if (collisionLayerMask == GameController.playerLayer && gameObject.layer == enemyShootingLayer)
         {
