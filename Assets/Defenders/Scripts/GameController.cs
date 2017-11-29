@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -14,7 +15,6 @@ public class GameController : MonoBehaviour
     /// checking for gameover events and post gameover settings.
     /// </summary>
 
-    //[Header("Background Type")]
     public enum groundTypes { flat, curved }
     public groundTypes groundType = groundTypes.flat;   //we have two options here. default is flat ground.
     public GameObject flatBg;                           //reference to flag ground object.
@@ -22,6 +22,7 @@ public class GameController : MonoBehaviour
     public LevelUI levelUI;
     public GameOverManager gameOverManager;
     public PauseManager pauseManager;
+	public Image cdImage;
 
     // Static variables //
     public static int gameMode;                     //current game mode
@@ -45,7 +46,6 @@ public class GameController : MonoBehaviour
     [Header("AudioClips")]
     public AudioClip tapSfx;
     public AudioClip endSfx;
-
 
     [Header("Public GameObjects")]
     //Reference to scene game objects		
