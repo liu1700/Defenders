@@ -26,6 +26,7 @@ public class EnemyBomberController : EnemyController
     void Start()
     {
         rigidbody = GetComponent<Rigidbody2D>();
+        canWalk = true;
     }
 
     public override void InitEnemy(int id, enemySkillLevels enemySkillLevel, string objName)

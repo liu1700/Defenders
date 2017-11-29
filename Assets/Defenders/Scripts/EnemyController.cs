@@ -18,7 +18,6 @@ public abstract class EnemyController : MonoBehaviour
 
     [Header("Public GamePlay settings")]
     public int enemyHealth = 100;                   //initial (full) health. can be edited.
-    public float baseShootAngle = 23f;           //Very important! - avoid editing this value! (it has been calculated based on the size/shape/weight of the arrow) preVal 61.5
     [HideInInspector]
     public float shootAngleError = 0;              //We use this to give some erros to enemy shoots. Setting this to 0 will results in accurate shoots
     public static float fakeWindPower = 0;              //We use this if we need to add more randomness to enemy shots.
@@ -35,9 +34,7 @@ public abstract class EnemyController : MonoBehaviour
     public AudioClip[] shootSfx;
     public AudioClip[] hitSfx;
 
-    //Enemy shoot settings
-    [HideInInspector]
-    public bool canShoot;
+
     [HideInInspector]
     public EnemyPool poolRef;
     AudioSource audioSource;
@@ -52,7 +49,6 @@ public abstract class EnemyController : MonoBehaviour
         }
 
         enemyCurrentHealth = enemyHealth;
-        canShoot = false;
         isEnemyDead = false;
         var g = GameObject.FindGameObjectWithTag("GameController");
         gc = g.GetComponent<GameController>();
