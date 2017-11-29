@@ -161,10 +161,10 @@ public class EnemyArcherController : EnemyController
         GetComponentInChildren<BodyController>().ActiveRigidBodys();
     }
 
-    public override void InitEnemy(int id, enemySkillLevels enemySkillLevel, string objName)
+    public override void InitEnemy(enemySkillLevels enemySkillLevel, string objName)
     {
         enemySkill = enemySkillLevel;
-        enemyId = id;
+        //enemyId = id;
 
         var obj = gameObject.transform.Find(objName).gameObject;
         obj.SetActive(true);

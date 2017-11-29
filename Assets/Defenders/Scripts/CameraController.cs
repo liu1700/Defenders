@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using EZCameraShake;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -11,6 +12,7 @@ public class CameraController : MonoBehaviour
     /// </summary>
 
     float cps = 15;           //camera's projection size
+    public CameraShaker cameraShaker;
 
     internal Vector3 cameraCurrentPos;
 
@@ -26,6 +28,13 @@ public class CameraController : MonoBehaviour
         transform.position = pos;
     }
 
+    public void ShakeIt()
+    {
+        if (cameraShaker)
+        {
+            cameraShaker.ShakeOnce();
+        }
+    }
 
     void Start()
     {

@@ -14,6 +14,7 @@ public abstract class EnemyController : MonoBehaviour
     public enum enemySkillLevels { easy, normal, hard, Robinhood }
     public enemySkillLevels enemySkill = enemySkillLevels.easy;
 
+    public static int enemyIdCounter;
     public int enemyId;
 
     [Header("Public GamePlay settings")]
@@ -42,6 +43,10 @@ public abstract class EnemyController : MonoBehaviour
     //Init
     void Awake()
     {
+        enemyId = enemyIdCounter;
+
+        enemyIdCounter++;
+
         //First of all, check if we need an enemy with the current game mode
         if (!GameModeController.isEnemyRequired())
         {
@@ -93,7 +98,7 @@ public abstract class EnemyController : MonoBehaviour
         }
     }
 
-    public abstract void InitEnemy(int id, enemySkillLevels enemySkillLevel, string objName);
+    public abstract void InitEnemy(enemySkillLevels enemySkillLevel, string objName);
     public abstract void LetMeFly();
     public abstract void playRandomHitSound();
 }

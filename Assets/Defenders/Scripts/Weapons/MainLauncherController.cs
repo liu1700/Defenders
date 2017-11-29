@@ -264,8 +264,11 @@ public class MainLauncherController : MonoBehaviour
             {
                 enemy.LetMeFly();
                 var bodyPart = collision.collider.gameObject.GetComponent<Rigidbody2D>();
-                bodyPart.velocity = Vector2.right * 70;
-                bodyPart.gravityScale = 3f;
+                if (bodyPart)
+                {
+                    bodyPart.velocity = Vector2.right * 50;
+                    bodyPart.gravityScale = 3f;
+                }
             }
 
             //play hit sfx

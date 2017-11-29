@@ -29,19 +29,17 @@ public class EnemyBomberController : EnemyController
         canWalk = true;
     }
 
-    public override void InitEnemy(int id, enemySkillLevels enemySkillLevel, string objName)
+    public override void InitEnemy(enemySkillLevels enemySkillLevel, string objName)
     {
         enemySkill = enemySkillLevel;
-        enemyId = id;
-
-        var obj = gameObject.transform.Find(objName).gameObject;
-        obj.SetActive(true);
-        var ctrl = obj.GetComponentInChildren<Control>(true);
+        //enemyId = id;
     }
 
 
     public override void LetMeFly()
     {
+        canWalk = false;
+        GetComponent<BoxCollider2D>().enabled = false;
         //GetComponentInChildren<BodyController>().ActiveRigidBodys();
     }
 
@@ -105,6 +103,7 @@ public class EnemyBomberController : EnemyController
         if (collisionLayer == GameController.towerLayer)
         {
             Debug.Log("bomb!");
+            Destroy(gameObject, 1f);
         }
     }
 

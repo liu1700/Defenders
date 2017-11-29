@@ -171,7 +171,7 @@ public class EnemyPool : MonoBehaviour
             System.Random random = new System.Random();
 
             EnemyController.enemySkillLevels skillLevel = skillLevels[random.Next(skillLevels.Count)];
-            ctrl.InitEnemy(i, skillLevel, gameObjectMap[skillLevel]);
+            ctrl.InitEnemy(skillLevel, gameObjectMap[skillLevel]);
             list.Add(ctrl);
         }
 
