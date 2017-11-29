@@ -72,6 +72,7 @@ public class GameController : MonoBehaviour
     public static int environmentLayer;
     public static int playerLayer;
     public static int towerLayer;
+    public static int bomberEnemyLayer;
 
     int maxKilled;
     PlayerController playerController;
@@ -150,6 +151,7 @@ public class GameController : MonoBehaviour
         environmentLayer = LayerMask.NameToLayer("environment");
         playerLayer = LayerMask.NameToLayer("player");
         towerLayer = LayerMask.NameToLayer("tower");
+        bomberEnemyLayer = LayerMask.NameToLayer("enemyBomber");
     }
 
     void Start()

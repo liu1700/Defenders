@@ -2,7 +2,7 @@
 using UnityEngine;
 using Anima2D;
 
-public class EnemyBomberController : MonoBehaviour
+public class EnemyBomberController : EnemyController
 {
 
     /// <summary>
@@ -10,85 +10,25 @@ public class EnemyBomberController : MonoBehaviour
     /// This class handles enemy difficulty, enemy health, shoot AI, body rotation, movement and dying sequences.
     /// </summary>
 
-    //Difficulty settings
-    public enum enemySkillLevels { easy, normal, hard, Robinhood }
-    public enemySkillLevels enemySkill = enemySkillLevels.easy;
-
-    public int enemyId;
-
     [Header("Public GamePlay settings")]
-    public int enemyHealth = 100;                   //initial (full) health. can be edited.
-    public float baseShootAngle = 23f;           //Very important! - avoid editing this value! (it has been calculated based on the size/shape/weight of the arrow) preVal 61.5
-    private float shootAngleError = 0;              //We use this to give some erros to enemy shoots. Setting this to 0 will results in accurate shoots
-    public static float fakeWindPower = 0;              //We use this if we need to add more randomness to enemy shots.
-    internal int enemyCurrentHealth;                //not editable.
-    public bool isEnemyDead;                 //flag for gameover event
-
-    //Hidden gameobjects
-    private GameController gc;                          //game controller object
+    public float moveSpeed;
 
     [Header("Audio Clips")]
     public AudioClip[] attackSfx;
-    public AudioClip[] hitSfx;
 
     //Enemy shoot settings
-	private bool canAttack;
+    private bool canAttack;
+    private bool canWalk;
 
-    EnemyPool poolRef;
-	AudioSource audioSource;
+    Rigidbody2D rigidbody;
 
     //Init
-    void Awake()
+    void Start()
     {
-
-        //First of all, check if we need an enemy with the current game mode
-        if (!GameModeController.isEnemyRequired())
-        {
-            gameObject.SetActive(false);
-        }
-
-        enemyCurrentHealth = enemyHealth;
-        canAttack = false;
-        isEnemyDead = false;
-        var g = GameObject.FindGameObjectWithTag("GameController");
-        gc = g.GetComponent<GameController>();
-
-		audioSource = GetComponent<AudioSource> ();
-
-        //Increase difficulty by decreasing the enemy error when shooting
-        //Please note that "shootAngleError" is not editable. If you want to change the precision, you need to edit "fakeWindPower"
-        switch (enemySkill)
-        {
-            case enemySkillLevels.easy:
-                shootAngleError = 15f;
-                fakeWindPower = Random.Range(0, 30);
-                break;
-            case enemySkillLevels.normal:
-                shootAngleError = 10f;
-                fakeWindPower = Random.Range(0, 20);
-                break;
-            case enemySkillLevels.hard:
-                shootAngleError = 8f;
-                fakeWindPower = Random.Range(0, 10);
-                break;
-            case enemySkillLevels.Robinhood:
-                shootAngleError = 2;
-                fakeWindPower = 0;
-                break;
-        }
-
-        poolRef = GetComponentInParent<EnemyPool>();
+        rigidbody = GetComponent<Rigidbody2D>();
     }
 
-    /// <summary>
-    /// move the enemy to a random position, each time the game begins
-    /// </summary>
-    public void setStartingPosition(Vector3 pos)
-    {
-        transform.position = pos;
-    }
-
-    public void InitEnemy(int id, enemySkillLevels enemySkillLevel, string objName)
+    public override void InitEnemy(int id, enemySkillLevels enemySkillLevel, string objName)
     {
         enemySkill = enemySkillLevel;
         enemyId = id;
@@ -99,7 +39,7 @@ public class EnemyBomberController : MonoBehaviour
     }
 
 
-    public void LetMeFly()
+    public override void LetMeFly()
     {
         GetComponentInChildren<BodyController>().ActiveRigidBodys();
     }
@@ -142,7 +82,29 @@ public class EnemyBomberController : MonoBehaviour
             return;
 
         if (canAttack)
-			StartCoroutine(performAttack());
+            StartCoroutine(performAttack());
+    }
+
+    private void FixedUpdate()
+    {
+        if (canWalk)
+        {
+            WalkForward();
+        }
+    }
+
+    void WalkForward()
+    {
+        rigidbody.velocity = new Vector2(moveSpeed, rigidbody.velocity.y);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        var collisionLayer = collision.gameObject.layer;
+        if (collisionLayer == GameController.towerLayer)
+        {
+            Debug.Log("bomb!");
+        }
     }
 
     /// <summary>
@@ -160,30 +122,18 @@ public class EnemyBomberController : MonoBehaviour
         {
             yield break;
         }
-			
-        //play atk sound
-		if (attackSfx.Length > 0) {
-			playSfx(attackSfx[Random.Range(0, attackSfx.Length)]);
-		}
-    }
 
-    /// <summary>
-    /// Plays the sfx.
-    /// </summary>
-    void playSfx(AudioClip _clip)
-    {
-		audioSource.clip = _clip;
-		if (!audioSource.isPlaying)
+        //play atk sound
+        if (attackSfx.Length > 0)
         {
-			audioSource.Play();
+            playSfx(attackSfx[Random.Range(0, attackSfx.Length)]);
         }
     }
-
 
     /// <summary>
     /// Play a sfx when enemy is hit by an arrow
     /// </summary>
-    public void playRandomHitSound()
+    public override void playRandomHitSound()
     {
         int rndIndex = Random.Range(0, hitSfx.Length);
         playSfx(hitSfx[rndIndex]);

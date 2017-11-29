@@ -17,6 +17,7 @@ public class EnemyPool : MonoBehaviour
 
     [Header("Enemy Object")]
     public GameObject enemyArcherObject;
+    public GameObject enemyBomberObject;
 
     [Header("Archer respawn area")]
     public float minX;
@@ -173,5 +174,9 @@ public class EnemyPool : MonoBehaviour
             ctrl.InitEnemy(i, skillLevel, gameObjectMap[skillLevel]);
             list.Add(ctrl);
         }
+
+        // for bombers
+        GameObject bomber = Instantiate(enemyBomberObject, gameObject.transform.position, Quaternion.Euler(0, 0, 0), gameObject.transform) as GameObject;
+
     }
 }

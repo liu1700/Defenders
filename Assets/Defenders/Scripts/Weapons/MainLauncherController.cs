@@ -245,11 +245,6 @@ public class MainLauncherController : MonoBehaviour
     private bool isChecking = false;
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //if (Time.time < timeOfShot + collisionCheckDelay)
-        //{
-        //    print("Can't check for collision at this moment!");
-        //    return;
-        //}
 
         if (isChecking)
             return;
@@ -257,7 +252,7 @@ public class MainLauncherController : MonoBehaviour
         isChecking = true;
 
         var collisionLayerMask = collision.gameObject.layer;
-        if (collisionLayerMask == GameController.enemyLayer && gameObject.layer == playerShootingLayer)
+        if ((collisionLayerMask == GameController.enemyLayer || collisionLayerMask == GameController.bomberEnemyLayer) && gameObject.layer == playerShootingLayer)
         {
             //disable the arrow
             stopUpdate = true;
