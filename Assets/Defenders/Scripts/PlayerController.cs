@@ -14,9 +14,9 @@ public class PlayerController : MonoBehaviour
 
     [Header("Public GamePlay settings")]
     public int baseShootPower;                 //base power. edit with care.
-    public int playerHealth = 1000;                  //starting (full) health. can be edited.
+    public float playerHealth = 1000;                  //starting (full) health. can be edited.
     private float minShootDistance = 0.3f;                 //powers lesser than this amount are ignored. (used to cancel shoots)
-    internal int playerCurrentHealth;               //real-time health. not editable.
+    internal float playerCurrentHealth;               //real-time health. not editable.
     public static bool isPlayerDead;                //flag for gameover event
 
     [Header("Linked GameObjects")]
@@ -179,7 +179,7 @@ public class PlayerController : MonoBehaviour
 
     public void UpdateHp()
     {
-        hpText.text = playerCurrentHealth.ToString();
+        hpText.text = (((playerCurrentHealth / playerHealth) * 100).ToString()) + "%";
         needUpdateHealth = false;
     }
 
