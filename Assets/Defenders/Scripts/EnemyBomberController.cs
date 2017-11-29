@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using Anima2D;
+using EZCameraShake;
 
 public class EnemyBomberController : EnemyController
 {
@@ -13,12 +14,11 @@ public class EnemyBomberController : EnemyController
     [Header("Public GamePlay settings")]
     public float moveSpeed;
 
-    [Header("Audio Clips")]
-    public AudioClip[] attackSfx;
-
     //Enemy shoot settings
     private bool canAttack;
     private bool canWalk;
+
+    public GameObject explodeObj;
 
     Rigidbody2D rigidbody;
 
@@ -75,13 +75,6 @@ public class EnemyBomberController : EnemyController
             }
             return;
         }
-
-        //if we have killed the player, but the controller has not finished the game yet
-        if (GameController.noMoreShooting)
-            return;
-
-        if (canAttack)
-            StartCoroutine(performAttack());
     }
 
     private void FixedUpdate()
@@ -97,36 +90,29 @@ public class EnemyBomberController : EnemyController
         rigidbody.velocity = new Vector2(moveSpeed, rigidbody.velocity.y);
     }
 
+    void Explode(Vector2 contactPoint)
+    {
+        GameObject exp = Instantiate(explodeObj, contactPoint, Quaternion.Euler(0, 0, 0)) as GameObject;
+        exp.name = "Explosion";
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         var collisionLayer = collision.gameObject.layer;
         if (collisionLayer == GameController.towerLayer)
         {
-            Debug.Log("bomb!");
+            canWalk = false;
+
+            rigidbody.velocity = new Vector2(0, 0);
+
+            CameraShaker.Instance.ShakeOnce();
+            Explode(collision.contacts[0].point);
+
+            GameController.playerController.AddHealth(-MasterWeaponManager.bombExplosionDamage);
+            gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            rigidbody.AddForce(new Vector2(20f, 20f), ForceMode2D.Impulse);
+            rigidbody.AddTorque(10f, ForceMode2D.Impulse);
             Destroy(gameObject, 1f);
-        }
-    }
-
-    /// <summary>
-    /// Enemy shoot AI.
-    /// We just need to create the enemy-Arrow and feed it with initial shoot angle. It will calculate the shoot-power itself.
-    /// </summary>
-    IEnumerator performAttack()
-    {
-        if (!canAttack)
-            yield break;
-
-        canAttack = false;
-
-        if (isEnemyDead)
-        {
-            yield break;
-        }
-
-        //play atk sound
-        if (attackSfx.Length > 0)
-        {
-            playSfx(attackSfx[Random.Range(0, attackSfx.Length)]);
         }
     }
 

@@ -31,14 +31,14 @@ public class MainLauncherController : MonoBehaviour
     private float timeOfShot;                   //time of the creation of this projectile
     private float collisionCheckDelay = 0.1f;   //seconds.
 
-    //reference to player and enemy game objects
-    //private GameObject enemy;
-    private GameObject player;
+    ////reference to player and enemy game objects
+    ////private GameObject enemy;
+    //private GameObject player;
 
     //effect objects
     public GameObject bloodFx;
     public GameObject trailFx;
-    public GameObject explosionFx;
+    public GameObject[] explosionFxs;
 
     //all available arrow types (Each with their unique behaviours)
     public enum arrowTypes { Arrow, Grenade, Sword, Axe, Bomb }
@@ -60,7 +60,7 @@ public class MainLauncherController : MonoBehaviour
 
     void Awake()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        //player = GameObject.FindGameObjectWithTag("Player");
         arrRigid = GetComponent<Rigidbody2D>();
         arrCollider = GetComponent<BoxCollider2D>();
 
@@ -114,10 +114,6 @@ public class MainLauncherController : MonoBehaviour
             gameObject.layer = enemyShootingLayer;
         }
 
-        /*GetComponent<BoxCollider> ().enabled = false;
-		yield return new WaitForSeconds (collisionCheckDelay);
-		GetComponent<BoxCollider> ().enabled = true;*/
-
         //we can destroy the arrow after a short time (if it is not already destroyed)
         Destroy(gameObject, 10);
     }
@@ -144,7 +140,7 @@ public class MainLauncherController : MonoBehaviour
 
         // get initial and target positions
         Vector3 pos = transform.position;
-        Vector3 target = player.transform.position;
+        Vector3 target = GameController.playerController.transform.position;
 
         // get distance
         float dist = Vector3.Distance(pos, target);
@@ -184,19 +180,15 @@ public class MainLauncherController : MonoBehaviour
 
             if (ownerID == 0 || ownerID == 2)
             {
-
                 zDir = (Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg) + 180;
                 yDir = Mathf.Atan2(v.z, v.x) * Mathf.Rad2Deg;
                 transform.eulerAngles = new Vector3(0, -yDir, zDir);
-
             }
             else if (ownerID == 1)
             {
-
                 zDir = (Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg);
                 yDir = Mathf.Atan2(v.z, v.x) * Mathf.Rad2Deg;
                 transform.eulerAngles = new Vector3(0, yDir, -zDir);
-
             }
         }
     }
@@ -213,7 +205,7 @@ public class MainLauncherController : MonoBehaviour
 
     void explodeOnTouch(Vector2 contactPoint)
     {
-        GameObject exp = Instantiate(explosionFx, contactPoint, Quaternion.Euler(0, 0, 0)) as GameObject;
+        GameObject exp = Instantiate(explosionFxs[Random.Range(0, explosionFxs.Length)], contactPoint, Quaternion.Euler(0, 0, 0)) as GameObject;
         exp.name = "Explosion";
     }
 
@@ -294,10 +286,10 @@ public class MainLauncherController : MonoBehaviour
             transform.parent = collision.gameObject.transform;
 
             //manage victim's helath status
-            player.GetComponent<PlayerController>().AddHealth(-damage);
+            GameController.playerController.AddHealth(-damage);
 
             //play hit tower sfx
-            player.GetComponent<PlayerController>().playRandomHitTowerSound();
+            GameController.playerController.playRandomHitTowerSound();
 
             Destroy(gameObject, 10f);
         }
@@ -323,10 +315,10 @@ public class MainLauncherController : MonoBehaviour
             Destroy(blood, 1.5f);
 
             //manage victim's helath status
-            player.GetComponent<PlayerController>().AddHealth(-damage);
+            GameController.playerController.AddHealth(-damage);
 
             //play hit sfx
-            player.GetComponent<PlayerController>().playRandomHitSound();
+            GameController.playerController.playRandomHitSound();
 
             Destroy(gameObject, 10f);
         }

@@ -75,7 +75,7 @@ public class GameController : MonoBehaviour
     public static int bomberEnemyLayer;
 
     int maxKilled;
-    PlayerController playerController;
+    public static PlayerController playerController;
 
     bool rewardOk;
     /// <summary>

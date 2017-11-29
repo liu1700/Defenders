@@ -120,12 +120,8 @@ public class EnemyArcherController : EnemyController
 
         //shoot calculations
         GameObject ea = Instantiate(arrow, enemyShootPosition.transform.position, Quaternion.Euler(0, 0, 10)) as GameObject;
-        //ea.layer = GameController.enemyLayer;
         ea.name = "EnemyProjectile";
         ea.GetComponent<MainLauncherController>().ownerID = 1;
-
-        //float finalShootAngle = baseShootAngle + Random.Range(-shootAngleError, shootAngleError);
-        //float finalShootAngle = baseShootAngle;
         ea.GetComponent<MainLauncherController>().enemyShootAngle = finalShootAngle;
 
         //at the end

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using EZCameraShake;
 using UnityEditor;
 using UnityEngine;
 
@@ -12,10 +13,9 @@ public class CameraShakerEditor : Editor
         {
             DrawDefaultInspector();
 
-            CameraController ctrl = (CameraController)target;
             if (GUILayout.Button("Shake"))
             {
-                ctrl.ShakeIt();
+                CameraShaker.Instance.ShakeOnce();
             }
         }
     }
