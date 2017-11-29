@@ -41,7 +41,7 @@ public class EnemyBomberController : EnemyController
 
     public override void LetMeFly()
     {
-        GetComponentInChildren<BodyController>().ActiveRigidBodys();
+        //GetComponentInChildren<BodyController>().ActiveRigidBodys();
     }
 
     /// <summary>

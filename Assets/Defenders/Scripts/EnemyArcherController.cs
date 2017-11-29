@@ -10,40 +10,8 @@ public class EnemyArcherController : EnemyController
     /// This class handles enemy difficulty, enemy health, shoot AI, body rotation, movement and dying sequences.
     /// </summary>
 
-    ////Difficulty settings
-    //public enum enemySkillLevels { easy, normal, hard, Robinhood }
-    //public enemySkillLevels enemySkill = enemySkillLevels.easy;
-
-    //public int enemyId;
-
     public DestructableController plateformController;
 
-    //[Header("Public GamePlay settings")]
-    //public int enemyHealth = 100;                   //initial (full) health. can be edited.
-    //public float baseShootAngle = 23f;           //Very important! - avoid editing this value! (it has been calculated based on the size/shape/weight of the arrow) preVal 61.5
-    //private float shootAngleError = 0;              //We use this to give some erros to enemy shoots. Setting this to 0 will results in accurate shoots
-    //public static float fakeWindPower = 0;              //We use this if we need to add more randomness to enemy shots.
-    //internal int enemyCurrentHealth;                //not editable.
-    //public bool isEnemyDead;                 //flag for gameover event
-
-    //[Header("Linked GameObjects")]
-    ////Reference to game objects (childs and prefabs)
-    //public GameObject arrow;
-    //public Control enemyTurnPivot;
-    //public GameObject enemyShootPosition;
-    ////Hidden gameobjects
-    //private GameController gc;                          //game controller object
-
-    //[Header("Audio Clips")]
-    //public AudioClip[] shootSfx;
-    //public AudioClip[] hitSfx;
-
-    ////Enemy shoot settings
-    //private bool canShoot;
-
-    //EnemyPool poolRef;
-
-    //AudioSource audioSource;
     [Header("Linked GameObjects")]
     //Reference to game objects (childs and prefabs)
     public GameObject arrow;
