@@ -24,6 +24,9 @@ public class GameController : MonoBehaviour
     public PauseManager pauseManager;
 	public Image cdImage;
 
+	Timer weaponeTimer; // cd 计时器
+	float unlockDuration = 1f;
+
     // Static variables //
     public static int gameMode;                     //current game mode
     public static bool isArrowInScene;              //have any body shot an arrow? (is there an arrow inside the game?)
@@ -158,6 +161,8 @@ public class GameController : MonoBehaviour
     {
         StartCoroutine(activateTap());
         levelUI.goldNum.text = playerCoins.ToString();
+
+		weaponeTimer = Timer.createTimer("weaponCD");
     }
 
     private void Update()
