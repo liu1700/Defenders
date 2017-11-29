@@ -144,7 +144,7 @@ public class GameController : MonoBehaviour
         }
 
         var ctrl = cam.GetComponent<CameraController>();
-        ctrl.SetCameraProjectionSize(20f);
+        ctrl.SetCameraProjectionSize(19f);
         ctrl.SetcameraCurrentPos(new Vector3(3, 9, -10));
 
         enemyLayer = LayerMask.NameToLayer("enemy");

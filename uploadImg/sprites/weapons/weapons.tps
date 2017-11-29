@@ -150,7 +150,7 @@
             <key>datafile</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename></filename>
+                <filename>../../../Assets/Resources/Sprites/Parts/weapons.tpsheet</filename>
             </struct>
         </map>
         <key>multiPack</key>

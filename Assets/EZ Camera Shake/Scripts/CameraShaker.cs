@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace EZCameraShake
 {
@@ -26,7 +27,11 @@ namespace EZCameraShake
         public float defaultFadeInTime;
         public float defaultFadeOutTime;
 
+        public float smoothSpeed = 0.1f;
+
         Vector3 posAddShake, rotAddShake;
+        Vector3 posSource, rotSource;
+        bool inPeace;
 
         List<CameraShakeInstance> cameraShakeInstances = new List<CameraShakeInstance>();
 
@@ -34,12 +39,22 @@ namespace EZCameraShake
         {
             Instance = this;
             instanceList.Add(gameObject.name, this);
+            inPeace = true;
+        }
+
+        private void Start()
+        {
+            posSource = transform.localPosition;
+            rotSource = transform.localEulerAngles;
         }
 
         void Update()
         {
-            posAddShake = Vector3.zero;
-            rotAddShake = Vector3.zero;
+            //posAddShake = Vector3.zero;
+            //rotAddShake = Vector3.zero;
+
+            posAddShake = transform.localPosition;
+            rotAddShake = transform.localEulerAngles;
 
             for (int i = 0; i < cameraShakeInstances.Count; i++)
             {
@@ -62,6 +77,38 @@ namespace EZCameraShake
 
             transform.localPosition = posAddShake;
             transform.localEulerAngles = rotAddShake;
+
+            if (!inPeace && cameraShakeInstances.Count == 0)
+            {
+                StartCoroutine(BackToSourcePosition());
+                BackToSourcePosition();
+                inPeace = true;
+            }
+            else if (inPeace && cameraShakeInstances.Count > 0)
+            {
+                Debug.Log("shaking start");
+                inPeace = false;
+            }
+        }
+
+        IEnumerator BackToSourcePosition()
+        {
+            Debug.Log("shaking over");
+            while (true)
+            {
+                if (transform.localPosition == posSource && transform.localEulerAngles == rotSource)
+                {
+                    yield break;
+                }
+                else
+                {
+                    transform.localPosition = Vector3.Lerp(transform.localPosition, posSource, smoothSpeed);
+                    transform.localEulerAngles = Vector3.Lerp(transform.localEulerAngles, rotSource, smoothSpeed);
+                }
+                yield return new WaitForSeconds(0.05f);
+            }
+
+            yield return null;
         }
 
         /// <summary>
