@@ -57,11 +57,11 @@ public class EnemyArcherController : EnemyController
             var goldCount = 1;
             if (enemySkill == enemySkillLevels.normal)
             {
-                goldCount = 3;
+                goldCount = 2;
             }
             else if (enemySkill == enemySkillLevels.hard || enemySkill == enemySkillLevels.Robinhood)
             {
-                goldCount = 4;
+                goldCount = 3;
             }
 
             gc.KillEnemies(1, goldCount);

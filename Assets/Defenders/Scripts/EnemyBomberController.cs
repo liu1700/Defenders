@@ -75,11 +75,11 @@ public class EnemyBomberController : EnemyController
             var goldCount = 5;
             if (enemySkill == enemySkillLevels.normal)
             {
-                goldCount = 10;
+                goldCount = 7;
             }
             else if (enemySkill == enemySkillLevels.hard || enemySkill == enemySkillLevels.Robinhood)
             {
-                goldCount = 15;
+                goldCount = 9;
             }
 
             gc.KillEnemies(1, goldCount);
