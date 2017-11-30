@@ -53,6 +53,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 shootDirectionVector;
 
     public Text hpText;
+    public Slider hpSlider;
 
     GameController gc;
     bool needUpdateHealth;
@@ -193,6 +194,7 @@ public class PlayerController : MonoBehaviour
     public void UpdateHp()
     {
         hpText.text = (((playerCurrentHealth / playerHealth) * 100).ToString()) + "%";
+        hpSlider.value = 1f - (playerCurrentHealth / playerHealth);
         needUpdateHealth = false;
     }
 

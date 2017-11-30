@@ -75,12 +75,12 @@ public class AdManager : MonoBehaviour
     //gets called from other classes inside the game
     public void showInterstitial()
     {
-        print("Request for Full AD.");
-        if (TGSDK.CouldShowAd(interstitialID))
-        {
-            //TGSDK.ShowTestView(interstitialID);
-            TGSDK.ShowAd(interstitialID);
-        }
+        //print("Request for Full AD.");
+        //if (TGSDK.CouldShowAd(interstitialID))
+        //{
+        //    //TGSDK.ShowTestView(interstitialID);
+        //    TGSDK.ShowAd(interstitialID);
+        //}
     }
 
     public void showRewardVideo()

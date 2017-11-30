@@ -36,7 +36,7 @@ public class GameController : MonoBehaviour
     public static int playerArrowShot;              //how many arrows player shot in this game
                                                     // Static variables //
 
-    public static int reviveUseGold = 100;
+    public static int reviveUseGold = 200;
 
     // Private vars //
     private bool canTap;
@@ -345,6 +345,7 @@ public class GameController : MonoBehaviour
     void nextTurn()
     {
         round++;
+        levelUI.UpdateLevel(round);
         enemies.ReGenerateEnemies(round);
     }
 

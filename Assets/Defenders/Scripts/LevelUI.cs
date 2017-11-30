@@ -9,12 +9,18 @@ public class LevelUI : MonoBehaviour
     public Text goldNum;
     public Text addGoldText;
     public Text addTime;
+    public Text levelCnt;
 
     private void Start()
     {
         addGoldText.GetComponent<CanvasRenderer>().SetAlpha(0f);
         addTime.GetComponent<CanvasRenderer>().SetAlpha(0f);
         goldNum.text = "0";
+    }
+
+    public void UpdateLevel(int lv)
+    {
+        levelCnt.text = lv.ToString();
     }
 
     public void performAddGoldAnim(int count)
