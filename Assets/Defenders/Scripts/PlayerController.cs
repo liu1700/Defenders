@@ -28,6 +28,11 @@ public class PlayerController : MonoBehaviour
     public GameObject topAnchor, lowerAnchor, handAnchor;
     public GameObject minPos, maxPos;
     public SimpleJoystick simpleJoystick;
+    public Image cdImage;
+
+    Timer weaponeTimer; // cd 计时器
+    float unlockDuration = 0.6f;
+
 
     [Header("Audio Clips")]
     public AudioClip[] shootSfx;
@@ -52,6 +57,7 @@ public class PlayerController : MonoBehaviour
     GameController gc;
     bool needUpdateHealth;
     bool helperDelayIsDone, canCreateHelper;
+    bool canShoot;
 
     float helperCreationDelay = 0.2f, helperShowDelay = 0.2f;
     float helperShowTimer;
@@ -86,11 +92,14 @@ public class PlayerController : MonoBehaviour
         bowString = hand.gameObject.GetComponent<LineRenderer>();
         audioSource = GetComponent<AudioSource>();
         distance = Vector2.Distance(minPos.transform.position, maxPos.transform.position);
+
+        canShoot = true;
     }
 
     private void Start()
     {
         UpdateBowString();
+        weaponeTimer = Timer.createTimer("weaponCD");
     }
 
     void UpdateBowString()
@@ -128,10 +137,14 @@ public class PlayerController : MonoBehaviour
         if (!PauseManager.enableInput)
             return;
 
+        if (!canShoot)
+        {
+            return;
+        }
+
         //Player pivot turn manager
         if (CnInputManager.GetButton(tapKey))
         {
-
             turnPlayerBody();
             helperShowTimer += Time.deltaTime;
             if (helperShowTimer >= helperShowDelay)
@@ -281,6 +294,22 @@ public class PlayerController : MonoBehaviour
 
         //reset body rotation
         StartCoroutine(resetBodyRotation());
+
+        cdImage.fillAmount = 0f;
+        cdImage.gameObject.SetActive(true);
+        weaponeTimer.startTiming(unlockDuration, onComplete, Unlocking, true, false, false);
+        canShoot = false;
+    }
+
+    void Unlocking(float p)
+    {
+        cdImage.fillAmount = p;
+    }
+
+    void onComplete()
+    {
+        cdImage.gameObject.SetActive(false);
+        canShoot = true;
     }
 
     IEnumerator shootTrajectoryHelper()

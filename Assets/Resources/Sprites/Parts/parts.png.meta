@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: f3855cbac687de64eb820901cc9580c4
-timeCreated: 1511953130
+timeCreated: 1512007379
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -21,6 +21,7 @@ TextureImporter:
     21300028: "res_0014_\u56FE\u5C42-14"
     21300030: "res_0015_\u56FE\u5C42-1"
     21300032: res
+    21300034: weaponSlot
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -103,7 +104,7 @@ TextureImporter:
       name: "res_0000_\u56FE\u5C42-13"
       rect:
         serializedVersion: 2
-        x: 361
+        x: 405
         y: 334
         width: 41
         height: 38
@@ -323,9 +324,23 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: -1
+    - serializedVersion: 2
+      name: weaponSlot
+      rect:
+        serializedVersion: 2
+        x: 361
+        y: 330
+        width: 42
+        height: 42
+      alignment: 9
+      pivot: {x: 10.785714, y: -10.976191}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
     outline: []
     physicsShape: []
   spritePackingTag: 
-  userData: 99087336649067
+  userData: 99090810405376
   assetBundleName: 
   assetBundleVariant: 

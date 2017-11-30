@@ -395,6 +395,19 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">../../../../../Desktop/OutPuts/weaponSlot.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>256,256,512,512</rect>
+                <key>scale9Paddings</key>
+                <rect>256,256,512,512</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
         </map>
         <key>fileList</key>
         <array>
@@ -414,6 +427,7 @@
             <filename>../../../../../Desktop/OutPuts/res_0003_图层-12.png</filename>
             <filename>../../../../../Desktop/OutPuts/res_0004_图层-17.png</filename>
             <filename>../../../../../Desktop/OutPuts/res_0007_图层-22.png</filename>
+            <filename>../../../../../Desktop/OutPuts/weaponSlot.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

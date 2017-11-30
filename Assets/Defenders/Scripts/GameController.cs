@@ -22,10 +22,6 @@ public class GameController : MonoBehaviour
     public LevelUI levelUI;
     public GameOverManager gameOverManager;
     public PauseManager pauseManager;
-	public Image cdImage;
-
-	Timer weaponeTimer; // cd 计时器
-	float unlockDuration = 1f;
 
     // Static variables //
     public static int gameMode;                     //current game mode
@@ -161,8 +157,6 @@ public class GameController : MonoBehaviour
     {
         StartCoroutine(activateTap());
         levelUI.goldNum.text = playerCoins.ToString();
-
-		weaponeTimer = Timer.createTimer("weaponCD");
     }
 
     private void Update()
