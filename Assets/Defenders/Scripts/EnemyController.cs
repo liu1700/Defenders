@@ -12,7 +12,9 @@ public abstract class EnemyController : MonoBehaviour
 
     //Difficulty settings
     public enum enemySkillLevels { easy, normal, hard, Robinhood }
+    public enum enemyType { archer, bomber }
     public enemySkillLevels enemySkill = enemySkillLevels.easy;
+    public enemyType enemyTyp = enemyType.archer;
 
     public static int enemyIdCounter;
     public int enemyId;

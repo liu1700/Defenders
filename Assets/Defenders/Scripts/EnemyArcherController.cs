@@ -25,6 +25,8 @@ public class EnemyArcherController : EnemyController
     void Start()
     {
         StartCoroutine(reactiveEnemyShoot());
+
+        enemyTyp = enemyType.archer;
     }
 
 
@@ -52,14 +54,14 @@ public class EnemyArcherController : EnemyController
         {
             enemyCurrentHealth = 0;
             isEnemyDead = true;
-            var goldCount = 3;
+            var goldCount = 1;
             if (enemySkill == enemySkillLevels.normal)
             {
-                goldCount = 5;
+                goldCount = 3;
             }
             else if (enemySkill == enemySkillLevels.hard || enemySkill == enemySkillLevels.Robinhood)
             {
-                goldCount = 7;
+                goldCount = 4;
             }
 
             gc.KillEnemies(1, goldCount);

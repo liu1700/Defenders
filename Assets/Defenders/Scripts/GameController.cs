@@ -472,7 +472,7 @@ public class GameController : MonoBehaviour
     public void KillEnemies(int count, int bounus)
     {
         playerKilled += count;
-        addBonusTime(bounus - 2);
+        addBonusTime(bounus);
         AddGold(bounus);
     }
 

@@ -10,9 +10,9 @@ public class EnemyBomberController : EnemyController
     /// Main enemy controller class.
     /// This class handles enemy difficulty, enemy health, shoot AI, body rotation, movement and dying sequences.
     /// </summary>
-
-    [Header("Public GamePlay settings")]
-    public float moveSpeed;
+    float moveSpeed = -9f;
+    float realMoveSpeed;
+    float moveSpeedParam = 2f;
 
     //Enemy shoot settings
     private bool canAttack;
@@ -27,12 +27,24 @@ public class EnemyBomberController : EnemyController
     {
         rigidbody = GetComponent<Rigidbody2D>();
         canWalk = true;
+
+        enemyTyp = enemyType.bomber;
     }
 
     public override void InitEnemy(enemySkillLevels enemySkillLevel, string objName)
     {
         enemySkill = enemySkillLevel;
-        //enemyId = id;
+
+        if (enemySkill == enemySkillLevels.normal)
+        {
+            moveSpeed = -11;
+        }
+        else if (enemySkill == enemySkillLevels.hard || enemySkill == enemySkillLevels.Robinhood)
+        {
+            moveSpeed = -13;
+        }
+        System.Random random = new System.Random();
+        realMoveSpeed = random.Next((int)(moveSpeed - moveSpeedParam), (int)(moveSpeed + moveSpeedParam));
     }
 
 
@@ -58,14 +70,14 @@ public class EnemyBomberController : EnemyController
         {
             enemyCurrentHealth = 0;
             isEnemyDead = true;
-            var goldCount = 3;
+            var goldCount = 5;
             if (enemySkill == enemySkillLevels.normal)
             {
-                goldCount = 5;
+                goldCount = 10;
             }
             else if (enemySkill == enemySkillLevels.hard || enemySkill == enemySkillLevels.Robinhood)
             {
-                goldCount = 7;
+                goldCount = 15;
             }
 
             gc.KillEnemies(1, goldCount);
@@ -87,7 +99,7 @@ public class EnemyBomberController : EnemyController
 
     void WalkForward()
     {
-        rigidbody.velocity = new Vector2(moveSpeed, rigidbody.velocity.y);
+        rigidbody.velocity = new Vector2(realMoveSpeed, rigidbody.velocity.y);
     }
 
     void Explode(Vector2 contactPoint)
@@ -112,7 +124,11 @@ public class EnemyBomberController : EnemyController
             gameObject.GetComponent<BoxCollider2D>().enabled = false;
             rigidbody.AddForce(new Vector2(20f, 20f), ForceMode2D.Impulse);
             rigidbody.AddTorque(10f, ForceMode2D.Impulse);
-            Destroy(gameObject, 1f);
+
+            if (poolRef != null)
+            {
+                poolRef.KillEnemy(enemyId);
+            }
         }
     }
 

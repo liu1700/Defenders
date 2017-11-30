@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyPool : MonoBehaviour
@@ -25,15 +23,18 @@ public class EnemyPool : MonoBehaviour
     public float minY;
     public float maxY;
 
+    public int levelStep = 5;
+    float bornOffset = 3;
 
     private List<Vector3> positions;
 
-    float minEnemyCount, maxEnemyCount;
+    //float minEnemyCount, maxEnemyCount;
+    float enemyArcherCount;
     List<EnemyController.enemySkillLevels> skillLevels;
 
     Dictionary<int, EnemyController.enemySkillLevels> levelUnlock;
     Dictionary<EnemyController.enemySkillLevels, string> gameObjectMap;
-    Dictionary<int, int[]> enemyCountUnlock;
+    //Dictionary<int, int[]> enemyCountUnlock;
 
     public void GenerateEnemyInfoPerLv()
     {
@@ -81,18 +82,19 @@ public class EnemyPool : MonoBehaviour
         gameObjectMap.Add(EnemyController.enemySkillLevels.hard, "EnemyBody3");
         gameObjectMap.Add(EnemyController.enemySkillLevels.Robinhood, "EnemyBody3");
 
-        // key: 第几回合, val: 解锁刷新人数值域
-        enemyCountUnlock = new Dictionary<int, int[]>();
-        enemyCountUnlock.Add(1, new int[] { 1, 2 });
-        enemyCountUnlock.Add(5, new int[] { 2, 3 });
-        enemyCountUnlock.Add(8, new int[] { 3, 4 });
-        enemyCountUnlock.Add(12, new int[] { 3, 5 });
-        enemyCountUnlock.Add(16, new int[] { 3, 6 });
-        enemyCountUnlock.Add(21, new int[] { 5, 7 });
-        enemyCountUnlock.Add(25, new int[] { 5, 8 });
+        //// key: 第几回合, val: 解锁刷新人数值域
+        //enemyCountUnlock = new Dictionary<int, int[]>();
+        //enemyCountUnlock.Add(1, new int[] { 1, 2 });
+        //enemyCountUnlock.Add(5, new int[] { 2, 3 });
+        //enemyCountUnlock.Add(8, new int[] { 3, 4 });
+        //enemyCountUnlock.Add(12, new int[] { 3, 5 });
+        //enemyCountUnlock.Add(16, new int[] { 3, 6 });
+        //enemyCountUnlock.Add(21, new int[] { 5, 7 });
+        //enemyCountUnlock.Add(25, new int[] { 5, 8 });
 
-        minEnemyCount = 1;
-        maxEnemyCount = 1;
+        //minEnemyCount = 1;
+        //maxEnemyCount = 1;
+        enemyArcherCount = 1;
     }
 
     //  选中时绘制一个方块
@@ -118,22 +120,24 @@ public class EnemyPool : MonoBehaviour
             skillLevels.Add(levelUnlock[turn]);
         }
 
-        if (enemyCountUnlock.ContainsKey(turn))
-        {
-            minEnemyCount = enemyCountUnlock[turn][0];
-            maxEnemyCount = enemyCountUnlock[turn][1];
-        }
+        //if (enemyCountUnlock.ContainsKey(turn))
+        //{
+        //    minEnemyCount = enemyCountUnlock[turn][0];
+        //    maxEnemyCount = enemyCountUnlock[turn][1];
+        //}
+        enemyArcherCount = turn / levelStep + turn % levelStep;
     }
 
     void generatePos()
     {
-        var points = Mathf.RoundToInt(UnityEngine.Random.Range(minEnemyCount, maxEnemyCount));
+        //var points = Mathf.RoundToInt(UnityEngine.Random.Range(minEnemyCount, maxEnemyCount));
 
         positions = new List<Vector3>();
-        for (int i = 0; i < points; i++)
+        //for (int i = 0; i < points; i++)
+        for (int i = 0; i < enemyArcherCount; i++)
         {
-            float randomX = UnityEngine.Random.Range(minX, maxX);
-            float randomY = UnityEngine.Random.Range(minY, maxY);
+            float randomX = Random.Range(minX, maxX);
+            float randomY = Random.Range(minY, maxY);
             positions.Add(new Vector3(randomX, randomY));
         }
     }
@@ -176,7 +180,22 @@ public class EnemyPool : MonoBehaviour
         }
 
         // for bombers
-        GameObject bomber = Instantiate(enemyBomberObject, gameObject.transform.position, Quaternion.Euler(0, 0, 0), gameObject.transform) as GameObject;
+        if (turn % levelStep == 0)
+        {
+            var center = gameObject.transform.position;
+            var cnt = turn / levelStep;
+            for (int i = 0; i < cnt; i++)
+            {
+                var rX = Random.Range(center.x - bornOffset, center.x + bornOffset);
+                var rY = Random.Range(center.y, center.y + bornOffset);
 
+                GameObject bomber = Instantiate(enemyBomberObject, new Vector3(rX, rY, 0), Quaternion.Euler(0, 0, 0), gameObject.transform) as GameObject;
+                var ctrl = bomber.GetComponent<EnemyBomberController>();
+
+                EnemyController.enemySkillLevels skillLevel = skillLevels[Mathf.RoundToInt(Random.Range(0, skillLevels.Count))];
+                ctrl.InitEnemy(skillLevel, gameObjectMap[skillLevel]);
+                list.Add(ctrl);
+            }
+        }
     }
 }
