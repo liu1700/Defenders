@@ -14,8 +14,8 @@ public class AdManager : MonoBehaviour
 
     // real
     string appid = "8iiI93K213E6W5w5J4rH";
-    string interstitialID = "k2zjcFEGwF53BJQ9RIW";
-    string interstitialOpt = "p969ZaRL37AukvlQT7F";
+    //string interstitialID = "k2zjcFEGwF53BJQ9RIW";
+    //string interstitialOpt = "p969ZaRL37AukvlQT7F";
     string videoID = "Dx37r6o8NSfrMQBbM3t";
 
     //// test

@@ -11,7 +11,10 @@ public class CFX_AutoDestructShuriken : MonoBehaviour
     void OnEnable()
     {
         StartCoroutine(CheckIfAlive());
-        playSfx(explosionSfx);
+        if (explosionSfx)
+        {
+            playSfx(explosionSfx);
+        }
     }
 
     /// <summary>

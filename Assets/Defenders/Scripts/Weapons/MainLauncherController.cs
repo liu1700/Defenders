@@ -27,14 +27,6 @@ public class MainLauncherController : MonoBehaviour
     /// </summary>
     internal float enemyShootAngle;         // shooting angle (set from EnemyController class upon shoot command) 
 
-    ////only check for collision after a few seconds passed after the shot
-    //private float timeOfShot;                   //time of the creation of this projectile
-    //private float collisionCheckDelay = 0.1f;   //seconds.
-
-    ////reference to player and enemy game objects
-    ////private GameObject enemy;
-    //private GameObject player;
-
     //effect objects
     public GameObject bloodFx;
     public GameObject trailFx;
@@ -268,6 +260,8 @@ public class MainLauncherController : MonoBehaviour
 
             transform.parent = collision.gameObject.transform;
 
+            HitTowerFx.instance.GetHit(collision.contacts[0].point, Quaternion.Euler(0, 0, 0));
+
             //manage victim's helath status
             GameController.playerController.AddHealth(-MasterWeaponManager.GetDamage(damage, enemySkill));
 
@@ -315,14 +309,16 @@ public class MainLauncherController : MonoBehaviour
             ctrl.die();
 
             var gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
-            if (collision.gameObject.CompareTag("coinBird"))
+            if (collision.gameObject.tag == "coinBird")
             {
                 gc.AddGold(30);
             }
-            else if (collision.gameObject.CompareTag("timeBird"))
+            else if (collision.gameObject.tag == "timeBird")
             {
                 gc.addBonusTime(15);
             }
+
+            Debug.Log("tag is " + collision.gameObject.tag);
 
             Destroy(gameObject);
         }
