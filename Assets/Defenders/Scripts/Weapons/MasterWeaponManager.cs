@@ -26,22 +26,15 @@ public class MasterWeaponManager : MonoBehaviour
         {
             case EnemyController.enemySkillLevels.easy:
                 return baseDamage;
-                break;
             case EnemyController.enemySkillLevels.normal:
                 return baseDamage * 2;
-                break;
             case EnemyController.enemySkillLevels.hard:
                 return baseDamage * 3;
-                break;
             case EnemyController.enemySkillLevels.Robinhood:
                 return baseDamage * 3;
-                break;
             default:
                 return baseDamage;
-                break;
         }
-
-        return 10;
     }
 
 }

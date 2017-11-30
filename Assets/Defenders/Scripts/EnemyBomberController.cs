@@ -22,12 +22,12 @@ public class EnemyBomberController : EnemyController
 
     public GameObject bombInHand;
 
-    Rigidbody2D rigidbody;
+    Rigidbody2D bomberRigid;
 
     //Init
     void Start()
     {
-        rigidbody = GetComponent<Rigidbody2D>();
+        bomberRigid = GetComponent<Rigidbody2D>();
         canWalk = true;
 
         enemyTyp = enemyType.bomber;
@@ -101,7 +101,7 @@ public class EnemyBomberController : EnemyController
 
     void WalkForward()
     {
-        rigidbody.velocity = new Vector2(realMoveSpeed, rigidbody.velocity.y);
+        bomberRigid.velocity = new Vector2(realMoveSpeed, bomberRigid.velocity.y);
     }
 
     void Explode(Vector2 contactPoint)
@@ -117,15 +117,15 @@ public class EnemyBomberController : EnemyController
         {
             canWalk = false;
 
-            rigidbody.velocity = new Vector2(0, 0);
+            bomberRigid.velocity = new Vector2(0, 0);
 
             CameraShaker.Instance.ShakeOnce();
             Explode(collision.contacts[0].point);
 
             GameController.playerController.AddHealth(-MasterWeaponManager.bombExplosionDamage);
             gameObject.GetComponent<BoxCollider2D>().enabled = false;
-            rigidbody.AddForce(new Vector2(20f, 20f), ForceMode2D.Impulse);
-            rigidbody.AddTorque(10f, ForceMode2D.Impulse);
+            bomberRigid.AddForce(new Vector2(20f, 20f), ForceMode2D.Impulse);
+            bomberRigid.AddTorque(10f, ForceMode2D.Impulse);
 
             bombInHand.SetActive(false);
 

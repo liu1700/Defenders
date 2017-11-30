@@ -35,8 +35,7 @@ public class GameController : MonoBehaviour
     int playerKilled;                  //available player coins
     public static int playerArrowShot;              //how many arrows player shot in this game
                                                     // Static variables //
-
-    public static int reviveUseGold = 250;
+    public static int reviveUseGold = 200;
 
     // Private vars //
     private bool canTap;
@@ -49,7 +48,7 @@ public class GameController : MonoBehaviour
     [Header("Public GameObjects")]
     //Reference to scene game objects		
     private GameObject player;
-    private GameObject enemy;
+    //private GameObject enemy;
     private GameObject cam;
     private GameObject uiCam;
 
@@ -72,6 +71,7 @@ public class GameController : MonoBehaviour
     public static int playerLayer;
     public static int towerLayer;
     public static int bomberEnemyLayer;
+    public static int birdLayer;
 
     int maxKilled;
     public static PlayerController playerController;
@@ -116,7 +116,7 @@ public class GameController : MonoBehaviour
 
         //cache main objects
         player = GameObject.FindGameObjectWithTag("Player");
-        enemy = GameObject.FindGameObjectWithTag("enemy");
+        //enemy = GameObject.FindGameObjectWithTag("enemy");
         cam = GameObject.FindGameObjectWithTag("MainCamera");
 
         playerController = player.GetComponent<PlayerController>();
@@ -151,6 +151,7 @@ public class GameController : MonoBehaviour
         playerLayer = LayerMask.NameToLayer("player");
         towerLayer = LayerMask.NameToLayer("tower");
         bomberEnemyLayer = LayerMask.NameToLayer("enemyBomber");
+        birdLayer = LayerMask.NameToLayer("bird");
     }
 
     void Start()

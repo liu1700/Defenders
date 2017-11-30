@@ -107,8 +107,6 @@ namespace EZCameraShake
                 }
                 yield return new WaitForSeconds(0.05f);
             }
-
-            yield return null;
         }
 
         /// <summary>

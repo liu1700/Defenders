@@ -40,12 +40,12 @@ public class PlayerController : MonoBehaviour
     public AudioClip[] hitTowerSfx;
 
     //private settings
-    private Vector2 icp;                            //initial Click Position
+    //private Vector2 icp;                            //initial Click Position
     private Ray inputRay;
     private RaycastHit hitInfo;
-    private float inputPosX;
+    //private float inputPosX;
     private float preInputPosX;
-    private float inputPosY;
+    //private float inputPosY;
     private Vector2 inputDirection;
     private float distanceFromFirstClick;
     private float shootPower;
@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Awake()
     {
-        icp = new Vector2(0, 0);
+        //icp = new Vector2(0, 0);
         //infoPanel.SetActive(false);
         shootDirectionVector = new Vector3(0, 0, 0);
         playerCurrentHealth = playerHealth;
@@ -154,11 +154,11 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        //register the initial Click Position
-        if (CnInputManager.GetButtonDown(tapKey))
-        {
-            icp = new Vector2(inputPosX, inputPosY);
-        }
+        ////register the initial Click Position
+        //if (CnInputManager.GetButtonDown(tapKey))
+        //{
+        //    icp = new Vector2(inputPosX, inputPosY);
+        //}
 
         //clear the initial Click Position
         if (CnInputManager.GetButtonUp(tapKey))
@@ -176,7 +176,7 @@ public class PlayerController : MonoBehaviour
             }
 
             //reset variables
-            icp = new Vector2(0, 0);
+            //icp = new Vector2(0, 0);
             helperDelayIsDone = false;
             helperShowTimer = 0;
 

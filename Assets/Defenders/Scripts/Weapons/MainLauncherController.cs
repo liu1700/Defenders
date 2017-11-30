@@ -27,9 +27,9 @@ public class MainLauncherController : MonoBehaviour
     /// </summary>
     internal float enemyShootAngle;         // shooting angle (set from EnemyController class upon shoot command) 
 
-    //only check for collision after a few seconds passed after the shot
-    private float timeOfShot;                   //time of the creation of this projectile
-    private float collisionCheckDelay = 0.1f;   //seconds.
+    ////only check for collision after a few seconds passed after the shot
+    //private float timeOfShot;                   //time of the creation of this projectile
+    //private float collisionCheckDelay = 0.1f;   //seconds.
 
     ////reference to player and enemy game objects
     ////private GameObject enemy;
@@ -52,6 +52,8 @@ public class MainLauncherController : MonoBehaviour
 
     int enemyShootingLayer;
     int playerShootingLayer;
+
+    float arrowRemoveDuration = 2f;
 
     public EnemyController.enemySkillLevels enemySkill;
 
@@ -86,9 +88,6 @@ public class MainLauncherController : MonoBehaviour
 
     void Start()
     {
-
-        //set shoot time
-        timeOfShot = Time.time;
 
         stopUpdate = false;
 
@@ -227,7 +226,6 @@ public class MainLauncherController : MonoBehaviour
             stopUpdate = true;
 
             arrRigid.gravityScale = 0;
-            //arrRigid.isKinematic = true;
 
             if (arrCollider)
                 arrCollider.enabled = false;
@@ -260,25 +258,13 @@ public class MainLauncherController : MonoBehaviour
                 }
             }
 
+            arrRigid.Sleep();
             //play hit sfx
             enemy.playRandomHitSound();
-
-            // sleep it
-            arrRigid.Sleep();
         }
         else if (collisionLayerMask == GameController.towerLayer && gameObject.layer == enemyShootingLayer)
         {
-            stopUpdate = true;
-            arrRigid.gravityScale = 0;
-            arrRigid.bodyType = RigidbodyType2D.Static;
-            arrRigid.Sleep();
-
-            if (arrCollider)
-                arrCollider.enabled = false;
-
-            trailFx.SetActive(false);
-
-            GameController.isArrowInScene = false;
+            StopTheArrow();
 
             transform.parent = collision.gameObject.transform;
 
@@ -288,23 +274,12 @@ public class MainLauncherController : MonoBehaviour
             //play hit tower sfx
             GameController.playerController.playRandomHitTowerSound();
 
-            Destroy(gameObject, 3f);
+            Destroy(gameObject, arrowRemoveDuration);
         }
         else if (collisionLayerMask == GameController.playerLayer && gameObject.layer == enemyShootingLayer)
         {
-            stopUpdate = true;
-            arrRigid.gravityScale = 0;
-            arrRigid.bodyType = RigidbodyType2D.Static;
-            arrRigid.Sleep();
-
-            if (arrCollider)
-                arrCollider.enabled = false;
-
-            trailFx.SetActive(false);
-
-            GameController.isArrowInScene = false;
-
             transform.parent = collision.gameObject.transform;
+            StopTheArrow();
 
             //create blood fx
             GameObject blood = Instantiate(bloodFx, collision.contacts[0].point, Quaternion.Euler(0, 0, 0)) as GameObject;
@@ -317,36 +292,61 @@ public class MainLauncherController : MonoBehaviour
             //play hit sfx
             GameController.playerController.playRandomHitSound();
 
-            Destroy(gameObject, 3f);
+            Destroy(gameObject, arrowRemoveDuration);
         }
         else if ((collisionLayerMask == playerShootingLayer && gameObject.layer == enemyShootingLayer) ||
           (collisionLayerMask == enemyShootingLayer && gameObject.layer == playerShootingLayer))
         {
             // 敌我的箭相撞
             explodeOnTouch(collision.contacts[0].point);
-            Destroy(gameObject, .1f);
-            Destroy(collision.gameObject, .1f);
+            Destroy(gameObject);
+            Destroy(collision.gameObject);
 
             var gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
             gc.AddGold(8);
             gc.addBonusTime(5);
         }
+        else if (collisionLayerMask == GameController.birdLayer && gameObject.layer == playerShootingLayer)
+        {
+            transform.parent = collision.gameObject.transform;
+            StopTheArrow();
+
+            var ctrl = collision.gameObject.GetComponent<BirdsController>();
+            ctrl.die();
+
+            var gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+            if (collision.gameObject.CompareTag("coinBird"))
+            {
+                gc.AddGold(30);
+            }
+            else if (collision.gameObject.CompareTag("timeBird"))
+            {
+                gc.addBonusTime(15);
+            }
+
+            Destroy(gameObject);
+        }
         else if (collisionLayerMask == GameController.environmentLayer)
         {
-            //disable the arrow
-            stopUpdate = true;
-            arrRigid.gravityScale = 0;
-            arrRigid.bodyType = RigidbodyType2D.Static;
-            arrRigid.Sleep();
+            StopTheArrow();
 
-            if (arrCollider)
-                arrCollider.enabled = false;
-
-            trailFx.SetActive(false);
-
-            GameController.isArrowInScene = false;
-
-            Destroy(gameObject, 2f);
+            Destroy(gameObject, arrowRemoveDuration);
         }
+    }
+
+    void StopTheArrow()
+    {
+        //disable the arrow
+        stopUpdate = true;
+        arrRigid.gravityScale = 0;
+        arrRigid.bodyType = RigidbodyType2D.Static;
+        arrRigid.Sleep();
+
+        if (arrCollider)
+            arrCollider.enabled = false;
+
+        trailFx.SetActive(false);
+
+        GameController.isArrowInScene = false;
     }
 }
