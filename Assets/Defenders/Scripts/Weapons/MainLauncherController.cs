@@ -53,6 +53,8 @@ public class MainLauncherController : MonoBehaviour
     int enemyShootingLayer;
     int playerShootingLayer;
 
+    public EnemyController.enemySkillLevels enemySkill;
+
     void Awake()
     {
         //player = GameObject.FindGameObjectWithTag("Player");
@@ -281,7 +283,7 @@ public class MainLauncherController : MonoBehaviour
             transform.parent = collision.gameObject.transform;
 
             //manage victim's helath status
-            GameController.playerController.AddHealth(-damage);
+            GameController.playerController.AddHealth(-MasterWeaponManager.GetDamage(damage, enemySkill));
 
             //play hit tower sfx
             GameController.playerController.playRandomHitTowerSound();
@@ -315,7 +317,7 @@ public class MainLauncherController : MonoBehaviour
             //play hit sfx
             GameController.playerController.playRandomHitSound();
 
-            Destroy(gameObject, 10f);
+            Destroy(gameObject, 3f);
         }
         else if ((collisionLayerMask == playerShootingLayer && gameObject.layer == enemyShootingLayer) ||
           (collisionLayerMask == enemyShootingLayer && gameObject.layer == playerShootingLayer))

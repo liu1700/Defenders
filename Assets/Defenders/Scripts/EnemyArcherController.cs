@@ -125,6 +125,7 @@ public class EnemyArcherController : EnemyController
         ea.name = "EnemyProjectile";
         ea.GetComponent<MainLauncherController>().ownerID = 1;
         ea.GetComponent<MainLauncherController>().enemyShootAngle = finalShootAngle;
+        ea.GetComponent<MainLauncherController>().enemySkill = enemySkill;
 
         //at the end
         StartCoroutine(reactiveEnemyShoot());

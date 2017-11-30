@@ -20,6 +20,8 @@ public class EnemyBomberController : EnemyController
 
     public GameObject explodeObj;
 
+    public GameObject bombInHand;
+
     Rigidbody2D rigidbody;
 
     //Init
@@ -124,6 +126,8 @@ public class EnemyBomberController : EnemyController
             gameObject.GetComponent<BoxCollider2D>().enabled = false;
             rigidbody.AddForce(new Vector2(20f, 20f), ForceMode2D.Impulse);
             rigidbody.AddTorque(10f, ForceMode2D.Impulse);
+
+            bombInHand.SetActive(false);
 
             if (poolRef != null)
             {
