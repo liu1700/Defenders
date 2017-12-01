@@ -77,6 +77,7 @@ public class GameController : MonoBehaviour
     public static PlayerController playerController;
 
     bool rewardOk;
+    bool videoRewardSuccess, videoRewardCancel;
     /// <summary>
     /// INIT
     /// </summary>
@@ -208,7 +209,7 @@ public class GameController : MonoBehaviour
         playSfx(tapSfx);                            //play touch sound
         canTap = false;                             //prevent double touch
         StartCoroutine(waitAnimation());
-        OnPlayerReviveOver();
+        OnPlayerReviveOver(true);
         StartCoroutine(activateTap());
     }
 
@@ -272,25 +273,39 @@ public class GameController : MonoBehaviour
             }
             else if (typ == 2)
             {
+                admgr.rewardCB = OnPlayerDoubleRewardOk;
                 admgr.showRewardVideo();
-
-                if (addedPlayerCoins > 0 && playerCoins > 0)
-                {
-                    AddGoldInstant(addedPlayerCoins + playerCoins);
-                }
-
-                SceneManager.LoadScene("Menu");
             }
         }
 
         StartCoroutine(activateTap());
     }
 
-    public void OnPlayerReviveOver()
+    public void OnPlayerReviveOver(bool isOk)
     {
-        playerController.RefillPlayerHealth();
-        reviveFinished();
-        rewardOk = true;
+        Debug.Log("OnPlayerReviveOver " + isOk.ToString());
+
+        if (isOk)
+        {
+            playerController.RefillPlayerHealth();
+            reviveFinished();
+            rewardOk = true;
+        }
+    }
+
+    public void OnPlayerDoubleRewardOk(bool isOk)
+    {
+        Debug.Log("OnPlayerDoubleRewardOk " + isOk.ToString());
+        if (isOk)
+        {
+            videoRewardSuccess = true;
+
+            if (addedPlayerCoins > 0 && playerCoins > 0)
+            {
+                AddGoldInstant(addedPlayerCoins + playerCoins);
+            }
+        }
+        SceneManager.LoadScene("Menu");
     }
 
     public void OnBackToMain()

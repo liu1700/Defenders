@@ -28,7 +28,7 @@ public class AdManager : MonoBehaviour
     //[Skip]
     //string admobVideoID = "ca-app-pub-3940256099942544/5224354917";
 
-    public delegate void CompleteEvent();
+    public delegate void CompleteEvent(bool isOk);
 
     public CompleteEvent rewardCB;
 
@@ -63,7 +63,7 @@ public class AdManager : MonoBehaviour
         Debug.Log("AdManger Inited.");
 
         TGSDK.AdRewardSuccessCallback = OnAdRewardSuccess;
-
+        TGSDK.AdRewardFailedCallback = OnAdRewardFailed;
         //////showBannerAd (always)
         ////Admob.Instance().showBannerRelative(AdSize.Banner, AdPosition.BOTTOM_CENTER, 0);
 
@@ -109,7 +109,17 @@ public class AdManager : MonoBehaviour
         Debug.Log("handler onRewardedVideoEvent---" + ret);
         if (rewardCB != null)
         {
-            rewardCB();
+            rewardCB(true);
+        }
+    }
+
+    [Skip]
+    public void OnAdRewardFailed(string ret)
+    {
+        Debug.Log("handler OnAdRewardFailed---" + ret);
+        if (rewardCB != null)
+        {
+            rewardCB(false);
         }
     }
 

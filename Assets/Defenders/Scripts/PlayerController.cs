@@ -3,6 +3,7 @@ using CnControls;
 using Anima2D;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,11 +14,12 @@ public class PlayerController : MonoBehaviour
     /// </summary>
 
     [Header("Public GamePlay settings")]
-    public int baseShootPower;                 //base power. edit with care.
     public float playerHealth = 1000;                  //starting (full) health. can be edited.
-    private float minShootDistance = 0.3f;                 //powers lesser than this amount are ignored. (used to cancel shoots)
+    private float minShootDistance = 0.05f;                 //powers lesser than this amount are ignored. (used to cancel shoots)
     internal float playerCurrentHealth;               //real-time health. not editable.
     public static bool isPlayerDead;                //flag for gameover event
+    public int trajectoryPointCnt = 10;
+    public float trajectoryPredictionDur = 0.4f;
 
     [Header("Linked GameObjects")]
     //Reference to game objects (childs and prefabs)
@@ -32,6 +34,7 @@ public class PlayerController : MonoBehaviour
 
     Timer weaponeTimer; // cd 计时器
     float unlockDuration = 0.6f;
+    Rigidbody2D arrowRigid;
 
 
     [Header("Audio Clips")]
@@ -57,11 +60,12 @@ public class PlayerController : MonoBehaviour
 
     GameController gc;
     bool needUpdateHealth;
-    bool helperDelayIsDone, canCreateHelper;
+    //bool helperDelayIsDone, canCreateHelper;
+    bool canCreateHelper;
     bool canShoot;
 
-    float helperCreationDelay = 0.2f, helperShowDelay = 0.2f;
-    float helperShowTimer;
+    //float helperCreationDelay = 0.2f, helperShowDelay = 0.2f;
+    //float helperShowTimer;
 
     float inputH, inputV;
 
@@ -71,6 +75,8 @@ public class PlayerController : MonoBehaviour
     LineRenderer bowString;
     Vector3 handSourceAnchor, topSourceAnchor, downSourceAnchor;
     float distance, powerPercent;
+
+    private List<GameObject> trajectoryPoints;
 
     AudioSource audioSource;
 
@@ -85,8 +91,8 @@ public class PlayerController : MonoBehaviour
         playerCurrentHealth = playerHealth;
         needUpdateHealth = true;
         isPlayerDead = false;
-        helperDelayIsDone = false;
-        canCreateHelper = true;
+        //helperDelayIsDone = false;
+        //canCreateHelper = true;
         inputDirection = new Vector2();
         var g = GameObject.FindGameObjectWithTag("GameController");
         gc = g.GetComponent<GameController>();
@@ -95,12 +101,22 @@ public class PlayerController : MonoBehaviour
         distance = Vector2.Distance(minPos.transform.position, maxPos.transform.position);
 
         canShoot = true;
+        arrowRigid = arrow.GetComponent<Rigidbody2D>();
     }
 
     private void Start()
     {
         UpdateBowString();
         weaponeTimer = Timer.createTimer("weaponCD");
+
+        trajectoryPoints = new List<GameObject>();
+        for (int i = 0; i < trajectoryPointCnt; i++)
+        {
+            GameObject t = Instantiate(trajectoryHelper, playerShootPosition.transform.position, Quaternion.identity, playerShootPosition.transform) as GameObject;
+            t.SetActive(false);
+            t.transform.localScale = new Vector3(t.transform.localScale.x - (0.01f * i), t.transform.localScale.y - (0.01f * i), t.transform.localScale.z);
+            trajectoryPoints.Add(t);
+        }
     }
 
     void UpdateBowString()
@@ -147,23 +163,24 @@ public class PlayerController : MonoBehaviour
         if (CnInputManager.GetButton(tapKey))
         {
             turnPlayerBody();
-            helperShowTimer += Time.deltaTime;
-            if (helperShowTimer >= helperShowDelay)
-            {
-                helperDelayIsDone = true;
-            }
+            //helperShowTimer += Time.deltaTime;
+            //if (helperShowTimer >= helperShowDelay)
+            //{
+            //    helperDelayIsDone = true;
+            //}
         }
 
-        ////register the initial Click Position
-        //if (CnInputManager.GetButtonDown(tapKey))
-        //{
-        //    icp = new Vector2(inputPosX, inputPosY);
-        //}
+        //register the initial Click Position
+        if (CnInputManager.GetButtonDown(tapKey))
+        {
+            //icp = new Vector2(inputPosX, inputPosY);
+            switchTrajectoryHelper(true);
+        }
 
         //clear the initial Click Position
         if (CnInputManager.GetButtonUp(tapKey))
         {
-
+            switchTrajectoryHelper(false);
             //only shoot if there is enough power applied to the shoot
             if (distanceFromFirstClick >= minShootDistance && gc.AddGold(-1))
             {
@@ -177,8 +194,8 @@ public class PlayerController : MonoBehaviour
 
             //reset variables
             //icp = new Vector2(0, 0);
-            helperDelayIsDone = false;
-            helperShowTimer = 0;
+            //helperDelayIsDone = false;
+            //helperShowTimer = 0;
 
             hand.transform.position = minPos.transform.position;
         }
@@ -260,13 +277,21 @@ public class PlayerController : MonoBehaviour
         //calculate shoot power
         distanceFromFirstClick = Vector2.Distance(Vector2.zero, inputDirection);
         powerPercent = Mathf.Clamp(distanceFromFirstClick, 0, 1);
-        shootPower = powerPercent * 900;
+        shootPower = powerPercent * 42;
 
         hand.transform.position = minPos.transform.TransformPoint(minPos.transform.localPosition.x - (distance * powerPercent), minPos.transform.localPosition.y, 0);
-        if (distanceFromFirstClick >= minShootDistance && helperDelayIsDone)
-        {
-            StartCoroutine(shootTrajectoryHelper());
-        }
+        //if (distanceFromFirstClick >= minShootDistance && helperDelayIsDone)
+        //if (distanceFromFirstClick >= minShootDistance)
+        //{
+        //    StartCoroutine(shootTrajectoryHelper());
+        //}
+
+        shootTrajectoryHelper();
+
+        //if (canCreateHelper)
+        //{
+        //    shootTrajectoryHelper();
+        //}
     }
 
     /// <summary>
@@ -292,7 +317,7 @@ public class PlayerController : MonoBehaviour
         launcherCtrl.ownerID = 0;
 
         shootDirectionVector = Vector3.Normalize(inputDirection);
-        launcherCtrl.playerShootVector = (shootDirectionVector * -1) * ((shootPower + baseShootPower) / 50);
+        launcherCtrl.playerShootVector = ((shootDirectionVector * -1) * shootPower);
 
         //reset body rotation
         StartCoroutine(resetBodyRotation());
@@ -314,22 +339,34 @@ public class PlayerController : MonoBehaviour
         canShoot = true;
     }
 
-    IEnumerator shootTrajectoryHelper()
+    void shootTrajectoryHelper()
     {
-        if (!canCreateHelper)
-        {
-            yield break;
-        }
-
-        canCreateHelper = false;
-
-        GameObject t = Instantiate(trajectoryHelper, playerShootPosition.transform.position, Quaternion.Euler(0, 180, shootDirection * -1)) as GameObject;
+        var fkTime = trajectoryPredictionDur;
         shootDirectionVector = Vector3.Normalize(inputDirection);
-        //shootDirectionVector = new Vector3(Mathf.Clamp(shootDirectionVector.x, 0, 1), Mathf.Clamp(shootDirectionVector.y, 0, 1), shootDirectionVector.z);
-        t.GetComponent<Rigidbody2D>().AddForce((shootDirectionVector * -1) * ((shootPower + baseShootPower) / 50), ForceMode2D.Impulse);
+        Vector2 pos;
+        Vector3 shootVector;
+        float sqrT;
+        for (int i = 0; i < trajectoryPointCnt; i++)
+        {
+            pos = new Vector2(playerShootPosition.transform.position.x, playerShootPosition.transform.position.y);
+            shootVector = (shootDirectionVector * -1) * (shootPower / fkTime);
+            sqrT = (fkTime * fkTime);
+            pos.y = pos.y + sqrT * ((shootVector.y / arrowRigid.mass) + ((Physics2D.gravity.y * arrowRigid.gravityScale) / 2f));
+            pos.x = pos.x + sqrT * (shootVector.x / arrowRigid.mass);
 
-        yield return new WaitForSeconds(helperCreationDelay);
-        canCreateHelper = true;
+            trajectoryPoints[i].transform.position = pos;
+            fkTime += trajectoryPredictionDur;
+        }
+        return;
+    }
+
+    void switchTrajectoryHelper(bool isOpen)
+    {
+        canCreateHelper = isOpen;
+        for (int i = 0; i < trajectoryPointCnt; i++)
+        {
+            trajectoryPoints[i].SetActive(isOpen);
+        }
     }
 
 
