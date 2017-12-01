@@ -11,7 +11,8 @@ public class EnemyArcherController : EnemyController
     /// </summary>
 
     public DestructableController plateformController;
-    public float baseShootAngle = 23f;           //Very important! - avoid editing this value! (it has been calculated based on the size/shape/weight of the arrow) preVal 61.5
+    //public float baseShootAngle = 23f;           //Very important! - avoid editing this value! (it has been calculated based on the size/shape/weight of the arrow) preVal 61.5
+    public GameObject target;
 
     //Enemy shoot settings
     bool canShoot;
@@ -100,6 +101,7 @@ public class EnemyArcherController : EnemyController
             yield break;
         }
 
+        float baseShootAngle = Mathf.Atan2(gameObject.transform.position.y, gameObject.transform.position.x) * Mathf.Rad2Deg;
         float finalShootAngle = baseShootAngle + Random.Range(-shootAngleError, shootAngleError);
 
         //we need to rotate enemy body to a random/calculated rotation angle

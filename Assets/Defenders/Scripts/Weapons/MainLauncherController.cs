@@ -134,6 +134,10 @@ public class MainLauncherController : MonoBehaviour
         float dist = Vector3.Distance(pos, target);
 
         // calculate initival velocity required for the arrow to move through distance
+        if (enemyShootAngle < 0)
+        {
+            enemyShootAngle *= -1;
+        }
         float Vi = Mathf.Sqrt(dist * -Physics.gravity.y / (Mathf.Sin(Mathf.Deg2Rad * enemyShootAngle * 1.05f)));
         float Vy, Vx;
 
@@ -148,7 +152,7 @@ public class MainLauncherController : MonoBehaviour
         arrRigid.velocity = globalVelocity;
 
         //add a little wind (stochastic destination) to make the enemy weapon more realistic
-        arrRigid.AddForce(new Vector3(EnemyController.fakeWindPower, 0, 0), ForceMode2D.Force);
+        //arrRigid.AddForce(new Vector3(EnemyController.fakeWindPower, 0, 0), ForceMode2D.Force);
     }
 
 
