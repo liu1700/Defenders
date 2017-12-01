@@ -55,14 +55,14 @@ public class EnemyArcherController : EnemyController
         {
             enemyCurrentHealth = 0;
             isEnemyDead = true;
-            var goldCount = 1;
+            var goldCount = 2;
             if (enemySkill == enemySkillLevels.normal)
             {
-                goldCount = 2;
+                goldCount = 3;
             }
             else if (enemySkill == enemySkillLevels.hard || enemySkill == enemySkillLevels.Robinhood)
             {
-                goldCount = 3;
+                goldCount = 4;
             }
 
             gc.KillEnemies(1, goldCount);
@@ -101,7 +101,8 @@ public class EnemyArcherController : EnemyController
             yield break;
         }
 
-        float baseShootAngle = Mathf.Atan2(gameObject.transform.position.y, gameObject.transform.position.x) * Mathf.Rad2Deg;
+        float baseShootAngle = Mathf.Atan2(gameObject.transform.position.y - GameController.playerController.transform.position.y,
+           gameObject.transform.position.x - GameController.playerController.transform.position.x) * Mathf.Rad2Deg;
         float finalShootAngle = baseShootAngle + Random.Range(-shootAngleError, shootAngleError);
 
         //we need to rotate enemy body to a random/calculated rotation angle
@@ -111,7 +112,7 @@ public class EnemyArcherController : EnemyController
         {
             t += Time.deltaTime;
             //enemyTurnPivot.transform.rotation = Quaternion.Euler(0, 0, Mathf.SmoothStep(-90, targetAngle - 90, t));
-            enemyTurnPivot.transform.rotation = Quaternion.Euler(0, 0, Mathf.SmoothStep(-90, -finalShootAngle - 90, t));
+            enemyTurnPivot.transform.rotation = Quaternion.Euler(0, 0, Mathf.SmoothStep(-90, finalShootAngle - 90, t));
             yield return 0;
         }
 

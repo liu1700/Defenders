@@ -67,16 +67,16 @@ public abstract class EnemyController : MonoBehaviour
         switch (enemySkill)
         {
             case enemySkillLevels.easy:
-                shootAngleError = 15f;
-                //fakeWindPower = Random.Range(0, 30);
+                shootAngleError = 5f;
+                fakeWindPower = Random.Range(20, 50);
                 break;
             case enemySkillLevels.normal:
-                shootAngleError = 10f;
-                //fakeWindPower = Random.Range(0, 20);
+                shootAngleError = 3f;
+                fakeWindPower = Random.Range(10, 30);
                 break;
             case enemySkillLevels.hard:
-                shootAngleError = 8f;
-                //fakeWindPower = Random.Range(0, 10);
+                shootAngleError = 2f;
+                fakeWindPower = Random.Range(0, 20);
                 break;
             case enemySkillLevels.Robinhood:
                 shootAngleError = 2;

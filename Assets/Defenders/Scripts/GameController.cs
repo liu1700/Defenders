@@ -50,7 +50,6 @@ public class GameController : MonoBehaviour
     private GameObject player;
     //private GameObject enemy;
     private GameObject cam;
-    private GameObject uiCam;
 
     ///Game timer vars
     public int availableTime = 30;                  //total gameplay time
@@ -60,7 +59,7 @@ public class GameController : MonoBehaviour
     private int seconds;
     private int minutes;
 
-    int reviveTime = 20;
+    int reviveTime = 30;
 
     private float playerHealthScale;                //player health bar real-time scale
     private float enemyHealthScale;                 //enemy health bar real-time scale

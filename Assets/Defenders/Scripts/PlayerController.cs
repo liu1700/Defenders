@@ -277,7 +277,7 @@ public class PlayerController : MonoBehaviour
         //calculate shoot power
         distanceFromFirstClick = Vector2.Distance(Vector2.zero, inputDirection);
         powerPercent = Mathf.Clamp(distanceFromFirstClick, 0, 1);
-        shootPower = powerPercent * 42;
+        shootPower = powerPercent * 45;
 
         hand.transform.position = minPos.transform.TransformPoint(minPos.transform.localPosition.x - (distance * powerPercent), minPos.transform.localPosition.y, 0);
         //if (distanceFromFirstClick >= minShootDistance && helperDelayIsDone)

@@ -132,27 +132,23 @@ public class MainLauncherController : MonoBehaviour
 
         // get distance
         float dist = Vector3.Distance(pos, target);
-
+        //Debug.Log("angle1 " + enemyShootAngle.ToString());
         // calculate initival velocity required for the arrow to move through distance
         if (enemyShootAngle < 0)
         {
             enemyShootAngle *= -1;
         }
-        float Vi = Mathf.Sqrt(dist * -Physics.gravity.y / (Mathf.Sin(Mathf.Deg2Rad * enemyShootAngle * 1.05f)));
+        float Vi = Mathf.Sqrt(dist * -Physics.gravity.y / (Mathf.Sin(Mathf.Deg2Rad * enemyShootAngle)));
         float Vy, Vx;
-
         Vx = Vi * Mathf.Cos(Mathf.Deg2Rad * enemyShootAngle);
         Vy = Vi * Mathf.Sin(Mathf.Deg2Rad * enemyShootAngle);
-
-        // create the velocity vector
-        Vector3 localVelocity = new Vector3(-Vx, Vy, 0);
-        Vector3 globalVelocity = transform.TransformVector(localVelocity);
+        //Debug.Log("angle " + enemyShootAngle.ToString() + " Vi " + Vi.ToString() + " Vx " + Vx.ToString() + " Vy " + Vy.ToString());
 
         // shoot the arrow
-        arrRigid.velocity = globalVelocity;
+        arrRigid.velocity = transform.TransformVector(new Vector3(-Vx, Vy, 0));
 
         //add a little wind (stochastic destination) to make the enemy weapon more realistic
-        //arrRigid.AddForce(new Vector3(EnemyController.fakeWindPower, 0, 0), ForceMode2D.Force);
+        arrRigid.AddForce(new Vector3(EnemyController.fakeWindPower, 0, 0), ForceMode2D.Force);
     }
 
 
