@@ -162,6 +162,15 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
+        if (videoRewardSuccess)
+        {
+            if (addedPlayerCoins > 0 && playerCoins > 0)
+            {
+                AddGoldInstant(addedPlayerCoins + playerCoins);
+            }
+            SceneManager.LoadScene("Menu");
+        }
+
         //we no longer need to loop into gameController if the game is already finished.
         if (gameIsFinished)
             return;
@@ -299,12 +308,12 @@ public class GameController : MonoBehaviour
         {
             videoRewardSuccess = true;
 
-            if (addedPlayerCoins > 0 && playerCoins > 0)
-            {
-                AddGoldInstant(addedPlayerCoins + playerCoins);
-            }
+            //if (addedPlayerCoins > 0 && playerCoins > 0)
+            //{
+            //    AddGoldInstant(addedPlayerCoins + playerCoins);
+            //}
         }
-        SceneManager.LoadScene("Menu");
+        //SceneManager.LoadScene("Menu");
     }
 
     public void OnBackToMain()

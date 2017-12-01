@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using Beebyte.Obfuscator;
-using Together;
+using admob;
 
 public class AdManager : MonoBehaviour
 {
@@ -12,25 +12,33 @@ public class AdManager : MonoBehaviour
     /// And you can define new public functions here and call them later inside your game
     /// </summary>
 
-    // real
-    string appid = "8iiI93K213E6W5w5J4rH";
-    //string interstitialID = "k2zjcFEGwF53BJQ9RIW";
-    //string interstitialOpt = "p969ZaRL37AukvlQT7F";
-    string videoID = "Dx37r6o8NSfrMQBbM3t";
+    //// real
+    //string appid = "8iiI93K213E6W5w5J4rH";
+    ////string interstitialID = "k2zjcFEGwF53BJQ9RIW";
+    ////string interstitialOpt = "p969ZaRL37AukvlQT7F";
+    //string videoID = "Dx37r6o8NSfrMQBbM3t";
 
     //// test
     //[Skip]
     //string admobId = "ca-app-pub-3940256099942544~3347511713";
+    [Skip]
+    string admobBannerID = "ca-app-pub-5176895987178305/3058017265";
+    [Skip]
+    string admobInterstitialID = "ca-app-pub-5176895987178305/1074975465";
+    [Skip]
+    string admobVideoID = "ca-app-pub-5176895987178305/5213531022";
+
     //[Skip]
-    //string admobBannerID = "ca-app-pub-3940256099942544/6300978111";
+    //string admobBannerID = "ca-app-pub-5176895987178305/1396727482";
     //[Skip]
-    //string admobInterstitialID = "ca-app-pub-3940256099942544/1033173712";
+    //string admobInterstitialID = "ca-app-pub-5176895987178305/1182062923";
     //[Skip]
-    //string admobVideoID = "ca-app-pub-3940256099942544/5224354917";
+    //string admobVideoID = "ca-app-pub-5176895987178305/3975747223";
 
     public delegate void CompleteEvent(bool isOk);
 
     public CompleteEvent rewardCB;
+    Admob ad;
 
     void Awake()
     {
@@ -47,29 +55,29 @@ public class AdManager : MonoBehaviour
     void initAdMgr()
     {
         ////  isAdmobInited = true;
-        //ad = Admob.Instance();
+        ad = Admob.Instance();
         //ad.bannerEventHandler += onBannerEvent;
         //ad.interstitialEventHandler += onInterstitialEvent;
-        //ad.rewardedVideoEventHandler += onRewardedVideoEvent;
+        ad.rewardedVideoEventHandler += onRewardedVideoEvent;
         //ad.nativeBannerEventHandler += onNativeBannerEvent;
-        //ad.initAdmob(admobBannerID, admobInterstitialID);
+        ad.initAdmob(admobBannerID, admobInterstitialID);
         //ad.setTesting(true);
 
-        //TGSDK.SetDebugModel(true);
-        TGSDK.Initialize(appid, "10053"); // taptap
+        ////TGSDK.SetDebugModel(true);
+        //TGSDK.Initialize(appid, "10053"); // taptap
 
-        TGSDK.PreloadAd();
+        //TGSDK.PreloadAd();
 
         Debug.Log("AdManger Inited.");
 
-        TGSDK.AdRewardSuccessCallback = OnAdRewardSuccess;
-        TGSDK.AdRewardFailedCallback = OnAdRewardFailed;
+        //TGSDK.AdRewardSuccessCallback = OnAdRewardSuccess;
+        //TGSDK.AdRewardFailedCallback = OnAdRewardFailed;
         //////showBannerAd (always)
         ////Admob.Instance().showBannerRelative(AdSize.Banner, AdPosition.BOTTOM_CENTER, 0);
 
-        ////cache an Interstitial ad for later use
+        //cache an Interstitial ad for later use
         //ad.loadInterstitial();
-        //ad.loadRewardedVideo(admobVideoID);
+        ad.loadRewardedVideo(admobVideoID);
     }
 
     //gets called from other classes inside the game
@@ -85,12 +93,16 @@ public class AdManager : MonoBehaviour
 
     public void showRewardVideo()
     {
-        print("Request for Reward AD.");
+        print("Show Reward AD.");
 
-        if (TGSDK.CouldShowAd(videoID))
+        //if (TGSDK.CouldShowAd(videoID))
+        //{
+        //    //TGSDK.ShowTestView(videoID);
+        //    TGSDK.ShowAd(videoID);
+        //}
+        if (ad.isRewardedVideoReady())
         {
-            //TGSDK.ShowTestView(videoID);
-            TGSDK.ShowAd(videoID);
+            ad.showRewardedVideo();
         }
         else
         {
@@ -98,40 +110,71 @@ public class AdManager : MonoBehaviour
         }
     }
 
+    public void loadReward()
+    {
+        print("Request for Reward AD.");
+        ad.loadRewardedVideo(admobVideoID);
+    }
+
     public bool isShowRewardVideoReady()
     {
-        return TGSDK.CouldShowAd(videoID);
+        return ad.isRewardedVideoReady();
     }
 
-    [Skip]
-    public void OnAdRewardSuccess(string ret)
+    void onRewardedVideoEvent(string eventName, string msg)
     {
-        Debug.Log("handler onRewardedVideoEvent---" + ret);
-        if (rewardCB != null)
+        Debug.Log("handler onRewardedVideoEvent---" + eventName + "  rewarded: " + msg);
+        if (eventName == AdmobEvent.onRewarded)
         {
-            rewardCB(true);
+            if (rewardCB != null)
+            {
+                rewardCB(true);
+            }
+            loadReward();
+        }
+        else if (eventName == AdmobEvent.onAdClosed)
+        {
+            if (rewardCB != null)
+            {
+                rewardCB(false);
+            }
+            loadReward();
+        }
+        else if (eventName == AdmobEvent.onAdFailedToLoad)
+        {
+            loadReward();
         }
     }
 
-    [Skip]
-    public void OnAdRewardFailed(string ret)
-    {
-        Debug.Log("handler OnAdRewardFailed---" + ret);
-        if (rewardCB != null)
-        {
-            rewardCB(false);
-        }
-    }
+    //[Skip]
+    //public void OnAdRewardSuccess(string ret)
+    //{
+    //    Debug.Log("handler onRewardedVideoEvent---" + ret);
+    //    if (rewardCB != null)
+    //    {
+    //        rewardCB(true);
+    //    }
+    //}
+
+    //[Skip]
+    //public void OnAdRewardFailed(string ret)
+    //{
+    //    Debug.Log("handler OnAdRewardFailed---" + ret);
+    //    if (rewardCB != null)
+    //    {
+    //        rewardCB(false);
+    //    }
+    //}
 
 
     // 上报
     public void UploadUserViewingVideoScene()
     {
-        TGSDK.ShowAdScene(videoID);
+        //TGSDK.ShowAdScene(videoID);
     }
 
     public void UploadUserRejectViewingVideoScene()
     {
-        TGSDK.ReportAdRejected(videoID);
+        //TGSDK.ReportAdRejected(videoID);
     }
 }
