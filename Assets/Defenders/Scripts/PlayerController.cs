@@ -114,7 +114,7 @@ public class PlayerController : MonoBehaviour
         {
             GameObject t = Instantiate(trajectoryHelper, playerShootPosition.transform.position, Quaternion.identity, playerShootPosition.transform) as GameObject;
             t.SetActive(false);
-            t.transform.localScale = new Vector3(t.transform.localScale.x - (0.01f * i), t.transform.localScale.y - (0.01f * i), t.transform.localScale.z);
+            t.transform.localScale = new Vector3(t.transform.localScale.x - (0.02f * i), t.transform.localScale.y - (0.02f * i), t.transform.localScale.z);
             trajectoryPoints.Add(t);
         }
     }
