@@ -27,6 +27,7 @@ public class MenuController : MonoBehaviour
     private GameObject cam;                         //main camera
 
     public GameObject featurePanel;
+    public GameObject equipmentPanel;
     //AdManager adManager;
 
     void Awake()
@@ -60,12 +61,19 @@ public class MenuController : MonoBehaviour
         }
         coinText.text = coin.ToString();
 
+        equipmentPanel.SetActive(false);
+
         //// preload ads
         //if (adManager)
         //{
         //    adManager.loadInterstitial();
         //    adManager.loadReward();
         //}
+    }
+
+    public void OnClickOpenEquipmentPanel()
+    {
+        equipmentPanel.SetActive(!equipmentPanel.activeSelf);
     }
 
     public void OnClickFeaturePanel()

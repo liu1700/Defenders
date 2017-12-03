@@ -3,12 +3,15 @@ importPivots: 1
 tpsheetFileNames:
 - Assets/Resources/Sprites/Parts/birdsAnim.tpsheet
 - Assets/Resources/Sprites/Parts/parts.tpsheet
+- Assets/Resources/Sprites/Parts/ui.tpsheet
 - Assets/Resources/Sprites/Parts/weapons.tpsheet
 textureFileNames:
 - Assets/Resources/Sprites/Parts/birdsAnim.png
 - Assets/Resources/Sprites/Parts/parts.png
+- Assets/Resources/Sprites/Parts/ui.png
 - Assets/Resources/Sprites/Parts/weapons.png
 normalmapFileNames:
+- 
 - 
 - 
 - 
