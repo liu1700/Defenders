@@ -9,13 +9,15 @@ public class SentryManager : MonoBehaviour
     Unity3DRavenCS.Unity3DRavenCS client;
     Dictionary<string, string> tags;
 
+    string dsn = "https://7001b017ca0c4b3697c1d27d111cc1ae:77a804dfe1cd422f8eb04a9b9d4e49a6@sentry.io/251815";
+
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         DontDestroyOnLoad(gameObject);
 
         // Create a new Unity3DRavenCS instance before using it.
-        Unity3DRavenCS.Unity3DRavenCS.NewInstance("https://d51acc7af2274dbcadbc0fa9ca7b43ff:09eac5f5288b4566acce95bcbc123f85@sentry.io/252613");
+        Unity3DRavenCS.Unity3DRavenCS.NewInstance(dsn);
 
         client = Unity3DRavenCS.Unity3DRavenCS.instance;
 
@@ -25,16 +27,9 @@ public class SentryManager : MonoBehaviour
         tags.Add("Device-Name", SystemInfo.deviceName);
         tags.Add("OS", SystemInfo.operatingSystem);
         tags.Add("MemorySize", SystemInfo.systemMemorySize.ToString());
-    }
 
-    void OnEnable()
-    {
         Application.logMessageReceived += LogHandler;
-    }
 
-    void OnDisable()
-    {
-        Application.logMessageReceived -= LogHandler;
     }
 
     public void LogHandler(string condition, string stackTrace, LogType type)
