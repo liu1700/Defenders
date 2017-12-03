@@ -61,7 +61,7 @@ public class MenuController : MonoBehaviour
         }
         coinText.text = coin.ToString();
 
-        equipmentPanel.SetActive(false);
+        //equipmentPanel.SetActive(false);
 
         //// preload ads
         //if (adManager)
