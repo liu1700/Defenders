@@ -14,6 +14,7 @@ public class SentryManager : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
+
         DontDestroyOnLoad(gameObject);
 
         // Create a new Unity3DRavenCS instance before using it.

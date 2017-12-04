@@ -46,9 +46,9 @@ public class PauseManager : MonoBehaviour
         print("Game is Paused...");
         enableInput = false;
 
-        //show an Interstitial Ad when the game is paused
-        if (adManager)
-            adManager.showInterstitial();
+        ////show an Interstitial Ad when the game is paused
+        //if (adManager)
+        //    adManager.showInterstitial();
 
         isGamePaused = true;
         //uiCam.GetComponent<Camera>().enabled = false;
