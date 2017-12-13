@@ -3,6 +3,7 @@ using System.Collections;
 using System;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using GooglePlayGames;
 
 public class MenuController : MonoBehaviour
 {
@@ -28,6 +29,11 @@ public class MenuController : MonoBehaviour
 
     public GameObject featurePanel;
     public GameObject equipmentPanel;
+
+    public Button leaderBoard;
+
+    String leaderBoardsID = "CgkImdG3uvMOEAIQAQ";
+
     //AdManager adManager;
 
     void Awake()
@@ -36,6 +42,33 @@ public class MenuController : MonoBehaviour
         cam = GameObject.FindGameObjectWithTag("MainCamera");
         featurePanel.GetComponent<CanvasRenderer>().SetAlpha(0f);
         Application.targetFrameRate = 30;
+
+        print("ccccccc " + AdManager.signedIn.ToString());
+
+        if (AdManager.signedIn)
+        {
+            leaderBoard.gameObject.SetActive(true);
+        }
+        else
+        {
+            leaderBoard.gameObject.SetActive(false);
+        }
+
+        if (!AdManager.signedOnce)
+        {
+            Social.localUser.Authenticate((bool success) =>
+            {
+                print("aaaaaaaa " + success.ToString());
+
+                AdManager.signedIn = success;
+                if (success && leaderBoard != null && !leaderBoard.gameObject.activeSelf)
+                {
+                    leaderBoard.gameObject.SetActive(true);
+                }
+            });
+            AdManager.signedOnce = true;
+        }
+
 
         //var AdManagerObject = GameObject.FindGameObjectWithTag("AdManager");
         //if (AdManagerObject != null)
@@ -69,6 +102,11 @@ public class MenuController : MonoBehaviour
         //    adManager.loadInterstitial();
         //    adManager.loadReward();
         //}
+    }
+
+    public void OnClickViewLeaderBoard()
+    {
+        PlayGamesPlatform.Instance.ShowLeaderboardUI(leaderBoardsID);
     }
 
     public void OnClickOpenEquipmentPanel()

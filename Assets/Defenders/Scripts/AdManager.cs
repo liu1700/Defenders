@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using Beebyte.Obfuscator;
+using GooglePlayGames.BasicApi;
+using GooglePlayGames;
 // using admob;
 
 public class AdManager : MonoBehaviour
@@ -11,6 +13,9 @@ public class AdManager : MonoBehaviour
     /// You can set different IDs for different types of Ads (obtainable from Admob developer panel)
     /// And you can define new public functions here and call them later inside your game
     /// </summary>
+
+    public static bool signedIn;
+    public static bool signedOnce;
 
     //// real
     //string appid = "8iiI93K213E6W5w5J4rH";
@@ -48,6 +53,15 @@ public class AdManager : MonoBehaviour
     void Start()
     {
         initAdMgr();
+
+        initGooglePlayerService();
+    }
+
+    void initGooglePlayerService()
+    {
+        PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder().Build();
+        PlayGamesPlatform.InitializeInstance(config);
+        PlayGamesPlatform.Activate();
     }
 
 
