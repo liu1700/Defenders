@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using Beebyte.Obfuscator;
-using admob;
+// using admob;
 
 public class AdManager : MonoBehaviour
 {
@@ -38,7 +38,7 @@ public class AdManager : MonoBehaviour
     public delegate void CompleteEvent(bool isOk);
 
     public CompleteEvent rewardCB;
-    Admob ad;
+    // Admob ad;
 
     void Awake()
     {
@@ -54,30 +54,30 @@ public class AdManager : MonoBehaviour
     [Skip]
     void initAdMgr()
     {
-        ////  isAdmobInited = true;
-        ad = Admob.Instance();
-        //ad.bannerEventHandler += onBannerEvent;
-        //ad.interstitialEventHandler += onInterstitialEvent;
-        ad.rewardedVideoEventHandler += onRewardedVideoEvent;
-        //ad.nativeBannerEventHandler += onNativeBannerEvent;
-        ad.initAdmob(admobBannerID, admobInterstitialID);
-        //ad.setTesting(true);
+        // ////  isAdmobInited = true;
+        // ad = Admob.Instance();
+        // //ad.bannerEventHandler += onBannerEvent;
+        // //ad.interstitialEventHandler += onInterstitialEvent;
+        // ad.rewardedVideoEventHandler += onRewardedVideoEvent;
+        // //ad.nativeBannerEventHandler += onNativeBannerEvent;
+        // ad.initAdmob(admobBannerID, admobInterstitialID);
+        // //ad.setTesting(true);
 
-        ////TGSDK.SetDebugModel(true);
-        //TGSDK.Initialize(appid, "10053"); // taptap
+        // ////TGSDK.SetDebugModel(true);
+        // //TGSDK.Initialize(appid, "10053"); // taptap
 
-        //TGSDK.PreloadAd();
+        // //TGSDK.PreloadAd();
 
-        Debug.Log("AdManger Inited.");
+        // Debug.Log("AdManger Inited.");
 
-        //TGSDK.AdRewardSuccessCallback = OnAdRewardSuccess;
-        //TGSDK.AdRewardFailedCallback = OnAdRewardFailed;
-        //////showBannerAd (always)
-        ////Admob.Instance().showBannerRelative(AdSize.Banner, AdPosition.BOTTOM_CENTER, 0);
+        // //TGSDK.AdRewardSuccessCallback = OnAdRewardSuccess;
+        // //TGSDK.AdRewardFailedCallback = OnAdRewardFailed;
+        // //////showBannerAd (always)
+        // ////Admob.Instance().showBannerRelative(AdSize.Banner, AdPosition.BOTTOM_CENTER, 0);
 
-        //cache an Interstitial ad for later use
-        //ad.loadInterstitial();
-        ad.loadRewardedVideo(admobVideoID);
+        // //cache an Interstitial ad for later use
+        // //ad.loadInterstitial();
+        // ad.loadRewardedVideo(admobVideoID);
     }
 
     //gets called from other classes inside the game
@@ -100,50 +100,51 @@ public class AdManager : MonoBehaviour
         //    //TGSDK.ShowTestView(videoID);
         //    TGSDK.ShowAd(videoID);
         //}
-        if (ad.isRewardedVideoReady())
-        {
-            ad.showRewardedVideo();
-        }
-        else
-        {
-            SceneManager.LoadScene("Menu");
-        }
+        // if (ad.isRewardedVideoReady())
+        // {
+        //     ad.showRewardedVideo();
+        // }
+        // else
+        // {
+        //     SceneManager.LoadScene("Menu");
+        // }
     }
 
     public void loadReward()
     {
         print("Request for Reward AD.");
-        ad.loadRewardedVideo(admobVideoID);
+        // ad.loadRewardedVideo(admobVideoID);
     }
 
     public bool isShowRewardVideoReady()
     {
-        return ad.isRewardedVideoReady();
+        return true;
+        // return ad.isRewardedVideoReady();
     }
 
     void onRewardedVideoEvent(string eventName, string msg)
     {
         Debug.Log("handler onRewardedVideoEvent---" + eventName + "  rewarded: " + msg);
-        if (eventName == AdmobEvent.onRewarded)
-        {
-            if (rewardCB != null)
-            {
-                rewardCB(true);
-            }
-            loadReward();
-        }
-        else if (eventName == AdmobEvent.onAdClosed)
-        {
-            if (rewardCB != null)
-            {
-                rewardCB(false);
-            }
-            loadReward();
-        }
-        else if (eventName == AdmobEvent.onAdFailedToLoad)
-        {
-            loadReward();
-        }
+        // if (eventName == AdmobEvent.onRewarded)
+        // {
+        //     if (rewardCB != null)
+        //     {
+        //         rewardCB(true);
+        //     }
+        //     loadReward();
+        // }
+        // else if (eventName == AdmobEvent.onAdClosed)
+        // {
+        //     if (rewardCB != null)
+        //     {
+        //         rewardCB(false);
+        //     }
+        //     loadReward();
+        // }
+        // else if (eventName == AdmobEvent.onAdFailedToLoad)
+        // {
+        //     loadReward();
+        // }
     }
 
     //[Skip]
